@@ -1,24 +1,26 @@
-# pi-mon-vue
+# RaspiMon
 
-## Project setup
-```
-npm install
-```
+A lightweight monitor for your raspberry pi, works with the [RaspiMon API.](https://github.com/raekw0n/raspberry-pi-monitor-api)
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+![image](src/media/screenshot.png)
 
-### Compiles and minifies for production
-```
-npm run build
+## Installation
+
+Clone this repository:
+```bash
+$ git clone git@github.com:raekw0n/raspi-mon.git
+$ cd raspi-mon
 ```
 
-### Lints and fixes files
-```
-npm run lint
+Install dependencies:
+```bash
+$ npm install
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Compile assets:
+```bash
+$ npm run build
+```
+
+## License
+RaspiMon is open-sourced software licensed under the MIT license.
