@@ -129,7 +129,8 @@
         },
         methods: {
             getSystem() {
-                fetch('http://api.raspberrypi.local/system').then(response => {
+                const url = 'http://api.raspberrypi.local/system/';
+                fetch(url).then(response => {
                     if (response.ok) {
                         this.message = 'Data successfully retrieved, initialising dashboard...';
                         return response.json();
@@ -137,7 +138,6 @@
                         throw new Error('ERROR: (' + response.status + ') could not fetch system statistics.');
                     }
                 }).then(json => {
-                    console.log(json);
                     // TODO remove timeout (its for testing the loading animation)
                     setTimeout(() => {
                             ['platform', 'cpu', 'disk'].forEach(key => {
