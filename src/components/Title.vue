@@ -9,6 +9,9 @@
                     document.title = this.title;
                 }
             }
+        },
+        render() {
+            return true;
         }
     }
 </script>

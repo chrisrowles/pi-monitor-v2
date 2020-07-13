@@ -4,9 +4,9 @@
         <div class="d-flex flex-column flex-md-row align-items-center p-4 px-md-4 mb-0 mb-md-3 bg-white box-shadow">
             <h5 class="my-0 mr-md-auto font-weight-normal">RaspiMon <small class="text-muted">v0.0.1-alpha</small></h5>
             <nav class="my-2 my-md-0 mr-md-3">
-                <a class="p-2 text-dark" href="#">Dashboard</a>
-                <a class="p-2 text-dark" href="#">Network</a>
-                <a class="p-2 text-dark" href="#">Settings</a>
+<!--                <a class="p-2 text-dark" href="#">Dashboard</a>-->
+<!--                <a class="p-2 text-dark" href="#">Network</a>-->
+<!--                <a class="p-2 text-dark" href="#">Settings</a>-->
             </nav>
         </div>
 
@@ -137,23 +137,21 @@
                         throw new Error('ERROR: (' + response.status + ') could not fetch system statistics.');
                     }
                 }).then(json => {
+                    console.log(json);
                     // TODO remove timeout (its for testing the loading animation)
                     setTimeout(() => {
-                        if (json.data) {
-                            let metric = json.data;
                             ['platform', 'cpu', 'disk'].forEach(key => {
-                                if (typeof this[key] === 'undefined' || typeof metric[key] === 'undefined') {
+                                if (typeof this[key] === 'undefined' || typeof json[key] === 'undefined') {
                                     throw new Error('Undefined metric in API response.');
                                 }
 
                                 Object.keys(this[key]).forEach(result => {
-                                    this[key][result] = metric[key][result];
+                                    this[key][result] = json[key][result];
                                 });
                             });
-                            this.disk_percent = metric.disk.percent;
-                            this.processes = metric.processes;
+                            this.disk_percent = json.disk.percent;
+                            this.processes = json.processes;
                             this.loaded = true;
-                        }
                     }, 2000);
                 }).catch(error => {
                     this.loaded = false;
