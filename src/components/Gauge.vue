@@ -16,6 +16,7 @@
     HighchartsSolidGauge(Highcharts);
 
     export default {
+        name: 'Gauge',
         props: ['title', 'id', 'metric', 'format'],
         mounted() {
             this.draw({
