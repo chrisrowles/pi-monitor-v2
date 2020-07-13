@@ -1,18 +1,21 @@
 <template>
-    <div>
-        <div class="please-wait">
-            <p class="text-muted text-center">Loading, please wait...</p>
-        </div>
-        <div class="out">
-            <div class="load">
+    <transition name="fade">
+        <div class="container py-5 px-3" id="loading" v-if="show">
+            <div class="please-wait">
+                <p class="text-muted text-center">{{ message }}</p>
+            </div>
+            <div class="mask">
+                <div class="load">
+                </div>
             </div>
         </div>
-    </div>
+    </transition>
 </template>
 
 <script>
     export default {
-        name: 'Loading'
+        name: 'Loading',
+        props: ['show', 'message'],
     }
 </script>
 
@@ -35,7 +38,7 @@
         width: 100%;
     }
 
-    .out {
+    .mask {
         background: white;
         display: flex;
         height: 100vh;

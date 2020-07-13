@@ -21,7 +21,7 @@
 <script>
     export default {
         name: 'Table',
-        props: ['type', 'data'],
+        props: ['type', 'data', 'sortKey', 'sortOrder'],
         methods: {
             formatHeader(header) {
                 return header.charAt(0).toUpperCase() + header.slice(1);
@@ -40,7 +40,7 @@
                         value: this.data[key]
                     });
                 });
-                return response;
+                return this.$_.orderBy(response, this.sortKey, this.sortOrder);
             }
         }
     }

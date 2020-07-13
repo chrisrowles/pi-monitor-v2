@@ -33,6 +33,14 @@ table.table thead th {
   width: 16px;
 }
 
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 1.5s;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
 @media (min-width: 768px) {
   #sidebar-wrapper {
     margin-left: 0;

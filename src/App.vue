@@ -1,5 +1,6 @@
 <template>
     <div id="app">
+        <Title :title="'Dashboard | RaspiMon - A Lightweight Monitor for the Raspberry Pi'"></Title>
         <div class="d-flex flex-column flex-md-row align-items-center p-4 px-md-4 mb-0 mb-md-3 bg-white box-shadow">
             <h5 class="my-0 mr-md-auto font-weight-normal">RaspiMon <small class="text-muted">v0.0.1-alpha</small></h5>
             <nav class="my-2 my-md-0 mr-md-3">
@@ -9,11 +10,10 @@
             </nav>
         </div>
 
-        <div class="container py-5 px-3" v-if="!loaded">
-            <Loading></Loading>
-        </div>
+        <Loading :show="!loaded" :message="message"></Loading>
 
-        <div class="container py-5 px-3" v-if="loaded">
+        <transition name="fade">
+            <div class="container py-5 px-3" v-if="loaded">
             <div class="row">
                 <div class="col-12 col-md-6 col-lg-4 ml-auto">
                     <Gauge :title="'Temperature'" :id="'temp'" :metric="cpu.temp" :format="'{y}°C'"></Gauge>
@@ -35,7 +35,7 @@
                                     <strong>Overview</strong>
                                 </div>
                                 <div class="card-body">
-                                    <Table :type="'vertical'" :data="platform"></Table>
+                                    <Table :type="'vertical'" :data="platform" :sort-key="'header'" :sort-order="'app'"></Table>
                                 </div>
                             </div>
                         </div>
@@ -47,7 +47,7 @@
                                     <strong>CPU</strong>
                                 </div>
                                 <div class="card-body">
-                                    <Table :type="'vertical'" :data="cpu"></Table>
+                                    <Table :type="'vertical'" :data="cpu" :sort-key="'header'" :sort-order="'desc'"></Table>
                                 </div>
                             </div>
                         </div>
@@ -59,7 +59,7 @@
                                     <strong>Disk</strong>
                                 </div>
                                 <div class="card-body">
-                                    <Table :type="'vertical'" :data="disk"></Table>
+                                    <Table :type="'vertical'" :data="disk" :sort-key="'header'" :sort-order="'desc'"></Table>
                                 </div>
                             </div>
                         </div>
@@ -82,13 +82,14 @@
                 </div>
             </section>
         </div>
+        </transition>
     </div>
 </template>
 
 <script>
-
     import Gauge from "./components/Gauge";
     import Table from "./components/Table";
+    import Title from "./components/Title";
     import Loading from "./components/Loading";
 
     export default {
@@ -98,11 +99,11 @@
                 platform: {
                     distro: '',
                     kernel: '',
-                    uptime: ''
+                    uptime: '',
                 },
                 cpu: {
-                    freq: 0,
                     temp: 0,
+                    freq: 0,
                     usage: 0
                 },
                 disk: {
@@ -115,10 +116,12 @@
                     status: '',
                 },
                 processes: {},
-                loaded: false
+                loaded: false,
+                message: ''
             }
         },
         created() {
+            this.message = 'Retrieving data from API, please wait...';
             // TODO remove timeout (its for testing the loading animation)
             setTimeout(() => {
                 this.getSystem();
@@ -128,34 +131,39 @@
             getSystem() {
                 fetch('http://api.raspberrypi.local/system').then(response => {
                     if (response.ok) {
+                        this.message = 'Data successfully retrieved, initialising dashboard...';
                         return response.json();
                     } else {
-                        throw new Error("Could not fetch system statistics.");
+                        throw new Error('ERROR: (' + response.status + ') could not fetch system statistics.');
                     }
                 }).then(json => {
-                    if (json.data) {
-                        let metric = json.data;
-                        ['platform', 'cpu', 'disk'].forEach(key => {
-                            if (typeof this[key] === 'undefined' || typeof metric[key] === 'undefined') {
-                                throw new Error('Undefined metric in API response.');
-                            }
+                    // TODO remove timeout (its for testing the loading animation)
+                    setTimeout(() => {
+                        if (json.data) {
+                            let metric = json.data;
+                            ['platform', 'cpu', 'disk'].forEach(key => {
+                                if (typeof this[key] === 'undefined' || typeof metric[key] === 'undefined') {
+                                    throw new Error('Undefined metric in API response.');
+                                }
 
-                            Object.keys(this[key]).forEach(result => {
-                                this[key][result] = metric[key][result];
+                                Object.keys(this[key]).forEach(result => {
+                                    this[key][result] = metric[key][result];
+                                });
                             });
-                        });
-                        this.disk_percent = metric.disk.percent;
-                        this.processes = metric.processes;
-                        this.loaded = true;
-                    }
+                            this.disk_percent = metric.disk.percent;
+                            this.processes = metric.processes;
+                            this.loaded = true;
+                        }
+                    }, 2000);
                 }).catch(error => {
                     this.loaded = false;
-                    console.log(error);
+                    this.message = error.message;
                 });
             }
         },
         components: {
             Gauge,
+            Title,
             Table,
             Loading
         }
