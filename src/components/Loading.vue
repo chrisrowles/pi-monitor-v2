@@ -5,7 +5,10 @@
                 <p class="text-muted text-center">{{ message }}</p>
             </div>
             <div class="mask">
-                <div class="load">
+                <div class="error" v-if="status === 'error'">
+                    <i class="fa fa-exclamation-triangle text-danger fa-3x"></i>
+                </div>
+                <div class="load" v-else>
                 </div>
             </div>
         </div>
@@ -15,7 +18,7 @@
 <script>
     export default {
         name: 'Loading',
-        props: ['show', 'message'],
+        props: ['show', 'status', 'message'],
     }
 </script>
 

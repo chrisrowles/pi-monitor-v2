@@ -10,7 +10,7 @@
             </nav>
         </div>
 
-        <Loading :show="!loaded" :message="message"></Loading>
+        <Loading :show="!loaded" :status="status" :message="message"></Loading>
 
         <transition name="fade">
             <div class="container py-5 px-3" v-if="loaded">
@@ -22,7 +22,7 @@
                     <Gauge :title="'CPU'" :id="'cpu'" :metric="cpu.usage" :format="'{y}%'"></Gauge>
                 </div>
                 <div class="col-12 col-md-12 col-lg-4 ml-auto">
-                    <Gauge :title="'Disk'" :id="'disk'" :metric="disk_percent" :format="'{y}%'"></Gauge>
+                    <Gauge :title="'Disk'" :id="'disk'" :metric="disk_usage" :format="'{y}%'"></Gauge>
                 </div>
             </div>
 
@@ -35,7 +35,7 @@
                                     <strong>Overview</strong>
                                 </div>
                                 <div class="card-body">
-                                    <Table :type="'vertical'" :data="platform" :sort-key="'header'" :sort-order="'app'"></Table>
+                                    <Table :type="'vertical'" :data="platform" :sort-key="'header'" :sort-order="'asc'"></Table>
                                 </div>
                             </div>
                         </div>
@@ -111,25 +111,27 @@
                     free: 0,
                     total: 0,
                 },
-                disk_percent: null,
                 fan: {
                     status: '',
                 },
                 processes: {},
+
                 loaded: false,
-                message: ''
+                status: false,
+                message: '',
+
+                connectionAttempt: 0
             }
         },
         created() {
             this.message = 'Retrieving data from API, please wait...';
-            // TODO remove timeout (its for testing the loading animation)
-            setTimeout(() => {
-                this.getSystem();
-            }, 3000)
+            this.getSystem();
         },
         methods: {
             getSystem() {
-                const url = 'http://api.raspberrypi.local/system/';
+                ++this.connectionAttempt;
+
+                const url = 'http://rowles.ddns.net:8888/system/';
                 fetch(url).then(response => {
                     if (response.ok) {
                         this.message = 'Data successfully retrieved, initialising dashboard...';
@@ -138,25 +140,37 @@
                         throw new Error('ERROR: (' + response.status + ') could not fetch system statistics.');
                     }
                 }).then(json => {
-                    // TODO remove timeout (its for testing the loading animation)
-                    setTimeout(() => {
+                    if (json.data) {
+                        setTimeout(() => {
                             ['platform', 'cpu', 'disk'].forEach(key => {
-                                if (typeof this[key] === 'undefined' || typeof json[key] === 'undefined') {
+                                if (typeof this[key] === 'undefined' || typeof json.data[key] === 'undefined') {
                                     throw new Error('Undefined metric in API response.');
                                 }
 
                                 Object.keys(this[key]).forEach(result => {
-                                    this[key][result] = json[key][result];
+                                    this[key][result] = json.data[key][result];
                                 });
                             });
-                            this.disk_percent = json.disk.percent;
-                            this.processes = json.processes;
+                            this.processes = json.data.processes;
                             this.loaded = true;
-                    }, 2000);
+                        }, 1000);
+                    } else {
+                        throw new Error('Oh shit.')
+                    }
                 }).catch(error => {
-                    this.loaded = false;
-                    this.message = error.message;
+                    if (this.connectionAttempt < 3) {
+                        this.getSystem();
+                    } else {
+                        this.loaded = false;
+                        this.status = 'error';
+                        this.message = error.message;
+                    }
                 });
+            }
+        },
+        computed: {
+            disk_usage()  {
+                return (this.disk.used / this.disk.total * 100)
             }
         },
         components: {
