@@ -2,7 +2,7 @@
 
 A lightweight monitor for your raspberry pi, works with the [RaspiMon API.](https://github.com/raekw0n/raspi-mon-api)
 
-![image](src/media/screenshot.png)
+![image](src/assets/screenshot.png)
 
 ## Installation
 

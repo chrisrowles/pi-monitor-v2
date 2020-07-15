@@ -4,9 +4,9 @@
         <div class="d-flex flex-column flex-md-row align-items-center p-4 px-md-4 mb-0 mb-md-3 bg-white box-shadow">
             <h5 class="my-0 mr-md-auto font-weight-normal">RaspiMon <small class="text-muted">v0.0.1-alpha</small></h5>
             <nav class="my-2 my-md-0 mr-md-3">
-<!--                <a class="p-2 text-dark" href="#">Dashboard</a>-->
-<!--                <a class="p-2 text-dark" href="#">Network</a>-->
-<!--                <a class="p-2 text-dark" href="#">Settings</a>-->
+                <!--                <a class="p-2 text-dark" href="#">Dashboard</a>-->
+                <!--                <a class="p-2 text-dark" href="#">Network</a>-->
+                <!--                <a class="p-2 text-dark" href="#">Settings</a>-->
             </nav>
         </div>
 
@@ -14,86 +14,94 @@
 
         <transition name="fade">
             <div class="container py-5 px-3" v-if="loaded">
-            <div class="row">
-                <div class="col-12 col-md-6 col-lg-4 ml-auto">
-                    <Gauge :title="'Temperature'" :id="'temp'" :metric="cpu.temp" :format="'{y}°C'"></Gauge>
+                <div class="row">
+                    <div class="col-12 col-md-6 col-lg-4 ml-auto">
+                        <Gauge :title="'Temperature'" :id="'temp'" :metric="cpu.temp" :format="'{y}°C'"></Gauge>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4 ml-auto">
+                        <Gauge :title="'CPU'" :id="'cpu'" :metric="cpu.usage" :format="'{y}%'"></Gauge>
+                    </div>
+                    <div class="col-12 col-md-12 col-lg-4 ml-auto">
+                        <Gauge :title="'Disk'" :id="'disk'" :metric="disk_percent" :format="'{y}%'"></Gauge>
+                    </div>
                 </div>
-                <div class="col-12 col-md-6 col-lg-4 ml-auto">
-                    <Gauge :title="'CPU'" :id="'cpu'" :metric="cpu.usage" :format="'{y}%'"></Gauge>
-                </div>
-                <div class="col-12 col-md-12 col-lg-4 ml-auto">
-                    <Gauge :title="'Disk'" :id="'disk'" :metric="disk_usage" :format="'{y}%'"></Gauge>
-                </div>
+
+                <section id="overview">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-5">
+                            <div class="overview-header">
+                                <div class="card border-0">
+                                    <div class="card-header bg-white text-muted">
+                                        <strong>Overview</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <Table :type="'vertical'" :data="platform" :sort-key="'header'"
+                                               :sort-order="'asc'"></Table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <div class="cpu-header">
+                                <div class="card border-0">
+                                    <div class="card-header bg-white text-muted">
+                                        <strong>CPU</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <Table :type="'vertical'" :data="cpu" :sort-key="'header'"
+                                               :sort-order="'desc'"></Table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="disk-header">
+                                <div class="card border-0">
+                                    <div class="card-header bg-white text-muted">
+                                        <strong>Disk</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <Table :type="'vertical'" :data="disk" :sort-key="'header'"
+                                               :sort-order="'desc'"></Table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="network">
+                    <Network></Network>
+                </section>
+
+                <section id="metrics">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card border-0">
+                                <div class="card-header bg-white text-muted">
+                                    <strong>Top Processes</strong>
+                                </div>
+                                <div class="card-body">
+                                    <Table :type="'horizontal'" :data="processes"></Table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
-
-            <section id="overview">
-                <div class="row">
-                    <div class="col-12 col-md-12 col-lg-5">
-                        <div class="overview-header">
-                            <div class="card border-0">
-                                <div class="card-header bg-white text-muted">
-                                    <strong>Overview</strong>
-                                </div>
-                                <div class="card-body">
-                                    <Table :type="'vertical'" :data="platform" :sort-key="'header'" :sort-order="'asc'"></Table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-3">
-                        <div class="cpu-header">
-                            <div class="card border-0">
-                                <div class="card-header bg-white text-muted">
-                                    <strong>CPU</strong>
-                                </div>
-                                <div class="card-body">
-                                    <Table :type="'vertical'" :data="cpu" :sort-key="'header'" :sort-order="'desc'"></Table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="disk-header">
-                            <div class="card border-0">
-                                <div class="card-header bg-white text-muted">
-                                    <strong>Disk</strong>
-                                </div>
-                                <div class="card-body">
-                                    <Table :type="'vertical'" :data="disk" :sort-key="'header'" :sort-order="'desc'"></Table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="metrics">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card border-0">
-                            <div class="card-header bg-white text-muted">
-                                <strong>Top Processes</strong>
-                            </div>
-                            <div class="card-body">
-                                <Table :type="'horizontal'" :data="processes"></Table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
         </transition>
     </div>
 </template>
 
 <script>
-    import Gauge from "./components/Gauge";
-    import Table from "./components/Table";
-    import Title from "./components/Title";
-    import Loading from "./components/Loading";
+    import Gauge from "../components/Gauge";
+    import Table from "../components/Table";
+    import Title from "../components/Title";
+    import Loading from "../components/Loading";
+    import Network from "./Network";
 
     export default {
-        name: 'App',
+        name: 'Dashboard',
         data() {
             return {
                 platform: {
@@ -111,6 +119,7 @@
                     free: 0,
                     total: 0,
                 },
+                disk_percent: 0,
                 fan: {
                     status: '',
                 },
@@ -151,6 +160,7 @@
                                     this[key][result] = json.data[key][result];
                                 });
                             });
+                            this.disk_percent = json.data.disk.percent;
                             this.processes = json.data.processes;
                             this.loaded = true;
                         }, 1000);
@@ -168,16 +178,12 @@
                 });
             }
         },
-        computed: {
-            disk_usage()  {
-                return (this.disk.used / this.disk.total * 100)
-            }
-        },
         components: {
             Gauge,
             Title,
             Table,
-            Loading
+            Loading,
+            Network
         }
     }
 </script>

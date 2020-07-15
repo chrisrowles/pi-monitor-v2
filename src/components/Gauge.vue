@@ -17,7 +17,7 @@
 
     export default {
         name: 'Gauge',
-        props: ['title', 'id', 'metric', 'format'],
+        props: ['title', 'id', 'metric', 'format', 'size'],
         mounted() {
             this.draw({
                 id: this.id,
