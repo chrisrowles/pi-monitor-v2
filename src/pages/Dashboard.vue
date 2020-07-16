@@ -7,7 +7,7 @@
         <transition name="fade">
             <div class="container" v-if="loaded">
 
-                <Header :title="'Dashboard Overview'" :status="connectionStatus" :message="apiMessage"></Header>
+                <Header :title="'Dashboard Overview'"></Header>
 
                 <section id="overview" class="my-4">
                     <div class="row">
@@ -151,20 +151,13 @@
 
                 // API props
                 url: 'http://rowles.ddns.net:8888/system/',
-                interval: null,
+                connection: null,
                 connectionAttempt: 0,
-                connectionStatus: false,
-                apiMessage: '',
             }
         },
         created() {
             this.message = 'Retrieving data from API, please wait...';
             this.getSystem();
-        },
-        mounted() {
-            setInterval(() => {
-                this.checkApiConnection();
-            }, 120000)
         },
         methods: {
             getSystem() {
@@ -172,8 +165,6 @@
 
                 fetch(this.url).then(response => {
                     if (response.ok) {
-                        this.connectionStatus = true;
-                        this.apiMessage = 'connected';
                         this.message = 'Data successfully received, initialising dashboard...';
                         return response.json();
                     } else {
@@ -207,27 +198,11 @@
                     if (this.connectionAttempt < 3) {
                         this.getSystem();
                     } else {
-                        this.connectionStatus = false;
                         this.loaded = false;
                         this.status = 'error';
                         this.message = error.message;
                     }
                 });
-            },
-            checkApiConnection() {
-                console.log('checking API connection...');
-                fetch(this.url).then(response => {
-                    if (!response.ok) {
-                        throw new Error('Unable to connect.');
-                    } else {
-                        console.log('API connected...');
-                        this.connectionStatus = true;
-                    }
-                }).catch(error => {
-                    this.connectionStatus = false;
-                    this.apiMessage = error.message
-                    console.log(this.apiMessage);
-                })
             },
             formatProcessesDataForGraphs() {
                 let response = [];

@@ -1,6 +1,6 @@
 <template>
     <transition name="fade">
-        <div class="container py-5 px-3" id="loading" v-if="show">
+        <div class="container" id="loading" v-if="show">
             <div class="please-wait">
                 <p class="text-muted text-center">{{ message }}</p>
             </div>

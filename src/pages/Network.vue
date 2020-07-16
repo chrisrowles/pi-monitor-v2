@@ -7,7 +7,7 @@
         <transition name="fade">
             <div class="container" v-if="loaded">
 
-                <Header :status="true" :title="'Network Overview'" :message="'connected'"></Header>
+                <Header :title="'Network Overview'"></Header>
 
                 <section id="overview" class="my-4">
                     <div class="row">

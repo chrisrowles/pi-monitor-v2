@@ -7,7 +7,7 @@
             </div>
             <div class="col-md-8 text-left text-md-right">
                 <small class="text-muted">API:
-                    <span v-if="status" :class="{'text-success': status, 'text-danger': !status }">{{ message }}</span>
+                    <span :class="{'text-success': status, 'text-danger': !status }">{{ message }}</span>
                 </small>
                 <br>
                 <small class="text-muted">Version: 0.0.1-alpha</small>
@@ -17,7 +17,31 @@
 </template>
 
 <script>
+    import bus from "../bus";
+    import ping from "../ping";
+
     export default {
-        props: ['status', 'title', 'message']
+        props: ['title'],
+        data() {
+            return {
+                status: true,
+                message: 'connected',
+                connection: null,
+            }
+        },
+        created() {
+            bus.$on('api-disconnect', () => {
+                this.status = false;
+                this.message = 'disconnected';
+            });
+
+            bus.$on('api-reconnect', () => {
+                this.status = true;
+                this.message = 'connected';
+            });
+        },
+        mounted() {
+            this.connection = setInterval(ping.api, 120000);
+        }
     }
 </script>
