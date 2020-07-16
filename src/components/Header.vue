@@ -41,7 +41,7 @@
             });
         },
         mounted() {
-            this.connection = setInterval(ping.api, 120000);
+            this.connection = setInterval(ping.api, 60000);
         }
     }
 </script>
