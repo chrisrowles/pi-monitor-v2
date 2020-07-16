@@ -20,3 +20,15 @@
   }
 }
 </style>
+
+
+[{name: "apache2", value: 37},
+{name: "apache2", value: 37},
+{name: "systemd", value: 7},
+{name: "systemd-journald", value: 7},
+{name: "systemd-logind", value: 5},
+{name: "sshd", value: 5},
+{name: "systemd-timesyncd", value: 5},
+{name: "apache2", value: 5},
+{name: "wpa_supplicant", value: 3},
+{name: "systemd-udevd", value: 3}]

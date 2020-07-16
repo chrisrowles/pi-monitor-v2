@@ -5,31 +5,32 @@
         <Loading :show="!loaded" :status="status" :message="message"></Loading>
 
         <transition name="fade">
-            <div class="container py-5 px-3" v-if="loaded">
-                <div class="row">
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card border-0 bg-white h-100">
-                            <div class="card-header bg-white">
-                                <strong class="text-muted">Wireless</strong>
-                            </div>
-                            <div class="card-body">
+            <div class="container" v-if="loaded">
+
+                <Header :status="true" :title="'Network Overview'" :message="'connected'"></Header>
+
+                <section id="overview" class="bg-white p-4 my-4 shadow border-radius-5">
+                    <div class="card bg-white border-0">
+                        <div class="card-header bg-white">
+                            <strong class="text-muted">Wireless</strong>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row justify-content-between align-items-center">
+                            <div class="col-12 col-md-6 col-lg-4">
                                 <Table :type="'vertical'" :data="details"></Table>
                             </div>
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <Gauge :id="'download'" :metric="speed.download" :format="'{y} Mb/s ↓'"></Gauge>
+                            </div>
+                            <div class="col-12 col-md-12 col-lg-4">
+                                <Gauge :id="'upload'" :metric="speed.upload" :format="'{y} Mb/s ↑'"></Gauge>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card border-0 bg-white h-100">
-                            <Gauge :id="'download'" :metric="speed.download" :format="'{y} Mb/s ↓'"></Gauge>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-12 col-lg-4">
-                        <div class="card border-0 bg-white h-100">
-                            <Gauge :id="'upload'" :metric="speed.upload" :format="'{y} Mb/s ↑'"></Gauge>
-                        </div>
-                    </div>
-                </div>
+                </section>
 
-                <section id="interfaces">
+                <section id="interfaces" class="bg-white p-4 my-4 shadow border-radius-5">
                     <div class="row">
                         <div class="col-12">
                             <div class="card border-0 bg-white h-100">
@@ -73,6 +74,7 @@
     import Table from "../components/Table";
     import Title from "../components/Title";
     import Loading from "../components/Loading";
+    import Header from "../components/Header";
 
     export default {
         data() {
@@ -189,7 +191,8 @@
             Gauge,
             Table,
             Title,
-            Loading
+            Loading,
+            Header
         }
     }
 </script>

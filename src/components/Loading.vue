@@ -34,7 +34,7 @@
 
     .please-wait {
         position: absolute;
-        top: 55%;
+        top: 50%;
         left: 0;
         z-index: 999;
         right: 0;
@@ -42,7 +42,6 @@
     }
 
     .mask {
-        background: white;
         display: flex;
         height: 100vh;
         align-items: center;

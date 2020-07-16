@@ -1,3 +1,4 @@
+@import 'variables';
 @import '~bootstrap/scss/bootstrap';
 @import 'fonts';
 
@@ -8,7 +9,7 @@ html, body {
 body {
   overflow-x: hidden;
   font-family: 'Montserrat', 'Lato', sans-serif;
-  background: #e9f9f2;
+  background: $brand;
 }
 
 table.table thead th {
@@ -22,11 +23,15 @@ table.table thead th {
 }
 
 #app {
-  background: #e9f9f2;
+  background: $brand;
 }
 
-.container {
-  background: white;
+.border-radius-5 {
+  border-radius: 5px;
+}
+
+.chart-legend {
+  font-size: 1.5rem;
 }
 
 #page-content-wrapper {
@@ -44,21 +49,4 @@ table.table thead th {
 
 .fade-enter, .fade-leave-to {
   opacity: 0;
-}
-
-@media (min-width: 768px) {
-  #sidebar-wrapper {
-    margin-left: 0;
-  }
-
-  #page-content-wrapper {
-    min-width: 0;
-    width: 100%;
-  }
-
-  #wrapper.toggled {
-    #sidebar-wrapper {
-      margin-left: -15rem;
-    }
-  }
 }

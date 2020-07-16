@@ -1,12 +1,12 @@
 <template>
-    <table class="table table-sm table-borderless" v-if="type === 'vertical'">
+    <table class="table table-sm table-borderless table-responsive" v-if="type === 'vertical'">
         <tr v-for="(content, key) in vertical" :key="key">
             <th class="w-1">{{ content.header }}</th>
             <td>{{ content.value }}</td>
         </tr>
     </table>
 
-    <table class="table table-sm" v-else>
+    <table class="table table-sm table-responsive-sm" v-else>
         <thead>
             <tr v-if="nested">
                 <th v-for="(header, key) in Object.keys(data)" :key="key">{{ formatHeader(header) }}</th>
