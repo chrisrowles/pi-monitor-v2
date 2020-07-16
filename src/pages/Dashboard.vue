@@ -7,7 +7,7 @@
         <transition name="fade">
             <div class="container" v-if="loaded">
 
-                <Header :component="'Dashboard'" :status="connectionStatus" :message="apiMessage"></Header>
+                <Header :title="'Dashboard Overview'" :status="connectionStatus" :message="apiMessage"></Header>
 
                 <section id="overview" class="my-4">
                     <div class="row">
@@ -28,12 +28,12 @@
                         </div>
                         <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
                             <div class="cpu-header">
-                                <div class="card bg-brand border-0 shadow">
-                                    <div class="card-header bg-brand border-0 text-white d-flex justify-content-between align-items-center w-100">
+                                <div class="card bg-success border-0 shadow">
+                                    <div class="card-header bg-success border-0 text-white d-flex justify-content-between align-items-center w-100">
                                         <strong>CPU</strong>
                                         <i class="fa fa-tachometer-alt card-icon"></i>
                                     </div>
-                                    <div class="card-body border-radius-5 bg-brand text-white">
+                                    <div class="card-body border-radius-5 bg-success text-white">
                                         <strong>Temp</strong> {{ cpu.temp }}°C<br>
                                         <strong>Usage</strong> {{ cpu.usage }}%<br>
                                         <strong>Frequency</strong> {{ cpu.freq }}MHz<br>
@@ -43,12 +43,12 @@
                         </div>
                         <div class="col-12 col-md-6 col-lg-3">
                             <div class="disk-header">
-                                <div class="card bg-brand border-0 shadow">
-                                    <div class="card-header bg-brand border-0 text-white d-flex justify-content-between align-items-center w-100">
+                                <div class="card bg-success border-0 shadow">
+                                    <div class="card-header bg-success border-0 text-white d-flex justify-content-between align-items-center w-100">
                                         <strong>Disk</strong>
                                         <i class="fa fa-hdd card-icon btt-1"></i>
                                     </div>
-                                    <div class="card-body border-radius-5 bg-brand text-white">
+                                    <div class="card-body border-radius-5 bg-success text-white">
                                         <strong>Used</strong> {{ disk.used }}GB<br>
                                         <strong>Free</strong> {{ disk.free }}GB<br>
                                         <strong>Total</strong> {{ disk.total }}GB<br>
@@ -257,26 +257,3 @@
         }
     }
 </script>
-
-<style>
-    #api-status {
-        font-size: 1rem;
-    }
-
-    .header-decor {
-        font-size: 1rem;
-    }
-
-    .bg-brand {
-        background: #41B883;
-    }
-
-    .card-icon {
-        font-size: 3rem;
-        color: #f5f5f5;
-    }
-
-    .btt-1 {
-        bottom: -11px;
-    }
-</style>

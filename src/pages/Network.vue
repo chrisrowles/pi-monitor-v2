@@ -9,28 +9,45 @@
 
                 <Header :status="true" :title="'Network Overview'" :message="'connected'"></Header>
 
-                <section id="overview" class="bg-white p-4 my-4 shadow border-radius-5">
-                    <div class="card bg-white border-0">
-                        <div class="card-header bg-white">
-                            <strong class="text-muted">Wireless</strong>
+                <section id="overview" class="my-4">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-4 mb-4 mb-lg-0">
+                            <div class="card border-0 bg-dark shadow">
+                                <div class="card-header bg-dark border-0 text-white d-flex justify-content-between align-items-center w-100">
+                                    <strong>Wireless Network</strong>
+                                    <i class="fa fa-wifi card-icon"></i>
+                                </div>
+                                <div class="card-body bg-dark border-radius-5 text-white">
+                                    <strong>{{ details.name }}</strong>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row justify-content-between align-items-center">
-                            <div class="col-12 col-md-6 col-lg-4">
-                                <Table :type="'vertical'" :data="details"></Table>
+                        <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
+                            <div class="card bg-dark border-0 shadow" :class="downloadClass">
+                                <div :class="downloadClass" class="card-header border-0 text-white d-flex justify-content-between align-items-center w-100">
+                                    <strong>Download Speed</strong>
+                                    <i class="fa fa-arrow-circle-down card-icon"></i>
+                                </div>
+                                <div :class="downloadClass" class="card-body border-radius-5 text-white">
+                                    <i class="fa fa-arrow-circle-down"></i> <strong>{{ speed.download }}</strong>
+                                </div>
                             </div>
-                            <div class="col-12 col-md-6 col-lg-4">
-                                <Gauge :id="'download'" :metric="speed.download" :format="'{y} Mb/s ↓'"></Gauge>
-                            </div>
-                            <div class="col-12 col-md-12 col-lg-4">
-                                <Gauge :id="'upload'" :metric="speed.upload" :format="'{y} Mb/s ↑'"></Gauge>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
+                            <div class="card bg-dark border-0 shadow" :class="uploadClass">
+                                <div :class="uploadClass" class="card-header border-0 text-white d-flex justify-content-between align-items-center w-100">
+                                    <strong>Upload Speed</strong>
+                                    <i class="fa fa-arrow-circle-up card-icon"></i>
+                                </div>
+                                <div :class="uploadClass" class="card-body border-radius-5 text-white">
+                                    <i class="fa fa-arrow-circle-up"></i> <strong>{{ speed.upload }}</strong>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <section id="interfaces" class="bg-white p-4 my-4 shadow border-radius-5">
+                <section id="interface-wlan0" class="bg-white p-4 my-4 shadow border-radius-5" v-if="interfaces.wlan0.mb_received > 0">
                     <div class="row">
                         <div class="col-12">
                             <div class="card border-0 bg-white h-100">
@@ -38,27 +55,55 @@
                                     <strong class="text-muted">Interface wlan0</strong>
                                 </div>
                                 <div class="card-body">
-                                    <Table :type="'horizontal'" :data="this.interfaces.wlan0" :nested="true"></Table>
+                                    <Graph :id="'wlan0'"
+                                           :title="'Interface wlan0'"
+                                           :data="interfacesGraphData.wlan0">
+                                    </Graph>
+                                    <div class="mt-4">
+                                        <Table :type="'horizontal'" :data="interfaces.wlan0" :nested="true"></Table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </section>
+
+                <section id="interface-eth0" class="bg-white p-4 my-4 shadow border-radius-5" v-if="interfaces.eth0.mb_received > 0">
+                    <div class="row">
                         <div class="col-12">
                             <div class="card border-0 bg-white h-100">
                                 <div class="card-header bg-white">
                                     <strong class="text-muted">Interface eth0</strong>
                                 </div>
                                 <div class="card-body">
-                                    <Table :type="'horizontal'" :data="this.interfaces.eth0" :nested="true"></Table>
+                                    <Graph :id="'eth0'"
+                                           :title="'Interface wlan0'"
+                                           :data="interfacesGraphData.eth0">
+                                    </Graph>
+                                    <div class="mt-4">
+                                        <Table :type="'horizontal'" :data="interfaces.eth0" :nested="true"></Table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </section>
+
+                <section id="interface-lo" class="bg-white p-4 my-4 shadow border-radius-5" v-if="interfaces.lo.mb_received > 0">
+                    <div class="row">
                         <div class="col-12">
                             <div class="card border-0 bg-white h-100">
                                 <div class="card-header bg-white">
                                     <strong class="text-muted">Interface lo</strong>
                                 </div>
                                 <div class="card-body">
-                                    <Table :type="'horizontal'" :data="this.interfaces.lo" :nested="true"></Table>
+                                    <Graph :id="'lo'"
+                                           :title="'Interface lo'"
+                                           :data="interfacesGraphData.lo">
+                                    </Graph>
+                                    <div class="mt-4">
+                                        <Table :type="'horizontal'" :data="interfaces.lo" :nested="true"></Table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -70,7 +115,7 @@
 </template>
 
 <script>
-    import Gauge from "../components/Gauge";
+    import Graph from "../components/Graph";
     import Table from "../components/Table";
     import Title from "../components/Title";
     import Loading from "../components/Loading";
@@ -124,6 +169,13 @@
                     download: 0,
                     upload: 0
                 },
+
+                interfacesGraphData: {
+                    wlan0: [],
+                    eth0: [],
+                    lo: [],
+                },
+
                 loaded: false,
                 status: false,
                 message: '',
@@ -131,11 +183,11 @@
         },
         created() {
             this.message = 'Retrieving wifi information and running speed test, please wait...';
-            this.getWifi();
-            this.getInet();
+            this.getNetworkWifi();
+            this.getNetworkInterfaces();
         },
         methods: {
-            getInet() {
+            getNetworkInterfaces() {
                 const url = 'http://rowles.ddns.net:8888/network';
                 fetch(url).then(response => {
                     if (response.ok) {
@@ -150,6 +202,10 @@
                                 this.interfaces[inet][metric] = Math.round(parseInt(json.interfaces[inet][metric]))
                             })
                         });
+
+                        this.formatInterfaceGraphData('wlan0');
+                        this.formatInterfaceGraphData('eth0');
+                        this.formatInterfaceGraphData('lo');
                     } else {
                         throw new Error('Oh shit.')
                     }
@@ -159,7 +215,7 @@
                     this.message = error.message;
                 });
             },
-            getWifi() {
+            getNetworkWifi() {
                 const url = 'http://rowles.ddns.net:8888/network/wifi';
                 fetch(url).then(response => {
                     if (response.ok) {
@@ -185,10 +241,42 @@
                     this.status = 'error';
                     this.message = error.message;
                 });
+            },
+            formatInterfaceGraphData(inet) {
+                let response = [];
+                Object.keys(this.interfaces[inet]).forEach(key => {
+                    if (key === 'mb_sent' || key === 'mb_received') {
+                        response.push({
+                            name: key,
+                            data: [this.interfaces[inet][key]]
+                        });
+                    }
+                })
+                this.interfacesGraphData[inet] = response;
             }
         },
+        computed: {
+            downloadClass() {
+                if (this.speed.download >= 10) {
+                    return 'bg-success'
+                } else if (this.speed.download < 10 &&  this.speed.download >= 5) {
+                    return 'bg-warning'
+                }  else {
+                    return 'bg-danger'
+                }
+            },
+            uploadClass() {
+                if (this.speed.upload >= 5) {
+                    return 'bg-success'
+                } else if (this.speed.upload < 2 && this.speed.upload >= 1) {
+                    return 'bg-warning'
+                }  else {
+                    return 'bg-danger'
+                }
+            },
+        },
         components: {
-            Gauge,
+            Graph,
             Table,
             Title,
             Loading,

@@ -1,5 +1,5 @@
 import { library, dom } from "@fortawesome/fontawesome-svg-core";
-import { faExclamationTriangle, faHdd, faServer, faTachometerAlt } from "@fortawesome/free-solid-svg-icons";
+import { faArrowCircleUp, faArrowCircleDown, faExclamationTriangle, faHdd, faServer, faTachometerAlt, faWifi } from "@fortawesome/free-solid-svg-icons";
 import _ from 'lodash';
 import Vue from 'vue'
 import App from './App'
@@ -8,7 +8,7 @@ import './scss/app.scss';
 
 import router from './router'
 
-library.add(faExclamationTriangle, faHdd, faServer, faTachometerAlt);
+library.add(faArrowCircleUp, faArrowCircleDown, faExclamationTriangle, faHdd, faServer, faTachometerAlt, faWifi);
 dom.watch();
 
 Vue.config.productionTip = false
