@@ -1,9 +1,14 @@
 @import '~bootstrap/scss/bootstrap';
 @import 'fonts';
 
+html, body {
+  height: 100%;
+}
+
 body {
   overflow-x: hidden;
   font-family: 'Montserrat', 'Lato', sans-serif;
+  background: #e9f9f2;
 }
 
 table.table thead th {

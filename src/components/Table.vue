@@ -8,11 +8,21 @@
 
     <table class="table table-sm" v-else>
         <thead>
-            <tr><th v-for="(header, key) in Object.keys(data[0])" :key="key">{{ formatHeader(header) }}</th></tr>
+            <tr v-if="nested">
+                <th v-for="(header, key) in Object.keys(data)" :key="key">{{ formatHeader(header) }}</th>
+            </tr>
+            <tr v-else>
+                <th v-for="(header, key) in Object.keys(data[0])" :key="key">{{ formatHeader(header) }}</th>
+            </tr>
         </thead>
-        <tbody>
+        <tbody v-if="nested">
+            <tr>
+                <td v-for="(object, key) in data" :key="key">{{ object }}</td>
+            </tr>
+        </tbody>
+        <tbody v-else>
             <tr v-for="(object, key) in data" :key="key">
-                <td v-for="(content, index) in object" :key="index">{{ content }} <span v-if="index === 'mem'"> MiB</span></td>
+                <td v-for="(content, index) in object" :key="index">{{ content }}</td>
             </tr>
         </tbody>
     </table>
@@ -21,11 +31,11 @@
 <script>
     export default {
         name: 'Table',
-        props: ['type', 'data', 'sortKey', 'sortOrder'],
+        props: ['type', 'nested', 'data', 'sortKey', 'sortOrder'],
         methods: {
             formatHeader(header) {
-                return header.charAt(0).toUpperCase() + header.slice(1);
-
+                header = header.charAt(0).toUpperCase() + header.slice(1);
+                return header.replace('_', ' ');
             }
         },
         computed: {

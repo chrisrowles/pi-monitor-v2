@@ -1,14 +1,6 @@
 <template>
-    <div id="app">
+    <div>
         <Title :title="'Dashboard | RaspiMon - A Lightweight Monitor for the Raspberry Pi'"></Title>
-        <div class="d-flex flex-column flex-md-row align-items-center p-4 px-md-4 mb-0 mb-md-3 bg-white box-shadow">
-            <h5 class="my-0 mr-md-auto font-weight-normal">RaspiMon <small class="text-muted">v0.0.1-alpha</small></h5>
-            <nav class="my-2 my-md-0 mr-md-3">
-                <!--                <a class="p-2 text-dark" href="#">Dashboard</a>-->
-                <!--                <a class="p-2 text-dark" href="#">Network</a>-->
-                <!--                <a class="p-2 text-dark" href="#">Settings</a>-->
-            </nav>
-        </div>
 
         <Loading :show="!loaded" :status="status" :message="message"></Loading>
 
@@ -70,10 +62,6 @@
                     </div>
                 </section>
 
-                <section id="network">
-                    <Network></Network>
-                </section>
-
                 <section id="metrics">
                     <div class="row">
                         <div class="col-12">
@@ -98,7 +86,6 @@
     import Table from "../components/Table";
     import Title from "../components/Title";
     import Loading from "../components/Loading";
-    import Network from "./Network";
 
     export default {
         name: 'Dashboard',
@@ -143,7 +130,7 @@
                 const url = 'http://rowles.ddns.net:8888/system/';
                 fetch(url).then(response => {
                     if (response.ok) {
-                        this.message = 'Data successfully retrieved, initialising dashboard...';
+                        this.message = 'Data successfully received, initialising dashboard...';
                         return response.json();
                     } else {
                         throw new Error('ERROR: (' + response.status + ') could not fetch system statistics.');
@@ -182,8 +169,7 @@
             Gauge,
             Title,
             Table,
-            Loading,
-            Network
+            Loading
         }
     }
 </script>
