@@ -89,8 +89,9 @@
                                     <strong>Top Processes</strong>
                                 </div>
                                 <div class="card-body">
-                                    <Graph :id="'processes'" :title="'Top Processes'"
-                                           :categories="processesGraphCategories" :data="processesGraphData">
+                                    <Graph :id="'processes'"
+                                           :title="'Top Processes'"
+                                           :data="processesGraphData">
                                     </Graph>
                                     <div class="mt-4">
                                         <Table :type="'horizontal'" :data="processes"></Table>
@@ -142,7 +143,6 @@
 
                 processes: {},
                 processesGraphData: [],
-                processesGraphCategories: [],
 
                 // UI props
                 loaded: false,
@@ -151,8 +151,7 @@
 
                 // API props
                 url: 'http://rowles.ddns.net:8888/system/',
-                connection: null,
-                connectionAttempt: 0,
+                connectionAttempt: 0
             }
         },
         created() {
@@ -187,7 +186,6 @@
                             this.processes = json.data.processes;
 
                             this.formatProcessesDataForGraphs();
-                            this.formatProcessesCategoriesForGraphs();
 
                             this.loaded = true;
                         }, 1000);
@@ -213,13 +211,6 @@
                     })
                 });
                 this.processesGraphData = response;
-            },
-            formatProcessesCategoriesForGraphs() {
-                let response = [];
-                this.processesGraphData.forEach(proc => {
-                    response.push(proc.name);
-                });
-                this.processesGraphCategories = response;
             }
         },
         components: {

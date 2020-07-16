@@ -233,7 +233,6 @@
                         });
                         this.loaded = true;
                     } else {
-                        this.loaded = false;
                         throw new Error('Oh shit.')
                     }
                 }).catch(error => {
