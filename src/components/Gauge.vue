@@ -1,7 +1,7 @@
 <template>
     <div class="highcharts-gauge">
-        <div class="chart-legend text-center">
-            <h3>{{ title }}</h3>
+        <div class="chart-legend text-center text-muted">
+            {{ title }}
         </div>
         <div :id="id" class="doughnut"></div>
     </div>
@@ -40,7 +40,7 @@
                     },
                     pane: {
                         center: ['50%', '50%'],
-                        size: '75%',
+                        size: '80%',
                         startAngle: 0,
                         endAngle: 360,
                         background: {
@@ -100,7 +100,6 @@
 
 <style scoped>
     .doughnut {
-        min-width: 310px;
         max-width: 400px;
         height: 300px;
         margin: 0 auto;
