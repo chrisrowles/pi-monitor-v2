@@ -116,13 +116,13 @@
 
 <script>
     import api from '../api';
+    import bus from '../services/bus';
 
     import Graph from '@/components/charts/Graph';
     import Table from '@/components/common/Table';
     import Title from '@/components/common/Title';
     import Loading from '@/components/common/Loading';
     import Header from '@/components/common/Header';
-    import bus from "../util/bus";
 
     export default {
         data() {

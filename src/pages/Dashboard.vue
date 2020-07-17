@@ -133,7 +133,9 @@
 
 <script>
     import api from '../api';
-    import bus from '../util/bus';
+    import bus from '../services/bus';
+
+    // import liveCpu from "../services/live-data";
 
     import Gauge from '@/components/charts/Gauge';
     import Graph from '@/components/charts/Graph';
@@ -185,6 +187,9 @@
                 this.message = 'Connection successful, reloading view...'
                 this.getSystem();
             });
+            // setInterval(() => {
+            //     liveCpu.temp();
+            // }, 10000)
         },
         methods: {
             getSystem() {

@@ -8,7 +8,7 @@
 </template>
 
 <script>
-    import bus from "../../util/bus";
+    import bus from '../../services/bus';
     import * as Highcharts from 'highcharts';
 
     export default {

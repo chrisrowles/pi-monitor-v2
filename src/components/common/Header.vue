@@ -17,7 +17,7 @@
 </template>
 
 <script>
-    import bus from '../../util/bus'
+    import bus from '../../services/bus'
 
     export default {
         props: ['title'],

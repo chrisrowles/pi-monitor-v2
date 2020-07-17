@@ -1,4 +1,4 @@
-import bus from './util/bus';
+import bus from './services/bus';
 
 const url = 'http://rowles.ddns.net:8888';
 const headers = {
@@ -8,6 +8,9 @@ const headers = {
 
 let connected = true
 const caller = (uri, options = {}) => {
+    if (options.headers) {
+        Object.assign(headers, options.headers)
+    }
     options.headers = headers;
     return new Promise((resolve, reject) => {
         fetch(uri, options).then(response => {
@@ -26,8 +29,8 @@ const caller = (uri, options = {}) => {
 }
 
 const api = {};
-api.get = async (endpoint) => {
-    let response = await caller(url + endpoint);
+api.get = async (endpoint, options = {}) => {
+    let response = await caller(url + endpoint, options);
     return response;
 }
 
@@ -36,5 +39,9 @@ api.ping = () => {
 }
 
 setInterval(api.ping, 45000);
+
+export {
+    url
+};
 
 export default api;
