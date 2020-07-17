@@ -39,11 +39,17 @@ api.get = async (endpoint, options = {}) => {
     return response;
 }
 
-api.ping = () => {
-    caller(url + '/network/ping');
+api.ping = (timeout) => {
+    let status =  setInterval(() => {
+        caller(url + '/network/ping').then(response => {
+            if (response.status !== 'connected') {
+                bus.$emit('api-disconnect');
+            }
+        });
+    }, timeout);
+    return status;
 }
-
-setInterval(api.ping, 45000);
+api.ping(30000);
 
 export {
     url,
