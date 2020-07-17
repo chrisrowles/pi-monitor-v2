@@ -28,8 +28,9 @@ dom.watch();
 
 Vue.config.productionTip = false;
 Vue.prototype.$_ = _;
+Vue.prototype.$app_name = process.env.VUE_APP_NAME;
 
 new Vue({
   router,
-  render: h => h(App)
+  render: h => h(App, { props: { name: Vue.prototype.$app_name }})
 }).$mount('#app');

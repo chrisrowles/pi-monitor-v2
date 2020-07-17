@@ -2,7 +2,7 @@
     <section id="heading" class="mt-5">
         <div class="row d-flex justify-content-between align-items-center">
             <div class="col-md-4">
-                <h1 class="text-muted header-decor">Raspberry Pi Monitor</h1>
+                <h1 class="text-muted header-decor">{{ name }}</h1>
                 <h2 class="header">{{ title }}</h2>
             </div>
             <div class="col-md-8 text-left text-md-right">
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-    import bus from '../../services/bus'
+    import bus from '../../services/event-bus'
 
     export default {
         props: ['title'],
@@ -26,9 +26,11 @@
                 status: true,
                 message: 'connected',
                 connection: null,
+                name: process.env.VUE_APP_NAME
             }
         },
         created() {
+            this.name = this.$app_name;
             bus.$on('api-disconnect', () => {
                 this.status = false
                 this.message = 'disconnected'

@@ -76,7 +76,7 @@
                                 </div>
                                 <div class="card-body">
                                     <Graph :id="'eth0'"
-                                           :title="'Interface wlan0'"
+                                           :title="'Interface eth0'"
                                            :data="interfacesGraphData.eth0">
                                     </Graph>
                                     <div class="mt-4">
@@ -115,7 +115,7 @@
 
 <script>
     import api from '../api';
-    import bus from '../services/bus';
+    import bus from '../services/event-bus';
 
     import Stat from '@/components/common/Stat';
     import Graph from '@/components/charts/Graph';

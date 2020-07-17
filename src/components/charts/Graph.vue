@@ -8,9 +8,9 @@
 </template>
 
 <script>
-    import * as Highcharts from 'highcharts';
+    import { graphMaker } from "../../services/chart-creator";
 
-    export default  {
+    export default {
         props: ['id', 'legend', 'title', 'subtitle', 'categories', 'data', 'yAxisText', 'xAxisText'],
         data() {
             return {
@@ -18,75 +18,12 @@
             }
         },
         mounted() {
-            this.draw({
+            graphMaker.create({
                 id: this.id,
-                title: this.title,
-                subtitle: this.subtitle,
-                categories: this.categories,
                 data: this.data,
                 yAxisText: this.yAxisText,
                 xAxisText: this.xAxisText
-            });
-        },
-        methods: {
-            draw({id, title, subtitle, data, yAxisText = null, xAxisText = null}) {
-                this.graph = Highcharts.chart(id, {
-                    chart: {
-                        type: 'bar'
-                    },
-                    title: {
-                        text: title
-                    },
-                    subtitle: {
-                        text: subtitle
-                    },
-                    xAxis: {
-                        categories: [id],
-                        title: {
-                            text: xAxisText
-                        }
-                    },
-                    yAxis: {
-                        min: 0,
-                        title: {
-                            text: yAxisText,
-                            align: 'high'
-                        },
-                        labels: {
-                            overflow: 'justify'
-                        }
-                    },
-                    tooltip: {
-                        valueDecimals: 2,
-                        valueSuffix: ' MiB'
-                    },
-                    plotOptions: {
-                        bar: {
-                            dataLabels: {
-                                enabled: true
-                            }
-                        }
-                    },
-                    legend: {
-                        layout: 'vertical',
-                        align: 'right',
-                        verticalAlign: 'top',
-                        x: -40,
-                        y: 80,
-                        floating: true,
-                        borderWidth: 1,
-                        backgroundColor:
-                            Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
-                        shadow: true
-                    },
-                    credits: {
-                        enabled: false
-                    },
-                    series: data
-                });
-
-                return this.graph
-            }
+            })
         }
     }
 </script>

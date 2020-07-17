@@ -41,9 +41,9 @@
                         </div>
                         <div class="col-12 col-md-6 col-lg-3">
                             <div class="disk-header">
-                                <Stat :color="'bg-success'" :title="'CPU'">
+                                <Stat :color="'bg-success'" :title="'Disk'">
                                     <template v-slot:icon>
-                                        <i class="fa fa-hdd card-icon btt-1"></i>>
+                                        <i class="fa fa-hdd card-icon btt-1"></i>
                                     </template>
                                     <template v-slot:content>
                                         <strong>Used</strong> {{ disk.used }}GB<br>
@@ -64,8 +64,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 col-md-6 col-lg-4 ml-auto">
-                                    <Gauge :title="'Temperature'" :id="'temp'" :metric="cpu.temp"
-                                           :format="'{y}°C'"></Gauge>
+                                    <Gauge :title="'Temperature'" :id="'temp'" :metric="cpu.temp" :format="'{y}°C'"></Gauge>
                                 </div>
                                 <div class="col-12 col-md-6 col-lg-4 ml-auto">
                                     <Gauge :title="'CPU'" :id="'cpu'" :metric="cpu.usage" :format="'{y}%'"></Gauge>
@@ -77,23 +76,6 @@
                         </div>
                     </div>
                 </section>
-
-<!--                <section id="running_processes" class="my-4 border-radius-5">-->
-<!--                    <div class="row">-->
-<!--                        <div class="col-12 col-md-12 mb-4 mb-lg-0">-->
-<!--                            <div class="card bg-white border-0 shadow">-->
-<!--                                <div class="card-header bg-white">-->
-<!--                                    Live CPU Data-->
-<!--                                </div>-->
-<!--                                <div class="card-body bg-white">-->
-<!--                                    <div class="highcharts-gauge">-->
-<!--                                        <div id="live-cpu-temp"></div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </section>-->
 
                 <section id="metrics" class="bg-white p-4 my-4 shadow border-radius-5">
                     <div class="row">
@@ -122,10 +104,9 @@
 
 <script>
     import api from '../api';
-    import bus from '../services/bus';
+    import bus from '../services/event-bus';
 
     import { liveCpu } from '../services/live-data';
-    import { splineMaker } from "../services/live-chart-creator";
 
     import Stat from '@/components/common/Stat';
     import Gauge from '@/components/charts/Gauge';
@@ -180,31 +161,7 @@
                 this.getSystem();
             });
         },
-        // mounted() {
-        //     this.liveTemp();
-        // },
         methods: {
-            liveTemp() {
-                setInterval(() => {
-                    liveCpu.temp().then(temp => {
-                        this.cpu.temp = temp;
-                        // TODO poll CSV endpoint and store data to reduce load on the server
-                        if (!this.liveChartExists) {
-                            splineMaker.create({
-                                id: 'live-cpu-temp',
-                                title: 'CPU Temperature',
-                                data: {
-                                    x: new Date().getTime(),
-                                    y: temp
-                                }
-                            });
-                            this.liveChartExists = true;
-                        } else {
-                            splineMaker.addPoint(temp);
-                        }
-                    })
-                }, 45000)
-            },
             getSystem() {
                 ++this.connectionAttempt;
                 api.get('/system/').then(response => {
@@ -220,6 +177,7 @@
                         this.disk_percent = response.data.disk.percent;
                         this.processes = response.data.processes;
                         this.formatProcessesDataForGraphs();
+                        // this.liveTemp();
                         this.loaded = true;
                     } else {
                         throw new Error('Oh shit.');
@@ -243,7 +201,15 @@
                     });
                 });
                 this.processesGraphData = response;
-            }
+            },
+            liveTemp() {
+                setInterval(() => {
+                    liveCpu.get('temp').then(temp => {
+                        this.cpu.temp = temp;
+                        bus.$emit('update-gauge-temp', { value: temp, id: 'temp' })
+                    })
+                }, 5000)
+            },
         },
         components: {
             Stat,

@@ -1,28 +1,22 @@
-import api, {url} from '../api';
-import { caller } from '../api';
+import { caller, url } from '../api';
 
 const liveCpu = {};
-
-liveCpu.temp = async () => {
+liveCpu.get = async (...fields) => {
     let response = await caller(url + '/system/cpu', {
-        headers: { 'X-Fields': 'temp' }
+        headers: { 'X-Fields': fields.join(', ') }
     });
     return response.data.temp;
 }
 
-liveCpu.usage = () => {
-    api.get('/system/cpu', {
-        headers: { 'X-Fields': 'usage' }
-    }).then(response => {
-        let x = [new Date().getTime()],
-            y = response.data.usage;
-        console.log({
-            'time': x,
-            'value': y
-        });
-    })
+const liveDisk = {};
+liveDisk.get = async (...fields) => {
+    let response = await caller(url + '/system/disk', {
+        headers: { 'X-Fields': fields.join(', ') }
+    });
+    return response.data.temp;
 }
 
 export {
-    liveCpu
+    liveCpu,
+    liveDisk
 };
