@@ -24,16 +24,14 @@
                 status: true,
                 message: 'connected',
                 connection: null,
-                name: process.env.VUE_APP_NAME
+                name: this.$app_name
             }
         },
         created() {
-            this.name = this.$app_name;
             this.$bus.$on('api-disconnect', () => {
                 this.status = false
                 this.message = 'disconnected'
             })
-
             this.$bus.$on('api-reconnect', () => {
                 this.status = true
                 this.message = 'connected'

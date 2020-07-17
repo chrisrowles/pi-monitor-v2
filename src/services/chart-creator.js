@@ -226,7 +226,7 @@ graphMaker.create = ({id, title, data, yAxisText = null, xAxisText = null}) => {
     });
     return graph;
 }
-graphMaker.addPoint = data => {
+graphMaker.updatePoint = data => {
     let series = graph[data.id].series[0];
     let x = (new Date()).getTime(), y = data.value;
     series.addPoint([x, y], true, true);

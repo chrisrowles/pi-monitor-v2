@@ -30,9 +30,9 @@ dom.watch();
 
 Vue.config.productionTip = false;
 Vue.prototype.$_ = _;
-Vue.prototype.$app_name = process.env.VUE_APP_NAME;
 Vue.prototype.$bus = bus;
 Vue.prototype.$api = api;
+Vue.prototype.$app_name = process.env.VUE_APP_NAME;
 
 new Vue({
   router,
