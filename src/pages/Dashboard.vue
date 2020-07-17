@@ -81,30 +81,22 @@
                     </div>
                 </section>
 
-                <section id="running_processes" class="my-4 border-radius-5">
-                    <div class="row">
-                        <div class="col-12 col-md-12 mb-4 mb-lg-0">
-                            <div class="card bg-white border-0 shadow">
-                                <div class="card-header bg-white">
-
-                                </div>
-                                <div class="card-body bg-white">
-                                    <Spline :id="'live_temp'" :title="'Process Usage'" :data="parseInt(cpu.temp)"></Spline>
-                                </div>
-                            </div>
-                        </div>
-<!--                        <div class="col-12 col-md-6 mb-4 mb-lg-0">-->
+<!--                <section id="running_processes" class="my-4 border-radius-5">-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-12 col-md-12 mb-4 mb-lg-0">-->
 <!--                            <div class="card bg-white border-0 shadow">-->
 <!--                                <div class="card-header bg-white">-->
-
+<!--                                    Live CPU Data-->
 <!--                                </div>-->
 <!--                                <div class="card-body bg-white">-->
-<!--                                    <Spline :id="'running3'" :data="parseInt(cpu.temp)"></Spline>-->
+<!--                                    <div class="highcharts-gauge">-->
+<!--                                        <div id="live-cpu-temp"></div>-->
+<!--                                    </div>-->
 <!--                                </div>-->
 <!--                            </div>-->
 <!--                        </div>-->
-                    </div>
-                </section>
+<!--                    </div>-->
+<!--                </section>-->
 
                 <section id="metrics" class="bg-white p-4 my-4 shadow border-radius-5">
                     <div class="row">
@@ -135,11 +127,11 @@
     import api from '../api';
     import bus from '../services/bus';
 
-    // import liveCpu from "../services/live-data";
+    import { liveCpu } from '../services/live-data';
+    import { splineMaker } from "../services/live-chart-creator";
 
     import Gauge from '@/components/charts/Gauge';
     import Graph from '@/components/charts/Graph';
-    import Spline from '@/components/charts/Spline';
     import Table from '@/components/common/Table';
     import Title from '@/components/common/Title';
     import Loading from '@/components/common/Loading';
@@ -172,7 +164,8 @@
                 loaded: false,
                 status: false,
                 message: '',
-                connectionAttempt: 0
+                connectionAttempt: 0,
+                first: true,
             }
         },
         created() {
@@ -187,11 +180,32 @@
                 this.message = 'Connection successful, reloading view...'
                 this.getSystem();
             });
-            // setInterval(() => {
-            //     liveCpu.temp();
-            // }, 10000)
         },
+        // mounted() {
+        //     this.liveTemp();
+        // },
         methods: {
+            liveTemp() {
+                setInterval(() => {
+                    liveCpu.temp().then(temp => {
+                        this.cpu.temp = temp;
+                        // TODO poll CSV endpoint and store data to reduce load on the server
+                        if (this.first) {
+                            splineMaker.create({
+                                id: 'live-cpu-temp',
+                                title: 'CPU Temperature',
+                                data: {
+                                    x: new Date().getTime(),
+                                    y: temp
+                                }
+                            });
+                            this.first = false;
+                        } else {
+                            bus.$emit('add-series-point', temp);
+                        }
+                    })
+                }, 5000)
+            },
             getSystem() {
                 ++this.connectionAttempt;
                 api.get('/system/').then(response => {
@@ -235,7 +249,6 @@
         components: {
             Gauge,
             Graph,
-            Spline,
             Title,
             Table,
             Loading,

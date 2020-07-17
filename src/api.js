@@ -41,7 +41,8 @@ api.ping = () => {
 setInterval(api.ping, 45000);
 
 export {
-    url
+    url,
+    caller
 };
 
 export default api;

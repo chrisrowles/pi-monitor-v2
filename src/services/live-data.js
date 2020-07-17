@@ -1,18 +1,13 @@
-import api from '../api';
+import api, {url} from '../api';
+import { caller } from '../api';
 
 const liveCpu = {};
 
-liveCpu.temp = () => {
-    api.get('/system/cpu', {
+liveCpu.temp = async () => {
+    let response = await caller(url + '/system/cpu', {
         headers: { 'X-Fields': 'temp' }
-    }).then(response => {
-        let x = [new Date().getTime()],
-            y = response.data.temp;
-        console.log({
-            'time': x,
-            'value': y
-        });
-    })
+    });
+    return response.data.temp;
 }
 
 liveCpu.usage = () => {
