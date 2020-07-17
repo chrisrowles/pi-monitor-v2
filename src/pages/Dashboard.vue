@@ -13,47 +13,44 @@
                     <div class="row">
                         <div class="col-12 col-md-12 col-lg-6 mb-4 mb-lg-0">
                             <div class="platform-header">
-                                <div class="card bg-dark border-0 shadow">
-                                    <div class="card-header border-0 bg-dark text-white d-flex justify-content-between align-items-center w-100">
-                                        <strong>Platform</strong>
+                                <Stat :color="'bg-dark'" :title="'Platform'">
+                                    <template v-slot:icon>
                                         <i class="fa fa-server card-icon"></i>
-                                    </div>
-                                    <div class="card-body border-radius-5 bg-dark text-white">
+                                    </template>
+                                    <template v-slot:content>
                                         <strong>Distro</strong> {{ platform.distro }}<br>
                                         <strong>Kernel</strong> {{ platform.kernel }}<br>
                                         <strong>Uptime</strong> {{ platform.uptime }}<br>
-                                    </div>
-                                </div>
+                                    </template>
+                                </Stat>
                             </div>
                         </div>
                         <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
                             <div class="cpu-header">
-                                <div class="card bg-success border-0 shadow">
-                                    <div class="card-header bg-success border-0 text-white d-flex justify-content-between align-items-center w-100">
-                                        <strong>CPU</strong>
+                                <Stat :color="'bg-success'" :title="'CPU'">
+                                    <template v-slot:icon>
                                         <i class="fa fa-tachometer-alt card-icon"></i>
-                                    </div>
-                                    <div class="card-body border-radius-5 bg-success text-white">
+                                    </template>
+                                    <template v-slot:content>
                                         <strong>Temp</strong> {{ cpu.temp }}°C<br>
                                         <strong>Usage</strong> {{ cpu.usage }}%<br>
                                         <strong>Frequency</strong> {{ cpu.freq }}MHz<br>
-                                    </div>
-                                </div>
+                                    </template>
+                                </Stat>
                             </div>
                         </div>
                         <div class="col-12 col-md-6 col-lg-3">
                             <div class="disk-header">
-                                <div class="card bg-success border-0 shadow">
-                                    <div class="card-header bg-success border-0 text-white d-flex justify-content-between align-items-center w-100">
-                                        <strong>Disk</strong>
-                                        <i class="fa fa-hdd card-icon btt-1"></i>
-                                    </div>
-                                    <div class="card-body border-radius-5 bg-success text-white">
+                                <Stat :color="'bg-success'" :title="'CPU'">
+                                    <template v-slot:icon>
+                                        <i class="fa fa-hdd card-icon btt-1"></i>>
+                                    </template>
+                                    <template v-slot:content>
                                         <strong>Used</strong> {{ disk.used }}GB<br>
                                         <strong>Free</strong> {{ disk.free }}GB<br>
                                         <strong>Total</strong> {{ disk.total }}GB<br>
-                                    </div>
-                                </div>
+                                    </template>
+                                </Stat>
                             </div>
                         </div>
                     </div>
@@ -130,6 +127,7 @@
     import { liveCpu } from '../services/live-data';
     import { splineMaker } from "../services/live-chart-creator";
 
+    import Stat from '@/components/common/Stat';
     import Gauge from '@/components/charts/Gauge';
     import Graph from '@/components/charts/Graph';
     import Table from '@/components/common/Table';
@@ -248,6 +246,7 @@
             }
         },
         components: {
+            Stat,
             Gauge,
             Graph,
             Title,

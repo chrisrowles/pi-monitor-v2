@@ -12,37 +12,36 @@
                 <section id="overview" class="my-4">
                     <div class="row">
                         <div class="col-12 col-md-12 col-lg-4 mb-4 mb-lg-0">
-                            <div class="card border-0 bg-dark shadow">
-                                <div class="card-header bg-dark border-0 text-white d-flex justify-content-between align-items-center w-100">
-                                    <strong>Wireless Network</strong>
+                            <Stat :color="'bg-dark'" :title="'Wireless Network'">
+                                <template v-slot:icon>
                                     <i class="fa fa-wifi card-icon"></i>
-                                </div>
-                                <div class="card-body bg-dark border-radius-5 text-white">
+                                </template>
+                                <template v-slot:content>
                                     <strong>{{ details.name }}</strong>
-                                </div>
-                            </div>
+                                </template>
+                            </Stat>
                         </div>
                         <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
-                            <div class="card bg-dark border-0 shadow" :class="downloadClass">
-                                <div :class="downloadClass" class="card-header border-0 text-white d-flex justify-content-between align-items-center w-100">
-                                    <strong>Download Speed</strong>
+                            <Stat :color="downloadClass" :title="'Download Speed'">
+                                <template v-slot:icon>
                                     <i class="fa fa-arrow-circle-down card-icon"></i>
-                                </div>
-                                <div :class="downloadClass" class="card-body border-radius-5 text-white">
-                                    <i v-if="speedTestStatus" class="fa fa-arrow-circle-down"></i> <strong>{{ speed.download }}</strong>
-                                </div>
-                            </div>
+                                </template>
+                                <template v-slot:content>
+                                    <i v-if="speedTestStatus" class="fa fa-arrow-circle-down mr-2"></i>
+                                    <strong>{{ speed.download }}</strong>
+                                </template>
+                            </Stat>
                         </div>
                         <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
-                            <div class="card bg-dark border-0 shadow" :class="uploadClass">
-                                <div :class="uploadClass" class="card-header border-0 text-white d-flex justify-content-between align-items-center w-100">
-                                    <strong>Upload Speed</strong>
+                            <Stat :color="uploadClass" :title="'Download Speed'">
+                                <template v-slot:icon>
                                     <i class="fa fa-arrow-circle-up card-icon"></i>
-                                </div>
-                                <div :class="uploadClass" class="card-body border-radius-5 text-white">
-                                    <i v-if="speedTestStatus" class="fa fa-arrow-circle-up"></i> <strong>{{ speed.upload }}</strong>
-                                </div>
-                            </div>
+                                </template>
+                                <template v-slot:content>
+                                    <i v-if="speedTestStatus" class="fa fa-arrow-circle-up mr-2"></i>
+                                    <strong>{{ speed.upload }}</strong>
+                                </template>
+                            </Stat>
                         </div>
                     </div>
                 </section>
@@ -118,6 +117,7 @@
     import api from '../api';
     import bus from '../services/bus';
 
+    import Stat from '@/components/common/Stat';
     import Graph from '@/components/charts/Graph';
     import Table from '@/components/common/Table';
     import Title from '@/components/common/Title';
@@ -308,6 +308,7 @@
             },
         },
         components: {
+            Stat,
             Graph,
             Table,
             Title,
