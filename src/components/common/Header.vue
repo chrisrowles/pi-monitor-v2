@@ -17,8 +17,6 @@
 </template>
 
 <script>
-    import bus from '../../services/event-bus'
-
     export default {
         props: ['title'],
         data() {
@@ -31,12 +29,12 @@
         },
         created() {
             this.name = this.$app_name;
-            bus.$on('api-disconnect', () => {
+            this.$bus.$on('api-disconnect', () => {
                 this.status = false
                 this.message = 'disconnected'
             })
 
-            bus.$on('api-reconnect', () => {
+            this.$bus.$on('api-reconnect', () => {
                 this.status = true
                 this.message = 'connected'
             })

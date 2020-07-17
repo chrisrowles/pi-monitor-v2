@@ -103,9 +103,6 @@
 </template>
 
 <script>
-    import api from '../api';
-    import bus from '../services/event-bus';
-
     import { liveCpu } from '../services/live-data';
 
     import Stat from '@/components/common/Stat';
@@ -151,11 +148,11 @@
         created() {
             this.message = 'Retrieving data from API, please wait...';
             this.getSystem();
-            bus.$on('api-disconnect', () => {
+            this.$bus.$on('api-disconnect', () => {
                 this.status = 'error';
                 this.message = 'Unable to connect, please wait...'
             });
-            bus.$on('api-reconnect', () => {
+            this.$bus.$on('api-reconnect', () => {
                 this.status = 'success'
                 this.message = 'Connection successful, reloading view...'
                 this.getSystem();
@@ -164,7 +161,7 @@
         methods: {
             getSystem() {
                 ++this.connectionAttempt;
-                api.get('/system/').then(response => {
+                this.$api.get('/system/').then(response => {
                     if (response.data) {
                         ['platform', 'cpu', 'disk'].forEach(key => {
                             if (typeof this[key] === 'undefined' || typeof response.data[key] === 'undefined') {
@@ -206,7 +203,7 @@
                 setInterval(() => {
                     liveCpu.get('temp').then(temp => {
                         this.cpu.temp = temp;
-                        bus.$emit('update-gauge-temp', { value: temp, id: 'temp' })
+                        this.$bus.$emit('update-gauge-temp', { value: temp, id: 'temp' })
                     })
                 }, 5000)
             },

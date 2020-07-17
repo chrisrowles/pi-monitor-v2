@@ -1,4 +1,4 @@
-import bus from './services/event-bus';
+import bus from './bus';
 
 const url = process.env.VUE_APP_API_URL;
 const defaultHeaders = {

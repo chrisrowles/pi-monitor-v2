@@ -114,9 +114,6 @@
 </template>
 
 <script>
-    import api from '../api';
-    import bus from '../services/event-bus';
-
     import Stat from '@/components/common/Stat';
     import Graph from '@/components/charts/Graph';
     import Table from '@/components/common/Table';
@@ -189,7 +186,7 @@
             this.message = 'Retrieving network information, please wait...';
             this.getNetworkInterfaces();
             this.getNetworkWifi();
-            bus.$on('api-disconnect', () => {
+            this.$bus.$on('api-disconnect', () => {
                 this.status = 'error';
                 this.message = 'Unable to connect, please try again.'
             });
@@ -199,7 +196,7 @@
         },
         methods: {
             getNetworkInterfaces() {
-                api.get('/network/').then(response => {
+                this.$api.get('/network/').then(response => {
                     if (response.data) {
                         Object.keys(this.interfaces).forEach(inet => {
                             Object.keys(this.interfaces[inet]).forEach(metric => {
@@ -218,7 +215,7 @@
                 });
             },
             getNetworkWifi() {
-                api.get('/network/wifi').then(response => {
+                this.$api.get('/network/wifi').then(response => {
                     if (response.data) {
                         Object.keys(this.details).forEach(key => {
                             this.details[key] = response.data[key];
@@ -239,7 +236,7 @@
                     progress[key] = this.progress(key)
                 })
 
-                api.get('/network/wifi/speed').then(response => {
+                this.$api.get('/network/wifi/speed').then(response => {
                     this.speedTestStatus = true;
                     if (response.data) {
                         Object.keys(this.speed).forEach(key => {

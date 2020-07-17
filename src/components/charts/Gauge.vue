@@ -8,13 +8,12 @@
 </template>
 
 <script>
-    import bus from '../../services/event-bus';
     import { gaugeMaker } from '../../services/chart-creator';
 
     export default {
         props: ['title', 'id', 'metric', 'format'],
         created() {
-            bus.$on('update-gauge-' + this.id, data => {
+            this.$bus.$on('update-gauge-' + this.id, data => {
                 gaugeMaker.updatePoint(data);
             });
         },

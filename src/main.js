@@ -12,6 +12,8 @@ import _ from 'lodash';
 import Vue from 'vue';
 import App from './App';
 
+import api from './api';
+import bus from './bus';
 import router from './router';
 
 import './scss/app.scss';
@@ -29,6 +31,8 @@ dom.watch();
 Vue.config.productionTip = false;
 Vue.prototype.$_ = _;
 Vue.prototype.$app_name = process.env.VUE_APP_NAME;
+Vue.prototype.$bus = bus;
+Vue.prototype.$api = api;
 
 new Vue({
   router,
