@@ -1,6 +1,5 @@
 import * as Highcharts from 'highcharts';
 
-
 const splineMaker  = {};
 let spline = null;
 splineMaker.create = ({id, title, data}) => {

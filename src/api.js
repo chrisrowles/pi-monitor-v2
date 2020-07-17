@@ -1,6 +1,6 @@
 import bus from './services/bus';
 
-const url = 'http://rowles.ddns.net:8888';
+const url = process.env.VUE_APP_API_URL;
 const headers = {
     'Content-Type': 'application/json; charset=utf-8',
     'Accept': 'application/json'

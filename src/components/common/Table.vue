@@ -41,34 +41,15 @@
         computed: {
             vertical() {
                 let response = [];
-                let ctr = 0;
                 Object.keys(this.data).forEach(key => {
                     if (typeof this.data[key] === 'number') {
                         this.data[key] = parseFloat(this.data[key]).toFixed(2);
-                    }
-
-                    // TODO provide proper generic type handling
-                    if (ctr < 6) {
-                        if (key === 'temp') {
-                            this.data[key] = this.data[key] + '°C';
-                        }
-                        if(key === 'freq') {
-                            this.data[key] = this.data[key] + ' MHz';
-                        }
-                        if(key === 'usage') {
-                            this.data[key] = this.data[key] + '%';
-                        }
-                        if(key === 'used' || key === 'free' || key === 'total') {
-                            this.data[key] = this.data[key] + ' GB';
-                        }
                     }
 
                     response.push({
                         header: this.formatHeader(key),
                         value: this.data[key]
                     });
-
-                    ++ctr;
                 });
                 return this.$_.orderBy(response, this.sortKey, this.sortOrder);
             }
