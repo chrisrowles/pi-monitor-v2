@@ -115,11 +115,11 @@
 </template>
 
 <script>
-    import Graph from "../components/Graph";
-    import Table from "../components/Table";
-    import Title from "../components/Title";
-    import Loading from "../components/Loading";
-    import Header from "../components/Header";
+    import Graph from "@/components/charts/Graph";
+    import Table from "@/components/common/Table";
+    import Title from "@/components/common/Title";
+    import Loading from "@/components/common/Loading";
+    import Header from "@/components/common/Header";
 
     export default {
         data() {
@@ -166,8 +166,8 @@
                 },
                 speed: {
                     ping: 0,
-                    download: 0,
-                    upload: 0
+                    download: 'Loading...',
+                    upload: 'Loading...'
                 },
 
                 interfacesGraphData: {
@@ -183,8 +183,11 @@
         },
         created() {
             this.message = 'Retrieving wifi information and running speed test, please wait...';
-            this.getNetworkWifi();
             this.getNetworkInterfaces();
+            this.getNetworkWifi();
+        },
+        mounted() {
+            this.runNetworkWifiSpeedTest();
         },
         methods: {
             getNetworkInterfaces() {
@@ -196,10 +199,10 @@
                         throw new Error('ERROR: (' + response.status + ') could not fetch network data.');
                     }
                 }).then(json => {
-                    if (json) {
+                    if (json.data) {
                         Object.keys(this.interfaces).forEach(inet => {
                             Object.keys(this.interfaces[inet]).forEach(metric => {
-                                this.interfaces[inet][metric] = Math.round(parseInt(json.interfaces[inet][metric]))
+                                this.interfaces[inet][metric] = Math.round(parseInt(json.data.interfaces[inet][metric]))
                             })
                         });
 
@@ -226,10 +229,8 @@
                     }
                 }).then(json => {
                     if (json.data) {
-                        ['details', 'speed'].forEach(key => {
-                            Object.keys(this[key]).forEach(result => {
-                                this[key][result] = json.data[key][result];
-                            });
+                        Object.keys(this.details).forEach(key => {
+                            this.details[key] = json.data[key];
                         });
                         this.loaded = true;
                     } else {
@@ -239,6 +240,27 @@
                     this.loaded = false;
                     this.status = 'error';
                     this.message = error.message;
+                });
+            },
+            runNetworkWifiSpeedTest() {
+                const url = 'http://rowles.ddns.net:8888/network/wifi/speed';
+                fetch(url).then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('ERROR: (' + response.status + ') could not run speed test.');
+                    }
+                }).then(json => {
+                    if (json.data) {
+                        Object.keys(this.speed).forEach(key => {
+                            this.speed[key] = json.data[key];
+                        });
+                    } else {
+                        throw new Error('Oh shit.')
+                    }
+                }).catch(() => {
+                    this.speed.download = 'Error.';
+                    this.speed.upload = 'Error.';
                 });
             },
             formatInterfaceGraphData(inet) {
@@ -261,7 +283,7 @@
                 } else if (this.speed.download < 10 &&  this.speed.download >= 5) {
                     return 'bg-warning'
                 }  else {
-                    return 'bg-danger'
+                    return 'bg-dark'
                 }
             },
             uploadClass() {
@@ -269,8 +291,8 @@
                     return 'bg-success'
                 } else if (this.speed.upload < 2 && this.speed.upload >= 1) {
                     return 'bg-warning'
-                }  else {
-                    return 'bg-danger'
+                } else {
+                    return 'bg-dark'
                 }
             },
         },

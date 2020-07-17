@@ -17,8 +17,8 @@
 </template>
 
 <script>
-    import bus from "../bus";
-    import ping from "../ping";
+    import bus from "../../util/bus";
+    import ping from "../../util/ping";
 
     export default {
         props: ['title'],

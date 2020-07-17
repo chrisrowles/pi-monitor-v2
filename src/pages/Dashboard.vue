@@ -81,6 +81,31 @@
                     </div>
                 </section>
 
+                <section id="running_processes" class="my-4 border-radius-5">
+                    <div class="row">
+                        <div class="col-12 col-md-12 mb-4 mb-lg-0">
+                            <div class="card bg-white border-0 shadow">
+                                <div class="card-header bg-white">
+
+                                </div>
+                                <div class="card-body bg-white">
+                                    <Spline :id="'live_temp'" :title="'Process Usage'" :data="parseInt(cpu.temp)"></Spline>
+                                </div>
+                            </div>
+                        </div>
+<!--                        <div class="col-12 col-md-6 mb-4 mb-lg-0">-->
+<!--                            <div class="card bg-white border-0 shadow">-->
+<!--                                <div class="card-header bg-white">-->
+
+<!--                                </div>-->
+<!--                                <div class="card-body bg-white">-->
+<!--                                    <Spline :id="'running3'" :data="parseInt(cpu.temp)"></Spline>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                    </div>
+                </section>
+
                 <section id="metrics" class="bg-white p-4 my-4 shadow border-radius-5">
                     <div class="row">
                         <div class="col-12">
@@ -107,12 +132,13 @@
 </template>
 
 <script>
-    import Gauge from "../components/Gauge";
-    import Graph from "../components/Graph";
-    import Table from "../components/Table";
-    import Title from "../components/Title";
-    import Loading from "../components/Loading";
-    import Header from "../components/Header";
+    import Gauge from "@/components/charts/Gauge";
+    import Graph from "@/components/charts/Graph";
+    import Spline from "@/components/charts/Spline";
+    import Table from "@/components/common/Table";
+    import Title from "@/components/common/Title";
+    import Loading from "@/components/common/Loading";
+    import Header from "@/components/common/Header";
 
     export default {
         name: 'Dashboard',
@@ -207,7 +233,7 @@
                 this.processes.forEach(proc => {
                     response.push({
                         name: proc.name,
-                        data: [parseInt(proc.mem)]
+                        data: [proc.mem]
                     })
                 });
                 this.processesGraphData = response;
@@ -216,6 +242,7 @@
         components: {
             Gauge,
             Graph,
+            Spline,
             Title,
             Table,
             Loading,
