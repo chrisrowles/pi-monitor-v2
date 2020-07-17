@@ -39,7 +39,7 @@ api.get = async (endpoint, options = {}) => {
     return response;
 }
 
-api.ping = (timeout) => {
+api.ping = timeout => {
     let status =  setInterval(() => {
         caller(url + '/network/ping').then(response => {
             if (response.status !== 'connected') {
