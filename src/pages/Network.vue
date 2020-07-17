@@ -115,11 +115,14 @@
 </template>
 
 <script>
-    import Graph from "@/components/charts/Graph";
-    import Table from "@/components/common/Table";
-    import Title from "@/components/common/Title";
-    import Loading from "@/components/common/Loading";
-    import Header from "@/components/common/Header";
+    import api from '../api';
+
+    import Graph from '@/components/charts/Graph';
+    import Table from '@/components/common/Table';
+    import Title from '@/components/common/Title';
+    import Loading from '@/components/common/Loading';
+    import Header from '@/components/common/Header';
+    import bus from "../util/bus";
 
     export default {
         data() {
@@ -182,35 +185,30 @@
             }
         },
         created() {
-            this.message = 'Retrieving wifi information and running speed test, please wait...';
+            this.message = 'Retrieving network information, please wait...';
             this.getNetworkInterfaces();
             this.getNetworkWifi();
+            bus.$on('api-disconnect', () => {
+                this.status = 'error';
+                this.message = 'Unable to connect, please try again.'
+            });
         },
         mounted() {
             this.runNetworkWifiSpeedTest();
         },
         methods: {
             getNetworkInterfaces() {
-                const url = 'http://rowles.ddns.net:8888/network';
-                fetch(url).then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error('ERROR: (' + response.status + ') could not fetch network data.');
-                    }
-                }).then(json => {
-                    if (json.data) {
+                api.get('/network/').then(response => {
+                    if (response.data) {
                         Object.keys(this.interfaces).forEach(inet => {
                             Object.keys(this.interfaces[inet]).forEach(metric => {
-                                this.interfaces[inet][metric] = Math.round(parseInt(json.data.interfaces[inet][metric]))
-                            })
+                                this.interfaces[inet][metric] = Math.round(parseInt(response.data.interfaces[inet][metric]))
+                            });
                         });
 
                         this.formatInterfaceGraphData('wlan0');
                         this.formatInterfaceGraphData('eth0');
                         this.formatInterfaceGraphData('lo');
-                    } else {
-                        throw new Error('Oh shit.')
                     }
                 }).catch(error => {
                     this.loaded = false;
@@ -219,22 +217,14 @@
                 });
             },
             getNetworkWifi() {
-                const url = 'http://rowles.ddns.net:8888/network/wifi';
-                fetch(url).then(response => {
-                    if (response.ok) {
-                        this.message = 'Data successfully received, initialising network view...';
-                        return response.json();
-                    } else {
-                        throw new Error('ERROR: (' + response.status + ') could not fetch system statistics.');
-                    }
-                }).then(json => {
-                    if (json.data) {
+                api.get('/network/wifi').then(response => {
+                    if (response.data) {
                         Object.keys(this.details).forEach(key => {
-                            this.details[key] = json.data[key];
+                            this.details[key] = response.data[key];
                         });
                         this.loaded = true;
                     } else {
-                        throw new Error('Oh shit.')
+                        throw new Error('Oh shit.');
                     }
                 }).catch(error => {
                     this.loaded = false;
@@ -243,20 +233,13 @@
                 });
             },
             runNetworkWifiSpeedTest() {
-                const url = 'http://rowles.ddns.net:8888/network/wifi/speed';
-                fetch(url).then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error('ERROR: (' + response.status + ') could not run speed test.');
-                    }
-                }).then(json => {
-                    if (json.data) {
+                api.get('/network/wifi/speed').then(response => {
+                    if (response.data) {
                         Object.keys(this.speed).forEach(key => {
-                            this.speed[key] = json.data[key];
+                            this.speed[key] = response.data[key];
                         });
                     } else {
-                        throw new Error('Oh shit.')
+                        throw new Error('Oh shit.');
                     }
                 }).catch(() => {
                     this.speed.download = 'Error.';
@@ -272,27 +255,27 @@
                             data: [this.interfaces[inet][key]]
                         });
                     }
-                })
+                });
                 this.interfacesGraphData[inet] = response;
             }
         },
         computed: {
             downloadClass() {
                 if (this.speed.download >= 10) {
-                    return 'bg-success'
+                    return 'bg-success';
                 } else if (this.speed.download < 10 &&  this.speed.download >= 5) {
-                    return 'bg-warning'
+                    return 'bg-warning';
                 }  else {
-                    return 'bg-dark'
+                    return 'bg-dark';
                 }
             },
             uploadClass() {
                 if (this.speed.upload >= 5) {
-                    return 'bg-success'
+                    return 'bg-success';
                 } else if (this.speed.upload < 2 && this.speed.upload >= 1) {
-                    return 'bg-warning'
+                    return 'bg-warning';
                 } else {
-                    return 'bg-dark'
+                    return 'bg-dark';
                 }
             },
         },

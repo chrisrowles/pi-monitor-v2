@@ -132,16 +132,18 @@
 </template>
 
 <script>
-    import Gauge from "@/components/charts/Gauge";
-    import Graph from "@/components/charts/Graph";
-    import Spline from "@/components/charts/Spline";
-    import Table from "@/components/common/Table";
-    import Title from "@/components/common/Title";
-    import Loading from "@/components/common/Loading";
-    import Header from "@/components/common/Header";
+    import api from '../api';
+    import bus from '../util/bus';
+
+    import Gauge from '@/components/charts/Gauge';
+    import Graph from '@/components/charts/Graph';
+    import Spline from '@/components/charts/Spline';
+    import Table from '@/components/common/Table';
+    import Title from '@/components/common/Title';
+    import Loading from '@/components/common/Loading';
+    import Header from '@/components/common/Header';
 
     export default {
-        name: 'Dashboard',
         data() {
             return {
                 platform: {
@@ -149,74 +151,60 @@
                     kernel: '',
                     uptime: '',
                 },
-
                 cpu: {
                     temp: 0,
                     freq: 0,
                     usage: 0
                 },
-
                 disk: {
                     used: 0,
                     free: 0,
                     total: 0,
                 },
                 disk_percent: 0,
-
                 fan: {
                     status: '',
                 },
-
                 processes: {},
                 processesGraphData: [],
-
-                // UI props
                 loaded: false,
                 status: false,
                 message: '',
-
-                // API props
-                url: 'http://rowles.ddns.net:8888/system/',
                 connectionAttempt: 0
             }
         },
         created() {
             this.message = 'Retrieving data from API, please wait...';
             this.getSystem();
+            bus.$on('api-disconnect', () => {
+                this.status = 'error';
+                this.message = 'Unable to connect, please wait...'
+            });
+            bus.$on('api-reconnect', () => {
+                this.status = 'success'
+                this.message = 'Connection successful, reloading view...'
+                this.getSystem();
+            });
         },
         methods: {
             getSystem() {
                 ++this.connectionAttempt;
-
-                fetch(this.url).then(response => {
-                    if (response.ok) {
-                        this.message = 'Data successfully received, initialising dashboard...';
-                        return response.json();
-                    } else {
-                        throw new Error('ERROR: (' + response.status + ') could not fetch system statistics.');
-                    }
-                }).then(json => {
-                    if (json.data) {
-                        setTimeout(() => {
-                            ['platform', 'cpu', 'disk'].forEach(key => {
-                                if (typeof this[key] === 'undefined' || typeof json.data[key] === 'undefined') {
-                                    throw new Error('Undefined metric in API response.');
-                                }
-
-                                Object.keys(this[key]).forEach(result => {
-                                    this[key][result] = json.data[key][result];
-                                });
+                api.get('/system/').then(response => {
+                    if (response.data) {
+                        ['platform', 'cpu', 'disk'].forEach(key => {
+                            if (typeof this[key] === 'undefined' || typeof response.data[key] === 'undefined') {
+                                throw new Error('Undefined metric in API response.');
+                            }
+                            Object.keys(this[key]).forEach(result => {
+                                this[key][result] = response.data[key][result];
                             });
-
-                            this.disk_percent = json.data.disk.percent;
-                            this.processes = json.data.processes;
-
-                            this.formatProcessesDataForGraphs();
-
-                            this.loaded = true;
-                        }, 1000);
+                        });
+                        this.disk_percent = response.data.disk.percent;
+                        this.processes = response.data.processes;
+                        this.formatProcessesDataForGraphs();
+                        this.loaded = true;
                     } else {
-                        throw new Error('Oh shit.')
+                        throw new Error('Oh shit.');
                     }
                 }).catch(error => {
                     if (this.connectionAttempt < 3) {
@@ -234,7 +222,7 @@
                     response.push({
                         name: proc.name,
                         data: [proc.mem]
-                    })
+                    });
                 });
                 this.processesGraphData = response;
             }

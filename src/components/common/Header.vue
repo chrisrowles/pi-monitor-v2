@@ -17,8 +17,7 @@
 </template>
 
 <script>
-    import bus from "../../util/bus";
-    import ping from "../../util/ping";
+    import bus from '../../util/bus'
 
     export default {
         props: ['title'],
@@ -31,17 +30,14 @@
         },
         created() {
             bus.$on('api-disconnect', () => {
-                this.status = false;
-                this.message = 'disconnected';
-            });
+                this.status = false
+                this.message = 'disconnected'
+            })
 
             bus.$on('api-reconnect', () => {
-                this.status = true;
-                this.message = 'connected';
-            });
-        },
-        mounted() {
-            this.connection = setInterval(ping.api, 60000);
+                this.status = true
+                this.message = 'connected'
+            })
         }
     }
 </script>
