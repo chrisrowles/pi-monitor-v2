@@ -29,7 +29,7 @@
                                     <i class="fa fa-arrow-circle-down card-icon"></i>
                                 </div>
                                 <div :class="downloadClass" class="card-body border-radius-5 text-white">
-                                    <i class="fa fa-arrow-circle-down"></i> <strong>{{ speed.download }}</strong>
+                                    <i v-if="speedTestStatus" class="fa fa-arrow-circle-down"></i> <strong>{{ speed.download }}</strong>
                                 </div>
                             </div>
                         </div>
@@ -40,7 +40,7 @@
                                     <i class="fa fa-arrow-circle-up card-icon"></i>
                                 </div>
                                 <div :class="uploadClass" class="card-body border-radius-5 text-white">
-                                    <i class="fa fa-arrow-circle-up"></i> <strong>{{ speed.upload }}</strong>
+                                    <i v-if="speedTestStatus" class="fa fa-arrow-circle-up"></i> <strong>{{ speed.upload }}</strong>
                                 </div>
                             </div>
                         </div>
@@ -169,9 +169,10 @@
                 },
                 speed: {
                     ping: 0,
-                    download: 'Loading...',
-                    upload: 'Loading...'
+                    download: '',
+                    upload: ''
                 },
+                speedTestStatus: false,
 
                 interfacesGraphData: {
                     wlan0: [],
@@ -233,9 +234,16 @@
                 });
             },
             runNetworkWifiSpeedTest() {
+                let progress = {}
+                Object.keys(this.speed).forEach(key => {
+                    progress[key] = this.progress(key)
+                })
+
                 api.get('/network/wifi/speed').then(response => {
+                    this.speedTestStatus = true;
                     if (response.data) {
                         Object.keys(this.speed).forEach(key => {
+                            clearInterval(progress[key]);
                             this.speed[key] = response.data[key];
                         });
                     } else {
@@ -257,6 +265,22 @@
                     }
                 });
                 this.interfacesGraphData[inet] = response;
+            },
+            progress(metric) {
+                let up = true;
+                return setInterval(() => {
+                    if (up) {
+                        this.speed[metric] += ".";
+                    } else {
+                        this.speed[metric] = this.speed[metric].substring(1, this.speed[metric].length);
+                        if (this.speed[metric] === ".") {
+                            up = true;
+                        }
+                    }
+                    if (this.speed[metric].length > 6) {
+                        up = false;
+                    }
+                }, 100)
             }
         },
         computed: {
@@ -265,15 +289,19 @@
                     return 'bg-success';
                 } else if (this.speed.download < 10 &&  this.speed.download >= 5) {
                     return 'bg-warning';
-                }  else {
+                } else if (this.speed.download < 3.5 && this.speed.download > 0) {
+                    return 'bg-danger';
+                } else {
                     return 'bg-dark';
                 }
             },
             uploadClass() {
                 if (this.speed.upload >= 5) {
                     return 'bg-success';
-                } else if (this.speed.upload < 2 && this.speed.upload >= 1) {
+                } else if (this.speed.upload < 3 && this.speed.upload >= 2) {
                     return 'bg-warning';
+                } else if (this.speed.upload < 2 && this.speed.upload > 0) {
+                    return 'bg-danger';
                 } else {
                     return 'bg-dark';
                 }

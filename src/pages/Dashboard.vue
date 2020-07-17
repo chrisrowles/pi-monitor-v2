@@ -165,7 +165,8 @@
                 status: false,
                 message: '',
                 connectionAttempt: 0,
-                first: true,
+
+                liveChartExists: false,
             }
         },
         created() {
@@ -190,7 +191,7 @@
                     liveCpu.temp().then(temp => {
                         this.cpu.temp = temp;
                         // TODO poll CSV endpoint and store data to reduce load on the server
-                        if (this.first) {
+                        if (!this.liveChartExists) {
                             splineMaker.create({
                                 id: 'live-cpu-temp',
                                 title: 'CPU Temperature',
@@ -199,12 +200,12 @@
                                     y: temp
                                 }
                             });
-                            this.first = false;
+                            this.liveChartExists = true;
                         } else {
-                            bus.$emit('add-series-point', temp);
+                            splineMaker.addPoint(temp);
                         }
                     })
-                }, 5000)
+                }, 45000)
             },
             getSystem() {
                 ++this.connectionAttempt;

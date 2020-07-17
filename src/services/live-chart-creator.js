@@ -1,4 +1,3 @@
-import bus from './bus';
 import * as Highcharts from 'highcharts';
 
 
@@ -87,10 +86,6 @@ splineMaker.addPoint = (data) => {
     let x = (new Date()).getTime(), y = data;
     series.addPoint([x, y], true, true);
 }
-
-bus.$on('add-series-point', (data) => {
-    splineMaker.addPoint(data)
-});
 
 export {
     splineMaker
