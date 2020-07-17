@@ -12,6 +12,11 @@
 
     export default  {
         props: ['id', 'legend', 'title', 'subtitle', 'categories', 'data', 'yAxisText', 'xAxisText'],
+        data() {
+            return {
+                graph: null,
+            }
+        },
         mounted() {
             this.draw({
                 id: this.id,
@@ -25,7 +30,7 @@
         },
         methods: {
             draw({id, title, subtitle, data, yAxisText = null, xAxisText = null}) {
-                Highcharts.chart(id, {
+                this.graph = Highcharts.chart(id, {
                     chart: {
                         type: 'bar'
                     },
@@ -52,6 +57,7 @@
                         }
                     },
                     tooltip: {
+                        valueDecimals: 2,
                         valueSuffix: ' MiB'
                     },
                     plotOptions: {
@@ -78,6 +84,8 @@
                     },
                     series: data
                 });
+
+                return this.graph
             }
         }
     }

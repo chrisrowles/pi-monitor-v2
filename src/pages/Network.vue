@@ -115,11 +115,11 @@
 </template>
 
 <script>
-    import Graph from "../components/Graph";
-    import Table from "../components/Table";
-    import Title from "../components/Title";
-    import Loading from "../components/Loading";
-    import Header from "../components/Header";
+    import Graph from "@/components/charts/Graph";
+    import Table from "@/components/common/Table";
+    import Title from "@/components/common/Title";
+    import Loading from "@/components/common/Loading";
+    import Header from "@/components/common/Header";
 
     export default {
         data() {
