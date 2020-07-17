@@ -89,7 +89,7 @@
 
                                 </div>
                                 <div class="card-body bg-white">
-                                    <Spline :id="'live_temp'" :title="'CPU Temperature'" :data="parseInt(cpu.temp)"></Spline>
+                                    <Spline :id="'live_temp'" :title="'Process Usage'" :data="parseInt(cpu.temp)"></Spline>
                                 </div>
                             </div>
                         </div>
