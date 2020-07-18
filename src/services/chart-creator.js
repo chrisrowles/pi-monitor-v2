@@ -5,8 +5,20 @@ import * as HighchartsSolidGauge from 'highcharts/modules/solid-gauge';
 HighchartsMore(Highcharts);
 HighchartsSolidGauge(Highcharts);
 
+/** Spline chart maker **/
 const splineMaker  = {};
+
+/** Created spline charts **/
 let spline = [];
+
+/**
+ * Create a new spline chart.
+ *
+ * @param id
+ * @param title
+ * @param data
+ * @returns {Chart}
+ */
 splineMaker.create = ({id, title, data}) => {
     console.log(data);
     spline = Highcharts.chart(id, {
@@ -85,14 +97,32 @@ splineMaker.create = ({id, title, data}) => {
     });
     return spline;
 }
+
+/**
+ * Update a spline chart with a new data point.
+ *
+ * @param data
+ */
 splineMaker.addPoint = data => {
     let series = spline[data.id].series[0];
     let x = (new Date()).getTime(), y = data.value;
     series.addPoint([x, y], true, true);
 }
 
+/** Gauge chart maker **/
 const gaugeMaker = {};
+
+/** Created gauge charts **/
 let gauge = [];
+
+/**
+ * Create a new gauge chart.
+ *
+ * @param id
+ * @param data
+ * @param format
+ * @returns {[]}
+ */
 gaugeMaker.create = ({id, data, format}) => {
     gauge[id] = Highcharts.chart(id, {
         chart: {
@@ -162,13 +192,33 @@ gaugeMaker.create = ({id, data, format}) => {
     });
     return gauge;
 }
+
+/**
+ * Update a gauge chart with a new value/
+ *
+ * @param data
+ */
 gaugeMaker.updatePoint = data => {
     let series = gauge[data.id].series[0].points[0];
     series.update(Math.round(data.value));
 }
 
+/** Graph maker **/
 const graphMaker = {};
+
+/** Created graphs **/
 let graph = [];
+
+/**
+ * Create a new graph.
+ *
+ * @param id
+ * @param title
+ * @param data
+ * @param yAxisText
+ * @param xAxisText
+ * @returns {[]}
+ */
 graphMaker.create = ({id, title, data, yAxisText = null, xAxisText = null}) => {
     graph[id] = Highcharts.chart(id, {
         chart: {
@@ -226,6 +276,11 @@ graphMaker.create = ({id, title, data, yAxisText = null, xAxisText = null}) => {
     });
     return graph;
 }
+
+/**
+ * Update a graph with a new values
+ * @param data
+ */
 graphMaker.updatePoint = data => {
     let series = graph[data.id].series[0];
     let x = (new Date()).getTime(), y = data.value;
