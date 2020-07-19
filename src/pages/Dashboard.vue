@@ -140,8 +140,7 @@
                 loaded: false,
                 status: false,
                 message: '',
-                connectionAttempt: 0,
-                liveChartExists: false,
+                liveChartExists: false
             }
         },
         created() {
@@ -159,7 +158,6 @@
         },
         methods: {
             getSystem() {
-                ++this.connectionAttempt;
                 this.$api.get('/system/').then(response => {
                         ['platform', 'cpu', 'disk'].forEach(key => {
                             if (typeof this[key] === 'undefined' || typeof response.data[key] === 'undefined') {
@@ -175,11 +173,7 @@
                         // this.liveTemp();
                         this.loaded = true;
                 }).catch(error => {
-                    if (this.connectionAttempt < 3) {
-                        this.getSystem();
-                    } else {
-                        this.setError(error.message);
-                    }
+                    this.setError(error.message);
                 });
             },
             formatProcessesDataForGraphs() {
