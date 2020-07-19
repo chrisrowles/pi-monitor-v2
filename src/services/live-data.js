@@ -20,7 +20,7 @@ liveCpu.get = async (...fields) => {
 const liveDisk = {};
 
 /**
- * Fetch live data statistics.
+ * Fetch live disk statistics.
  *
  * @param fields
  * @returns {Promise<number>}

@@ -194,7 +194,7 @@ gaugeMaker.create = ({id, data, format}) => {
 }
 
 /**
- * Update a gauge chart with a new value/
+ * Update a gauge chart with a new value.
  *
  * @param data
  */
@@ -278,7 +278,8 @@ graphMaker.create = ({id, title, data, yAxisText = null, xAxisText = null}) => {
 }
 
 /**
- * Update a graph with a new values
+ * Update a graph with a new values.
+ *
  * @param data
  */
 graphMaker.updatePoint = data => {

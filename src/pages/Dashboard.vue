@@ -141,12 +141,11 @@
                 status: false,
                 message: '',
                 connectionAttempt: 0,
-
                 liveChartExists: false,
             }
         },
         created() {
-            this.message = 'Retrieving data from API, please wait...';
+            this.message = 'Retrieving system information, please wait...';
             this.getSystem();
             this.$bus.$on('api-disconnect', () => {
                 this.status = 'error';
@@ -162,7 +161,6 @@
             getSystem() {
                 ++this.connectionAttempt;
                 this.$api.get('/system/').then(response => {
-                    if (response.data) {
                         ['platform', 'cpu', 'disk'].forEach(key => {
                             if (typeof this[key] === 'undefined' || typeof response.data[key] === 'undefined') {
                                 throw new Error('Undefined metric in API response.');
@@ -176,16 +174,11 @@
                         this.formatProcessesDataForGraphs();
                         // this.liveTemp();
                         this.loaded = true;
-                    } else {
-                        throw new Error('Oh shit.');
-                    }
                 }).catch(error => {
                     if (this.connectionAttempt < 3) {
                         this.getSystem();
                     } else {
-                        this.loaded = false;
-                        this.status = 'error';
-                        this.message = error.message;
+                        this.setError(error.message);
                     }
                 });
             },
@@ -207,6 +200,11 @@
                     })
                 }, 5000)
             },
+            setError(message) {
+                this.loaded = false;
+                this.status = 'error';
+                this.message = message;
+            }
         },
         components: {
             Stat,

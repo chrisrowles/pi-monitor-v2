@@ -17,6 +17,11 @@
                 graph: null,
             }
         },
+        created() {
+            this.$bus.$on('update-graph-' + this.id, data => {
+                graphMaker.updatePoint(data);
+            });
+        },
         mounted() {
             graphMaker.create({
                 id: this.id,

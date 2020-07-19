@@ -17,6 +17,11 @@
                 graph: null
             }
         },
+        created() {
+            this.$bus.$on('update-spline-' + this.id, data => {
+                splineMaker.addPoint(data);
+            });
+        },
         mounted() {
             splineMaker.create({
                 id: this.id,

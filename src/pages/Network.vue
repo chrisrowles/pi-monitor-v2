@@ -27,7 +27,7 @@
                                     <i class="fa fa-arrow-circle-down card-icon"></i>
                                 </template>
                                 <template v-slot:content>
-                                    <i v-if="speedTestStatus" class="fa fa-arrow-circle-down mr-2"></i>
+                                    <i v-if="speedTestCompleted" class="fa fa-arrow-circle-down mr-2"></i>
                                     <strong>{{ speed.download }}</strong>
                                 </template>
                             </Stat>
@@ -38,7 +38,7 @@
                                     <i class="fa fa-arrow-circle-up card-icon"></i>
                                 </template>
                                 <template v-slot:content>
-                                    <i v-if="speedTestStatus" class="fa fa-arrow-circle-up mr-2"></i>
+                                    <i v-if="speedTestCompleted" class="fa fa-arrow-circle-up mr-2"></i>
                                     <strong>{{ speed.upload }}</strong>
                                 </template>
                             </Stat>
@@ -46,68 +46,29 @@
                     </div>
                 </section>
 
-                <section id="interface-wlan0" class="bg-white p-4 my-4 shadow border-radius-5" v-if="interfaces.wlan0.mb_received > 0">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card border-0 bg-white h-100">
-                                <div class="card-header bg-white">
-                                    <strong class="text-muted">Interface wlan0</strong>
-                                </div>
-                                <div class="card-body">
-                                    <Graph :id="'wlan0'"
-                                           :title="'Interface wlan0'"
-                                           :data="interfacesGraphData.wlan0">
-                                    </Graph>
-                                    <div class="mt-4">
-                                        <Table :type="'horizontal'" :data="interfaces.wlan0" :nested="true"></Table>
+                <div v-for="(idx, inet) in interfaces" :key="inet">
+                    <section class="bg-white p-4 my-4 shadow border-radius-5"
+                             v-if="typeof interfaces[inet] !== 'undefined' && interfaces[inet].mb_received > 0">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card border-0 bg-white h-100">
+                                    <div class="card-header bg-white">
+                                        <strong class="text-muted">Interface {{ inet }}</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <Graph :id="inet"
+                                               :title="'Interface ' + inet"
+                                               :data="interfacesGraphData[inet]">
+                                        </Graph>
+                                        <div class="mt-4">
+                                            <Table :type="'horizontal'" :data="interfaces[inet]" :nested="true"></Table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </section>
-
-                <section id="interface-eth0" class="bg-white p-4 my-4 shadow border-radius-5" v-if="interfaces.eth0.mb_received > 0">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card border-0 bg-white h-100">
-                                <div class="card-header bg-white">
-                                    <strong class="text-muted">Interface eth0</strong>
-                                </div>
-                                <div class="card-body">
-                                    <Graph :id="'eth0'"
-                                           :title="'Interface eth0'"
-                                           :data="interfacesGraphData.eth0">
-                                    </Graph>
-                                    <div class="mt-4">
-                                        <Table :type="'horizontal'" :data="interfaces.eth0" :nested="true"></Table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="interface-lo" class="bg-white p-4 my-4 shadow border-radius-5" v-if="interfaces.lo.mb_received > 0">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card border-0 bg-white h-100">
-                                <div class="card-header bg-white">
-                                    <strong class="text-muted">Interface lo</strong>
-                                </div>
-                                <div class="card-body">
-                                    <Graph :id="'lo'"
-                                           :title="'Interface lo'"
-                                           :data="interfacesGraphData.lo">
-                                    </Graph>
-                                    <div class="mt-4">
-                                        <Table :type="'horizontal'" :data="interfaces.lo" :nested="true"></Table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                    </section>
+                </div>
             </div>
         </transition>
     </div>
@@ -124,35 +85,8 @@
     export default {
         data() {
             return {
-                interfaces: {
-                    eth0: {
-                        mb_sent: 0,
-                        mb_received: 0,
-                        pk_sent: 0,
-                        pk_received: 0,
-                        error_in: 0,
-                        error_out: 0,
-                        dropout: 0
-                    },
-                    wlan0: {
-                        mb_sent: 0,
-                        mb_received: 0,
-                        pk_sent: 0,
-                        pk_received: 0,
-                        error_in: 0,
-                        error_out: 0,
-                        dropout: 0
-                    },
-                    lo: {
-                        mb_sent: 0,
-                        mb_received: 0,
-                        pk_sent: 0,
-                        pk_received: 0,
-                        error_in: 0,
-                        error_out: 0,
-                        dropout: 0
-                    }
-                },
+                interfaces: {},
+                interfacesGraphData: {},
                 connections: {
                     ssh: []
                 },
@@ -169,14 +103,7 @@
                     download: '',
                     upload: ''
                 },
-                speedTestStatus: false,
-
-                interfacesGraphData: {
-                    wlan0: [],
-                    eth0: [],
-                    lo: [],
-                },
-
+                speedTestCompleted: false,
                 loaded: false,
                 status: false,
                 message: '',
@@ -184,50 +111,67 @@
         },
         created() {
             this.message = 'Retrieving network information, please wait...';
-            this.getNetworkInterfaces();
-            this.getNetworkWifi();
+            this.getNetwork();
             this.$bus.$on('api-disconnect', () => {
                 this.status = 'error';
-                this.message = 'Unable to connect, please try again.'
+                this.message = 'Unable to connect, please try again.';
+            });
+            this.$bus.$on('api-reconnect', () => {
+                this.status = 'success';
+                this.message = 'Connection successful, reloading view...';
+                this.getNetwork();
             });
         },
-        mounted() {
-            this.runNetworkWifiSpeedTest();
-        },
         methods: {
-            getNetworkInterfaces() {
-                this.$api.get('/network/').then(response => {
-                    if (response.data) {
-                        Object.keys(this.interfaces).forEach(inet => {
-                            Object.keys(this.interfaces[inet]).forEach(metric => {
-                                this.interfaces[inet][metric] = Math.round(parseInt(response.data.interfaces[inet][metric]))
-                            });
-                        });
-
-                        this.formatInterfaceGraphData('wlan0');
-                        this.formatInterfaceGraphData('eth0');
-                        this.formatInterfaceGraphData('lo');
+            getNetwork() {
+                this.setNetworkInterfaces();
+                this.$on('interfaces-retrieved', () => this.getNetworkInformation());
+                this.$on('information-retrieved', () => this.getNetworkWifi());
+            },
+            setNetworkInterfaces() {
+                this.$api.get('/network/interfaces').then(response => {
+                    if (typeof response === 'undefined' || response.length === 0) {
+                        throw new Error('Unable to fetch network interfaces.');
                     }
+                    response.forEach(inet => {
+                        this.interfaces[inet] = {
+                            mb_sent: 0,
+                            mb_received: 0,
+                            pk_sent: 0,
+                            pk_received: 0,
+                            error_in: 0,
+                            error_out: 0,
+                            dropout: 0
+                        };
+                        this.interfacesGraphData[inet] = [];
+                    });
+                    this.$emit('interfaces-retrieved');
                 }).catch(error => {
-                    this.loaded = false;
-                    this.status = 'error';
-                    this.message = error.message;
+                    this.setError(error.message);
+                });
+            },
+            getNetworkInformation() {
+                this.$api.get('/network/').then(response => {
+                    Object.keys(this.interfaces).forEach(inet => {
+                        Object.keys(this.interfaces[inet]).forEach(metric => {
+                            this.interfaces[inet][metric] = Math.round(parseInt(response.data.interfaces[inet][metric]))
+                        });
+                        this.formatInterfaceGraphData(inet)
+                    });
+                    this.$emit('information-retrieved');
+                }).catch(error => {
+                    this.setError(error.message);
                 });
             },
             getNetworkWifi() {
                 this.$api.get('/network/wifi').then(response => {
-                    if (response.data) {
-                        Object.keys(this.details).forEach(key => {
-                            this.details[key] = response.data[key];
-                        });
-                        this.loaded = true;
-                    } else {
-                        throw new Error('Oh shit.');
-                    }
+                    Object.keys(this.details).forEach(key => {
+                        this.details[key] = response.data[key];
+                    });
+                    this.runNetworkWifiSpeedTest();
+                    this.loaded = true;
                 }).catch(error => {
-                    this.loaded = false;
-                    this.status = 'error';
-                    this.message = error.message;
+                    this.setError(error.message);
                 });
             },
             runNetworkWifiSpeedTest() {
@@ -235,17 +179,12 @@
                 Object.keys(this.speed).forEach(key => {
                     progress[key] = this.progress(key)
                 })
-
                 this.$api.get('/network/wifi/speed').then(response => {
-                    this.speedTestStatus = true;
-                    if (response.data) {
-                        Object.keys(this.speed).forEach(key => {
-                            clearInterval(progress[key]);
-                            this.speed[key] = response.data[key];
-                        });
-                    } else {
-                        throw new Error('Oh shit.');
-                    }
+                    this.speedTestCompleted = true;
+                    Object.keys(this.speed).forEach(key => {
+                        clearInterval(progress[key]);
+                        this.speed[key] = response.data[key];
+                    });
                 }).catch(() => {
                     this.speed.download = 'Error.';
                     this.speed.upload = 'Error.';
@@ -278,6 +217,11 @@
                         up = false;
                     }
                 }, 100)
+            },
+            setError(message) {
+                this.loaded = false;
+                this.status = 'error';
+                this.message = message;
             }
         },
         computed: {
