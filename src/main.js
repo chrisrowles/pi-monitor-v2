@@ -1,11 +1,11 @@
-import { library, dom } from '@fortawesome/fontawesome-svg-core';
+import {library, dom} from '@fortawesome/fontawesome-svg-core';
 import {
-  faArrowCircleUp,
-  faArrowCircleDown,
-  faExclamationTriangle,
-  faHdd, faServer,
-  faTachometerAlt,
-  faWifi
+    faArrowCircleUp,
+    faArrowCircleDown,
+    faExclamationTriangle,
+    faHdd, faServer,
+    faTachometerAlt,
+    faWifi
 } from '@fortawesome/free-solid-svg-icons';
 
 import _ from 'lodash';

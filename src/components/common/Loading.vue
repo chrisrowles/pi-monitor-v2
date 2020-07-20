@@ -17,7 +17,6 @@
 
 <script>
     export default {
-        name: 'Loading',
         props: ['show', 'status', 'message']
     }
 </script>

@@ -30,7 +30,6 @@
 
 <script>
     export default {
-        name: 'Table',
         props: ['type', 'nested', 'data', 'sortKey', 'sortOrder'],
         methods: {
             formatHeader(header) {

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Title :title="'Dashboard | RaspiMon - A Lightweight Monitor for the Raspberry Pi'"></Title>
+        <Title :title="'Dashboard'"></Title>
 
         <Loading :show="!loaded" :status="status" :message="message"></Loading>
 

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Title :title="'Network | RaspiMon - A Lightweight Monitor for the Raspberry Pi'"></Title>
+        <Title :title="'Network'"></Title>
 
         <Loading :show="!loaded" :status="status" :message="message"></Loading>
 
@@ -75,6 +75,7 @@
 </template>
 
 <script>
+    import util from "../components/utils";
     import Stat from '@/components/common/Stat';
     import Graph from '@/components/charts/Graph';
     import Table from '@/components/common/Table';
@@ -226,26 +227,10 @@
         },
         computed: {
             downloadClass() {
-                if (this.speed.download >= 10) {
-                    return 'bg-success';
-                } else if (this.speed.download < 10 &&  this.speed.download >= 5) {
-                    return 'bg-warning';
-                } else if (this.speed.download < 3.5 && this.speed.download > 0) {
-                    return 'bg-danger';
-                } else {
-                    return 'bg-dark';
-                }
+                return util.computeDisplayClass(this.speed.download, {min: 0, mid: 5, max: 10});
             },
             uploadClass() {
-                if (this.speed.upload >= 5) {
-                    return 'bg-success';
-                } else if (this.speed.upload < 3 && this.speed.upload >= 2) {
-                    return 'bg-warning';
-                } else if (this.speed.upload < 2 && this.speed.upload > 0) {
-                    return 'bg-danger';
-                } else {
-                    return 'bg-dark';
-                }
+                return util.computeDisplayClass(this.speed.upload, {min: 0, mid: 3, max: 5});
             },
         },
         components: {
