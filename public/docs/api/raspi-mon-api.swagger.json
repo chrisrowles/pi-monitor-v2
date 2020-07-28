@@ -1,0 +1,767 @@
+{
+    "swagger": "2.0",
+    "basePath": "/",
+    "paths": {
+        "/auth/login": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "operationId": "user login",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/auth_details"
+                        }
+                    }
+                ],
+                "tags": [
+                    "auth"
+                ]
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "operationId": "logout a user",
+                "tags": [
+                    "auth"
+                ]
+            }
+        },
+        "/network/": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "properties": {
+                                "data": {
+                                    "$ref": "#/definitions/network"
+                                }
+                            }
+                        }
+                    }
+                },
+                "operationId": "network_information",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "network"
+                ]
+            }
+        },
+        "/network/interfaces": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "operationId": "network_interfaces_information",
+                "tags": [
+                    "network"
+                ]
+            }
+        },
+        "/network/ping": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/ping"
+                        }
+                    }
+                },
+                "operationId": "network_ping_information",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "network"
+                ]
+            }
+        },
+        "/network/wifi": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "properties": {
+                                "data": {
+                                    "$ref": "#/definitions/wifi"
+                                }
+                            }
+                        }
+                    }
+                },
+                "operationId": "network_wifi_information",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "network"
+                ]
+            }
+        },
+        "/network/wifi/speed": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "properties": {
+                                "data": {
+                                    "$ref": "#/definitions/speed"
+                                }
+                            }
+                        }
+                    }
+                },
+                "operationId": "network_wifi_speed_information",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "network"
+                ]
+            }
+        },
+        "/system/": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "operationId": "system_action_information",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/system_action"
+                        }
+                    }
+                ],
+                "tags": [
+                    "system"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "properties": {
+                                "data": {
+                                    "$ref": "#/definitions/system"
+                                }
+                            }
+                        }
+                    }
+                },
+                "operationId": "system_information",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "system"
+                ]
+            }
+        },
+        "/system/cpu": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "properties": {
+                                "data": {
+                                    "$ref": "#/definitions/cpu_fields"
+                                }
+                            }
+                        }
+                    }
+                },
+                "operationId": "cpu_information",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "system"
+                ]
+            }
+        },
+        "/system/disk": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "properties": {
+                                "data": {
+                                    "$ref": "#/definitions/disk_fields"
+                                }
+                            }
+                        }
+                    }
+                },
+                "operationId": "disk_information",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "system"
+                ]
+            }
+        },
+        "/system/processes": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "properties": {
+                                "data": {
+                                    "$ref": "#/definitions/processes_fields"
+                                }
+                            }
+                        }
+                    }
+                },
+                "operationId": "processes_information",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "system"
+                ]
+            }
+        },
+        "/user/": {
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "User successfully created."
+                    }
+                },
+                "operationId": "create a new user",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    }
+                ],
+                "tags": [
+                    "user"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "properties": {
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/user"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "operationId": "list_of_registered_users",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "user"
+                ]
+            }
+        },
+        "/user/{public_id}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "The User identifier",
+                    "name": "public_id",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "responses": {
+                    "404": {
+                        "description": "User not found."
+                    },
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    }
+                },
+                "operationId": "get a user",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "user"
+                ]
+            }
+        }
+    },
+    "info": {
+        "title": "RaspiMon API",
+        "version": "1.0",
+        "description": "A lightweight monitoring API for the raspberry pi"
+    },
+    "produces": [
+        "application/json"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "tags": [
+        {
+            "name": "user",
+            "description": "user related operations"
+        },
+        {
+            "name": "auth",
+            "description": "authentication related operations"
+        },
+        {
+            "name": "system",
+            "description": "system monitor core related operations"
+        },
+        {
+            "name": "network",
+            "description": "system monitor network related operations"
+        }
+    ],
+    "definitions": {
+        "user": {
+            "required": [
+                "email",
+                "password",
+                "username"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "description": "user email address"
+                },
+                "username": {
+                    "type": "string",
+                    "description": "user username"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "user password"
+                },
+                "public_id": {
+                    "type": "string",
+                    "description": "user Identifier"
+                }
+            },
+            "type": "object"
+        },
+        "auth_details": {
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "description": "The email address"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "The user password"
+                }
+            },
+            "type": "object"
+        },
+        "system_action": {
+            "required": [
+                "action"
+            ],
+            "properties": {
+                "action": {
+                    "type": "string",
+                    "description": "System shutdown/reboot"
+                }
+            },
+            "type": "object"
+        },
+        "system": {
+            "properties": {
+                "cpu": {
+                    "description": "CPU information",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/cpu_fields"
+                        }
+                    ]
+                },
+                "disk": {
+                    "description": "Disk information",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/disk_fields"
+                        }
+                    ]
+                },
+                "platform": {
+                    "description": "Platform information",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/platform_fields"
+                        }
+                    ]
+                },
+                "user": {
+                    "type": "string",
+                    "description": "Current user"
+                },
+                "processes": {
+                    "type": "array",
+                    "description": "Running processes",
+                    "items": {
+                        "$ref": "#/definitions/processes_fields"
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "cpu_fields": {
+            "properties": {
+                "usage": {
+                    "type": "number",
+                    "description": "CPU usage"
+                },
+                "temp": {
+                    "type": "number",
+                    "description": "CPU temperature"
+                },
+                "freq": {
+                    "type": "number",
+                    "description": "CPU clock rate"
+                }
+            },
+            "type": "object"
+        },
+        "disk_fields": {
+            "properties": {
+                "total": {
+                    "type": "number",
+                    "description": "Disk total"
+                },
+                "used": {
+                    "type": "number",
+                    "description": "Disk used"
+                },
+                "free": {
+                    "type": "number",
+                    "description": "Disk free"
+                },
+                "percent": {
+                    "type": "number",
+                    "description": "Disk used percent"
+                }
+            },
+            "type": "object"
+        },
+        "platform_fields": {
+            "properties": {
+                "distro": {
+                    "type": "string",
+                    "description": "Current distribution"
+                },
+                "kernel": {
+                    "type": "string",
+                    "description": "Current kernel version"
+                },
+                "uptime": {
+                    "type": "string",
+                    "description": "System uptime"
+                }
+            },
+            "type": "object"
+        },
+        "processes_fields": {
+            "properties": {
+                "pid": {
+                    "type": "integer",
+                    "description": "Process ID"
+                },
+                "username": {
+                    "type": "string",
+                    "description": "Process Owner"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Process Name"
+                },
+                "mem": {
+                    "type": "number",
+                    "description": "Process memory usage"
+                }
+            },
+            "type": "object"
+        },
+        "network": {
+            "properties": {
+                "interfaces": {
+                    "description": "Network interfaces",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/interfaces_fields"
+                        }
+                    ]
+                },
+                "connections": {
+                    "description": "Connections",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/connections_fields"
+                        }
+                    ]
+                }
+            },
+            "type": "object"
+        },
+        "interfaces_fields": {
+            "properties": {
+                "lo": {
+                    "description": "Interface lo",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/interface_fields"
+                        }
+                    ]
+                },
+                "wlan0": {
+                    "description": "Interface wlan0",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/interface_fields"
+                        }
+                    ]
+                },
+                "eth0": {
+                    "description": "Interface eth0",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/interface_fields"
+                        }
+                    ]
+                }
+            },
+            "type": "object"
+        },
+        "interface_fields": {
+            "properties": {
+                "mb_sent": {
+                    "type": "number",
+                    "description": "Megabytes sent"
+                },
+                "mb_received": {
+                    "type": "number",
+                    "description": "Megabytes received"
+                },
+                "pk_sent": {
+                    "type": "number",
+                    "description": "Packets sent"
+                },
+                "pk_received": {
+                    "type": "number",
+                    "description": "Packets received"
+                },
+                "error_in": {
+                    "type": "number",
+                    "description": "Errors in"
+                },
+                "error_out": {
+                    "type": "number",
+                    "description": "Errors out"
+                },
+                "dropout": {
+                    "type": "number",
+                    "description": "Dropout rate"
+                }
+            },
+            "type": "object"
+        },
+        "connections_fields": {
+            "properties": {
+                "ssh": {
+                    "type": "array",
+                    "description": "Remote SSH connections",
+                    "items": {
+                        "$ref": "#/definitions/ssh_fields"
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "ssh_fields": {
+            "properties": {
+                "local_port": {
+                    "type": "integer",
+                    "description": "Local port"
+                },
+                "remote_ip": {
+                    "type": "string",
+                    "description": "Remote IP"
+                }
+            },
+            "type": "object"
+        },
+        "ping": {
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "description": "Network connection status"
+                }
+            },
+            "type": "object"
+        },
+        "wifi": {
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Wireless SSID"
+                },
+                "quality": {
+                    "type": "string",
+                    "description": "Wireless quality"
+                },
+                "channel": {
+                    "type": "string",
+                    "description": "Wireless channel"
+                },
+                "encryption": {
+                    "type": "string",
+                    "description": "Wireless encryption"
+                },
+                "address": {
+                    "type": "string",
+                    "description": "MAC address"
+                },
+                "signal": {
+                    "type": "string",
+                    "description": "Wireless signal"
+                }
+            },
+            "type": "object"
+        },
+        "speed": {
+            "properties": {
+                "ping": {
+                    "type": "string",
+                    "description": "Ping"
+                },
+                "download": {
+                    "type": "string",
+                    "description": "Upload speed"
+                },
+                "upload": {
+                    "type": "string",
+                    "description": "Download speed"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "responses": {
+        "ParseError": {
+            "description": "When a mask can't be parsed"
+        },
+        "MaskError": {
+            "description": "When any error occurs on mask"
+        }
+    }
+}
