@@ -38,11 +38,10 @@
                                         <input class="form-control" type="password" name="password" placeholder=""  v-model="password">
                                     </div>
                                 </div>
-                                {% module xsrf_form_html() %}
                                 <div class="form-group row mt-3">
                                     <div class="col-md-12">
                                         <button type="submit" class="btn btn-success btn-connect">Connect 
-                                            <span class="loading"><i class="fa fa-spinner fa-spin ml-2"></i></span>
+                                            <i v-if="submitting" class="fa fa-spinner fa-spin ml-2"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -52,11 +51,17 @@
                 </section>
             </div>
 
-            <div class="row">
-                <div class="col-12">
-                    <div id="terminal"></div>
+            <section class="my-4" v-if="xterm_active">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card border-0 shadow">
+                            <div class="card-body bg-black border-radius-5">
+                                <div id="terminal"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </section>
         </div>
     </div>
 </template>
@@ -65,13 +70,13 @@
 import Header from '@/components/common/Header';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
-import axios from 'axios';
 
 export default {
     data() {
         return {
             url: '',
             data: null,
+            submitting: false,
 
             hostname: '',
             port: '22',
@@ -85,6 +90,9 @@ export default {
     },
     methods: {
         connect(e) {
+            this.submitting = true;
+            this.xterm_active = true;
+
             this.url = e.target.action;
             this.data = new FormData();
             this.data.append('hostname', this.hostname);
@@ -95,18 +103,20 @@ export default {
             if (this.private_key && this.private_key.size > 16384) {
                 this.message = 'Key size exceeds maximum value.';
             }
-    
-            axios({
+
+            fetch(this.url, {
+                mode: 'cors',
+                credentials: 'same-origin',
                 method: 'POST',
-                headers: {
-                    "Cache-Control": "no-cache",
-                    'Access-Control-Allow-Origin': '*',
-                },
-                url: this.url,
-                data: this.data
+                body: this.data
             }).then(response => {
-                console.log(response);
-                this.process(response.data);
+                if (!response.ok) {
+                    throw new Error('Could not connect.')
+                } 
+
+                return response.json();
+            }).then(data => {
+                this.process(data);
             }).catch(error => {
                 console.log(error);
             });
@@ -125,7 +135,6 @@ export default {
             });
 
             websocket.onopen = () => {
-                this.xterm_active = true;
                 xterm.open(terminal);
                 this.toggle_display();
                 xdisplay.fit();
