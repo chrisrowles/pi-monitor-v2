@@ -5,6 +5,7 @@
             <nav class="my-2 my-md-0 mr-md-3" id="nav">
                 <router-link to="/" class="p-2">Dashboard</router-link>
                 <router-link to="/network" class="p-2">Network</router-link>
+                <router-link to="/ssh" class="p-2">Remote SSH</router-link>
             </nav>
         </div>
         <router-view/>

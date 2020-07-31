@@ -52,8 +52,8 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="card border-0 bg-white h-100">
-                                    <div class="card-header bg-white">
-                                        <strong class="text-muted">Interface {{ inet }}</strong>
+                                    <div class="card-header bg-white text-muted">
+                                        <i class="fa fa-broadcast-tower mr-2"></i> Interface {{ inet }}
                                     </div>
                                     <div class="card-body">
                                         <Graph :id="inet"

@@ -59,7 +59,7 @@
                 <section id="charts" class="bg-white p-4 my-4 shadow border-radius-5">
                     <div class="card border-0">
                         <div class="card-header bg-white text-muted">
-                            <strong>Statistics</strong>
+                            <i class="fa fa-tasks mr-2"></i> Statistics
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -82,7 +82,7 @@
                         <div class="col-12">
                             <div class="card border-0">
                                 <div class="card-header bg-white text-muted">
-                                    <strong>Top Processes</strong>
+                                    <i class="fa fa-cogs mr-2"></i> Top Processes
                                 </div>
                                 <div class="card-body">
                                     <Graph :id="'processes'"

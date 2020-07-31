@@ -5,7 +5,11 @@ import {
     faExclamationTriangle,
     faHdd, faServer,
     faTachometerAlt,
-    faWifi
+    faWifi,
+    faTasks,
+    faSpinner,
+    faCogs,
+    faBroadcastTower
 } from '@fortawesome/free-solid-svg-icons';
 
 import _ from 'lodash';
@@ -25,7 +29,11 @@ library.add(
     faExclamationTriangle,
     faHdd, faServer,
     faTachometerAlt,
-    faWifi
+    faWifi,
+    faTasks,
+    faSpinner,
+    faCogs,
+    faBroadcastTower
 );
 dom.watch();
 

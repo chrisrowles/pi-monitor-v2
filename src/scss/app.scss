@@ -1,5 +1,6 @@
 @import 'variables';
 @import '~bootstrap/scss/bootstrap';
+@import "~xterm/css/xterm.css";
 @import 'fonts';
 
 html, body {
@@ -58,4 +59,20 @@ table.table thead th {
 
 .fade-enter, .fade-leave-to {
   opacity: 0;
+}
+
+.xterm_display {
+  background-color: black;
+  overflow-y: hidden !important;
+}
+
+.file-control {
+  background-color: transparent;
+  background-clip: padding-box;
+  border: none;
+  padding-left: 0;
+}
+
+.loading {
+  display: none;
 }
