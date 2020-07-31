@@ -11,31 +11,31 @@
                             <i class="fa fa-cogs mr-2"></i> Configure Connection
                         </div>
                         <div class="card-body">
-                            <form v-on:submit.prevent="connect" id="connect" action="http://127.0.0.1:3400" type="post" enctype="multipart/form-data">
+                            <form v-on:submit.prevent="connect" id="connect" action="" type="post" enctype="multipart/form-data">
                                 <div class="form-group row">
                                     <div class="col-6">
-                                        <label for="Hostname">Hostname</label>
-                                        <input class="form-control" type="text" name="hostname" v-model="hostname">
+                                        <label for="hostname">Hostname</label>
+                                        <input id="hostname" class="form-control" type="text" name="hostname" v-model="hostname">
                                     </div>
                                     <div class="col-6">
-                                        <label for="Port">Port</label>
-                                        <input class="form-control" type="text" name="port" v-model="port">
+                                        <label for="port">Port</label>
+                                        <input id="port" class="form-control" type="text" name="port" v-model="port">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-6">
-                                        <label for="Username">Username</label>
-                                        <input class="form-control" type="text" name="username" v-model="username">
+                                        <label for="username">Username</label>
+                                        <input id="username" class="form-control" type="text" name="username" v-model="username">
                                     </div>
                                     <div class="col-6">
-                                        <label for="Username">Private Key</label>
-                                        <input class="form-control file-control" type="file" name="privatekey" value="">
+                                        <label for="privatekey">Private Key</label>
+                                        <input id="privatekey" class="form-control file-control" type="file" name="privatekey" value="">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-6">
-                                        <label for="Password">Password</label>
-                                        <input class="form-control" type="password" name="password" placeholder=""  v-model="password">
+                                        <label for="password">Password</label>
+                                        <input id="password" class="form-control" type="password" name="password" placeholder=""  v-model="password">
                                     </div>
                                 </div>
                                 <div class="form-group row mt-3">
@@ -89,11 +89,11 @@ export default {
         }
     },
     methods: {
-        connect(e) {
+        connect() {
             this.submitting = true;
             this.xterm_active = true;
 
-            this.url = e.target.action;
+            this.url = process.env.VUE_APP_WS_URL;
             this.data = new FormData();
             this.data.append('hostname', this.hostname);
             this.data.append('port', this.port);
@@ -110,6 +110,7 @@ export default {
                 method: 'POST',
                 body: this.data
             }).then(response => {
+                this.submitting = false;
                 if (!response.ok) {
                     throw new Error('Could not connect.')
                 } 
@@ -122,7 +123,7 @@ export default {
             });
         },
         process(msg) {
-            const ws_url = 'ws://127.0.0.1:3400/ws?id=' + msg.id;
+            const ws_url = process.env.VUE_APP_WS_CONN_URL + msg.id;
             const websocket = new WebSocket(ws_url);
 
             const terminal = document.getElementById('terminal');
