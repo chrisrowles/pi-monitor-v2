@@ -1,7 +1,8 @@
 <template>
     <div>
-        <div class="container">
+        <Title :title="title"></Title>
 
+        <div class="container">
             <Header :title="'Remote SSH'"></Header>
 
             <div v-if="!xterm_active">
@@ -68,12 +69,16 @@
 
 <script>
 import Header from '@/components/common/Header';
+import Title from '@/components/common/Title';
+
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 
 export default {
     data() {
         return {
+            title: 'Remote SSH',
+
             url: '',
             data: null,
             submitting: false,
@@ -92,6 +97,7 @@ export default {
         connect() {
             this.submitting = true;
             this.xterm_active = true;
+            this.title = this.username + '@' + this.hostname;
 
             this.url = process.env.VUE_APP_WS_URL;
             this.data = new FormData();
@@ -149,6 +155,7 @@ export default {
                 this.toggle_display();
                 xterm.dispose();
                 this.xterm_active = false;
+                this.title = 'Remote SSH';
             };
 
             websocket.onerror = event => {
@@ -160,7 +167,8 @@ export default {
         }
     },
     components: {
-        Header
+        Header,
+        Title
     }
 }
 </script>
