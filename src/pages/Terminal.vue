@@ -30,7 +30,7 @@
                                     </div>
                                     <div class="col-6">
                                         <label for="privatekey">Private Key</label>
-                                        <input id="privatekey" class="form-control file-control" type="file" name="privatekey" value="">
+                                        <input id="privatekey" class="form-control file-control" type="file" name="privatekey" @change="attach_private_key">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -94,6 +94,10 @@ export default {
         }
     },
     methods: {
+        attach_private_key(e) {
+            let files = e.target.files || e.dataTransfer.files;
+            this.private_key = files[0];
+        },
         connect() {
             this.submitting = true;
             this.xterm_active = true;
@@ -105,6 +109,7 @@ export default {
             this.data.append('port', this.port);
             this.data.append('username', this.username);
             this.data.append('password', this.password);
+            this.data.append('privatekey', this.private_key);
 
             if (this.private_key && this.private_key.size > 16384) {
                 this.message = 'Key size exceeds maximum value.';
