@@ -14,6 +14,11 @@ const store = new Vuex.Store({
   state: {
     auth: null
   },
+  getters: {
+    isAuthorized: state => {
+      return !!state.auth
+    }
+  },
   mutations: {
     auth_request(state){
       state.status = 'loading';
