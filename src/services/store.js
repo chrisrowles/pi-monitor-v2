@@ -1,55 +1,69 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import Vuex from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 import router from '@/router';
 import api from '@/services/api';
 
 const store = new Vuex.Store({
+  plugins: [createPersistedState({
+    storage: window.sessionStorage,
+  })],
   state: {
-    token: null
+    auth: null
   },
   mutations: {
     auth_request(state){
-      state.status = 'loading'
+      state.status = 'loading';
     },
-    auth_success(state, token){
+    auth_success(state, auth){
       state.status = 'success';
-      state.token = token;
+      state.auth = auth;
 
       router.push({ name: 'dashboard' }).catch(e => {
         console.log(e);
       });
     },
     auth_error(state){
-      state.status = 'error'
+      state.status = 'error';
     },
     logout(state){
-      state.status = ''
-      state.token = ''
+      state.status = '';
+      state.auth = null;
     },
   },
   actions: {
     login({commit}, user) {
       return new Promise((resolve, reject) => {
-        commit('auth_request')
+        commit('auth_request');
         api.request('/auth/login', {
           method: 'POST',
           body: JSON.stringify(user)
         }).then(response => {
-          let token = response.Authorization;
-          localStorage.setItem('token', token);
-          commit('auth_success', token)
-          resolve(response)
+          if (!response.Authorization) {
+            throw new Error("Unable to authenticate.");
+          }
+
+          let auth = response.Authorization;
+          localStorage.setItem('auth', auth);
+          commit('auth_success', auth);
+
+          resolve(response);
         }).catch(e => {
           commit('auth_error')
-          localStorage.removeItem('token')
-          reject(e)
+          localStorage.removeItem('auth');
+
+          reject(e);
         })
       })
+    },
+    logout({commit}) {
+      localStorage.removeItem('auth')
+      commit('logout')
     }
   }
-})
+});
 
 export default store;

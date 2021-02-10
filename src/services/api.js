@@ -27,7 +27,7 @@ const caller = (uri, options = {}) => {
   const headers = new Headers();
   Object.keys(defaultHeaders).forEach((key) => headers.append(key, defaultHeaders[key]));
 
-  if (store.state.token) headers.append('Authorization', store.state.token);
+  if (store.state.auth) headers.append('Authorization', store.state.auth);
 
   options.headers = headers;
 
