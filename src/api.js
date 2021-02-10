@@ -21,37 +21,37 @@ let connected = true
  * @returns {Promise<unknown>}
  */
 const caller = (uri, options = {}) => {
-    if (options.headers) {
-        // Append extra headers to the default headers.
-        Object.assign(defaultHeaders, options.headers)
-    }
-    let headers = new Headers();
-    Object.keys(defaultHeaders).forEach(key => {
-        headers.append(key, defaultHeaders[key])
-    })
-    options.headers = headers;
+  options.headers = { ...defaultHeaders, ...options.headers };
 
-    return new Promise((resolve, reject) => {
-        fetch(uri, options).then(response => {
-            if (!connected) {
-                // If recovering from a disconnect
-                // then emit an API reconnect event.
-                bus.$emit('api-reconnect');
-            }
-            connected = true;
-            if (response.ok) {
-                return resolve(response.json());
-            } else {
-                return reject(response);
-            }
-        }).catch(() => {
-            // If we're disconnected from the API
-            // then emit an API disconnect event.
-            connected = false;
-            bus.$emit('api-disconnect');
-        });
+  console.log(options);
+
+  const headers = new Headers();
+  Object.keys(defaultHeaders).forEach((key) => headers.append(key, defaultHeaders[key]));
+
+  const auth = localStorage.getItem('auth_token');
+  if (auth) headers.append('Authorization', auth);
+
+  options.headers = headers;
+
+  return new Promise((resolve, reject) => {
+    fetch(uri, options).then((response) => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+
+      if (!connected) {
+        bus.$emit('api-reconnect');
+      }
+      connected = true;
+
+      return response.ok ? resolve(response.json()) : reject(response);
+    }).catch(() => {
+      connected = false;
+
+      bus.$emit('api-disconnect');
     });
-}
+  });
+};
 
 /** API client **/
 const api = {};
@@ -63,10 +63,7 @@ const api = {};
  * @param options
  * @returns {Promise<unknown>}
  */
-api.get = async (endpoint, options = {}) => {
-    let response = await caller(url + endpoint, options);
-    return response;
-}
+api.request = async (endpoint, options = {}) => caller(url + endpoint, options);
 
 /**
  * Ping the API for connection status.
@@ -87,8 +84,8 @@ api.ping = timeout => {
 api.ping(30000);
 
 export {
-    url,
-    caller
+  url,
+  caller,
 };
 
 export default api;
