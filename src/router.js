@@ -4,7 +4,6 @@ import Dashboard from './pages/Dashboard';
 import Login from "./pages/Login";
 
 import auth from './middleware/auth';
-import log from './middleware/log';
 
 Vue.use(VueRouter);
 
@@ -12,26 +11,20 @@ const routes = [
   {
     path: '/',
     name: 'login',
-    component: Login,
-    meta: {
-      middleware: log
-    }
+    component: Login
   },
   {
     path: '/dashboard',
     name: 'dashboard',
     component: Dashboard,
     meta: {
-      middleware: [auth, log]
+      middleware: auth
     }
   },
   {
     path: '/network',
     name: 'network',
-    component: () => import(/* webpackChunkName: "about" */ './pages/Network'),
-    meta: {
-      middleware: [auth, log]
-    }
+    component: () => import(/* webpackChunkName: "about" */ './pages/Network')
   }
 ];
 

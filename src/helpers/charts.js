@@ -19,8 +19,7 @@ let spline = [];
  * @param data
  * @returns {Chart}
  */
-splineMaker.create = ({id, title, data}) => {
-    console.log(data);
+splineMaker.create = ({id, title}) => {
     spline = Highcharts.chart(id, {
         chart: {
             type: 'spline',

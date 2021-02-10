@@ -1,4 +1,5 @@
 import bus from './bus';
+import store from '@/services/store';
 
 /** Set the API url and default request headers **/
 const url = process.env.VUE_APP_API_URL;
@@ -23,13 +24,10 @@ let connected = true
 const caller = (uri, options = {}) => {
   options.headers = { ...defaultHeaders, ...options.headers };
 
-  console.log(options);
-
   const headers = new Headers();
   Object.keys(defaultHeaders).forEach((key) => headers.append(key, defaultHeaders[key]));
 
-  const auth = localStorage.getItem('auth_token');
-  if (auth) headers.append('Authorization', auth);
+  if (store.state.token) headers.append('Authorization', store.state.token);
 
   options.headers = headers;
 
@@ -72,14 +70,13 @@ api.request = async (endpoint, options = {}) => caller(url + endpoint, options);
  * @returns {number}
  */
 api.ping = timeout => {
-    let status =  setInterval(() => {
-        caller(url + '/network/ping').then(response => {
-            if (response.status !== 'connected') {
-                bus.$emit('api-disconnect');
-            }
-        });
+  return setInterval(() => {
+      caller(url + '/network/ping').then(response => {
+        if (response.status !== 'connected') {
+          bus.$emit('api-disconnect');
+        }
+      });
     }, timeout);
-    return status;
 }
 api.ping(30000);
 

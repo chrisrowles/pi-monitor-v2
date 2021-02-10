@@ -1,26 +1,24 @@
+import _ from 'lodash';
 import {library, dom} from '@fortawesome/fontawesome-svg-core';
 import {
-    faArrowCircleUp,
-    faArrowCircleDown,
-    faExclamationTriangle,
-    faHdd, faServer,
-    faTachometerAlt,
-    faWifi,
-    faTasks,
-    faSpinner,
-    faCogs,
-    faBroadcastTower
+  faArrowCircleUp,
+  faArrowCircleDown,
+  faExclamationTriangle,
+  faHdd, faServer,
+  faTachometerAlt,
+  faWifi,
+  faTasks,
+  faSpinner,
+  faCogs,
+  faBroadcastTower
 } from '@fortawesome/free-solid-svg-icons';
-
-import _ from 'lodash';
+import './scss/app.scss';
 import Vue from 'vue';
 import App from './App';
-
-import api from './api';
-import bus from './bus';
 import router from './router';
-
-import './scss/app.scss';
+import api from './services/api';
+import bus from './services/bus';
+import store from './services/store';
 
 /** Add required font awesome icons **/
 library.add(
@@ -47,5 +45,6 @@ Vue.prototype.$app_name = process.env.VUE_APP_NAME;
 /** Mount the instance **/
 new Vue({
   router,
+  store: store,
   render: h => h(App, { props: { name: Vue.prototype.$app_name }})
 }).$mount('#app');

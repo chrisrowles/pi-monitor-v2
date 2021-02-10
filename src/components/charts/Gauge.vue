@@ -8,7 +8,7 @@
 </template>
 
 <script>
-    import { gaugeMaker } from '../../services/chart-creator';
+    import { gaugeMaker } from '@/helpers/charts';
 
     export default {
         props: ['title', 'id', 'metric', 'format'],

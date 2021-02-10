@@ -19,6 +19,7 @@
     "sweetalert2": "^10.14.0",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
+    "vuex": "^3.6.2",
     "xterm": "^4.8.1",
     "xterm-addon-fit": "^0.4.0"
   },

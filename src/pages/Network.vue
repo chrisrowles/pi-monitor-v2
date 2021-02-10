@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import util from "../components/utils";
+import util from "../helpers/notify";
 import Stat from '@/components/common/Stat';
 import Graph from '@/components/charts/Graph';
 import Table from '@/components/common/Table';

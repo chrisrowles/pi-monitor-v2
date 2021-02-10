@@ -40,21 +40,9 @@ export default {
       password: '',
     }
   },
-  created() {
-    if (localStorage.getItem('auth')) {
-      this.$router.push({name: 'dashboard'})
-    }
-    this.$bus.$on('post-login', () => this.$router.push('dashboard').catch(() => {}))
-  },
   methods: {
     login() {
-      this.$api.request('/auth/login', {
-        method: 'POST',
-        body: JSON.stringify({email: this.email, password: this.password})
-      }).then(response => {
-        localStorage.setItem('auth', response.Authorization)
-        this.$bus.$emit('post-login');
-      })
+      this.$store.dispatch('login', {email: this.email, password: this.password})
     }
   },
   components: {
