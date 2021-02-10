@@ -1,4 +1,4 @@
-import { caller, url } from '@/services/api';
+import { caller, url } from './api';
 
 /** Live CPU data service **/
 const liveCpu = {};

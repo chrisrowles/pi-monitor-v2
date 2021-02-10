@@ -23,7 +23,9 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch('logout');
-      this.$router.push({ name: 'login' }).catch(() => {});
+      this.$router.push({ name: 'login' }).catch((e) => {
+        console.log(e);
+      });
     }
   }
 }

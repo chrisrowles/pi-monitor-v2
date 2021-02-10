@@ -88,9 +88,9 @@
 </template>
 
 <script>
-import Header from '@/components/common/Header';
+import Stat from "@/components/common/Stat";
 import Title from '@/components/common/Title';
-import Stat from "../components/common/Stat";
+import Header from '@/components/common/Header';
 
 import {Terminal} from 'xterm';
 import {FitAddon} from 'xterm-addon-fit';

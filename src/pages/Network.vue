@@ -75,13 +75,14 @@
 </template>
 
 <script>
-import util from "../helpers/notify";
+import notify from '@/helpers/notify';
+
 import Stat from '@/components/common/Stat';
 import Graph from '@/components/charts/Graph';
 import Table from '@/components/common/Table';
 import Title from '@/components/common/Title';
-import Loading from '@/components/common/Loading';
 import Header from '@/components/common/Header';
+import Loading from '@/components/common/Loading';
 
 export default {
   data() {
@@ -227,10 +228,10 @@ export default {
   },
   computed: {
     downloadClass() {
-      return util.computeDisplayClass(this.speed.download, {min: 0, mid: 5, max: 10});
+      return notify.level(this.speed.download, {min: 0, mid: 5, max: 10});
     },
     uploadClass() {
-      return util.computeDisplayClass(this.speed.upload, {min: 0, mid: 3, max: 5});
+      return notify.level(this.speed.upload, {min: 0, mid: 3, max: 5});
     },
   },
   components: {

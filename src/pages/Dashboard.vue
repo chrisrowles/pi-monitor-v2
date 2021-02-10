@@ -110,8 +110,8 @@ import Gauge from '@/components/charts/Gauge';
 import Graph from '@/components/charts/Graph';
 import Table from '@/components/common/Table';
 import Title from '@/components/common/Title';
-import Loading from '@/components/common/Loading';
 import Header from '@/components/common/Header';
+import Loading from '@/components/common/Loading';
 
 export default {
   data() {
@@ -170,7 +170,7 @@ export default {
         this.disk_percent = response.data.disk.percent;
         this.processes = response.data.processes;
         this.formatProcessesDataForGraphs();
-        // this.liveTemp();
+        this.liveTemp();
         this.loaded = true;
       }).catch(error => {
         this.setError(error.message);

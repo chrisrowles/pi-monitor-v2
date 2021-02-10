@@ -1,11 +1,13 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+
+import router from './router';
+
+import api from './services/api';
+
 import createPersistedState from 'vuex-persistedstate';
 
 Vue.use(Vuex);
-
-import router from '@/router';
-import api from '@/services/api';
 
 const store = new Vuex.Store({
   plugins: [createPersistedState({
@@ -43,6 +45,7 @@ const store = new Vuex.Store({
     login({commit}, user) {
       return new Promise((resolve, reject) => {
         commit('auth_request');
+
         api.request('/auth/login', {
           method: 'POST',
           body: JSON.stringify(user)
@@ -53,11 +56,13 @@ const store = new Vuex.Store({
 
           let auth = response.Authorization;
           localStorage.setItem('auth', auth);
+
           commit('auth_success', auth);
 
           resolve(response);
         }).catch(e => {
-          commit('auth_error')
+          commit('auth_error');
+
           localStorage.removeItem('auth');
 
           reject(e);
@@ -65,8 +70,9 @@ const store = new Vuex.Store({
       })
     },
     logout({commit}) {
-      localStorage.removeItem('auth')
-      commit('logout')
+      localStorage.removeItem('auth');
+
+      commit('logout');
     }
   }
 });

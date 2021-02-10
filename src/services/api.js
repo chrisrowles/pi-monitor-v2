@@ -1,5 +1,5 @@
 import bus from './bus';
-import store from '@/services/store';
+import store from '@/store';
 
 /** Set the API url and default request headers **/
 const url = process.env.VUE_APP_API_URL;
@@ -27,7 +27,9 @@ const caller = (uri, options = {}) => {
   const headers = new Headers();
   Object.keys(defaultHeaders).forEach((key) => headers.append(key, defaultHeaders[key]));
 
-  if (store.state.auth) headers.append('Authorization', store.state.auth);
+  if (store.getters.isAuthorized) {
+    headers.append('Authorization', store.state.auth);
+  }
 
   options.headers = headers;
 

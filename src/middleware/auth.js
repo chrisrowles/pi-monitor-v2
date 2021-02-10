@@ -1,5 +1,5 @@
-import notify from "@/helpers/notify";
-import store from "@/services/store";
+import store from '@/store';
+import notify from '@/helpers/notify';
 
 export default function auth({ next, router }) {
   if (!store.state.auth) {

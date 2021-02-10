@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Dashboard from './pages/Dashboard';
+
 import Login from "./pages/Login";
+import Dashboard from './pages/Dashboard';
 
 import auth from './middleware/auth';
 

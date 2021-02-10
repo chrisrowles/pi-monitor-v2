@@ -8,7 +8,7 @@
 </template>
 
 <script>
-    import { graphMaker } from "@/helpers/charts";
+    import { graphMaker } from '@/helpers/charts';
 
     export default {
         props: ['id', 'legend', 'title', 'subtitle', 'categories', 'data', 'yAxisText', 'xAxisText'],

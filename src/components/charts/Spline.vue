@@ -8,7 +8,7 @@
 </template>
 
 <script>
-    import { splineMaker } from "@/helpers/charts";
+    import { splineMaker } from '@/helpers/charts';
 
     export default {
         props: ['id', 'legend', 'title', 'data'],

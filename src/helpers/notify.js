@@ -1,4 +1,4 @@
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2';
 
 const notify = {};
 
@@ -20,6 +20,18 @@ notify.send = (type, msg) => {
         icon: type,
         title: msg
     }).then(r => { console.log(r)});
+}
+
+notify.level = (param, {max, mid, min}) => {
+    if (param >= max) {
+        return 'bg-success';
+    } else if (param < max && param >= mid) {
+        return 'bg-warning';
+    } else if (param < mid && param > min) {
+        return 'bg-danger';
+    } else {
+        return 'bg-dark';
+    }
 }
 
 export default notify;
