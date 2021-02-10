@@ -1,26 +1,28 @@
 <template>
-  <div>
+  <div class="container d-flex h-100">
+    <div class="background"></div>
     <Title :title="'Login'"></Title>
-
-    <div class="container">
-      <div id="login" class="card shadow my-4">
-        <div class="card-header">
-          <Header :title="'Login'"></Header>
-        </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-12">
-              <form v-on:submit.prevent="login" method="POST">
-                <div class="form-group">
-                  <label for="email-address">Email address</label>
-                  <input v-model="email" type="email" class="form-control" id="email-address" placeholder="Enter email">
-                </div>
-                <div class="form-group">
-                  <label for="password">Password</label>
-                  <input v-model="password" type="password" class="form-control" id="password" placeholder="Password">
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-              </form>
+    <div class="row align-self-center w-100">
+      <div class="col-6 offset-3">
+        <div id="login" class="card shadow border-0">
+          <div class="card-header login">
+            <Header :title="'Login'"></Header>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12">
+                <form v-on:submit.prevent="login" method="POST">
+                  <div class="form-group">
+                    <label for="email-address" class="sr-only">Email address</label>
+                    <input v-model="email" type="email" class="form-control" id="email-address" placeholder="Username">
+                  </div>
+                  <div class="form-group">
+                    <label for="password" class="sr-only">Password</label>
+                    <input v-model="password" type="password" class="form-control" id="password" placeholder="Password">
+                  </div>
+                  <button type="submit" class="btn login">Submit</button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
@@ -54,3 +56,13 @@ export default {
   }
 }
 </script>
+
+<style>
+input.form-control {
+  border: none;
+  background: transparent;
+  border-bottom: 1px solid #999999;
+  border-radius: 0;
+  border-width: thin;
+}
+</style>

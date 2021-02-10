@@ -5,9 +5,9 @@
     <Loading :show="!loaded" :status="status" :message="message"></Loading>
 
     <transition name="fade">
-      <div class="container" v-if="loaded">
+      <div class="container pb-2" v-if="loaded">
 
-        <Header :title="'Network Overview'"></Header>
+        <Header :title="'Network Overview'" class="mt-5"></Header>
 
         <section id="overview" class="my-4">
           <div class="row">
@@ -153,7 +153,7 @@ export default {
       });
     },
     getNetworkInformation() {
-      this.$api.request('/network/').then(response => {
+      this.$api.request('/network').then(response => {
         Object.keys(this.interfaces).forEach(inet => {
           Object.keys(this.interfaces[inet]).forEach(metric => {
             this.interfaces[inet][metric] = Math.round(parseInt(response.data.interfaces[inet][metric]))

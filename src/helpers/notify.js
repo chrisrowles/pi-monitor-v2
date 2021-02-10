@@ -4,10 +4,16 @@ const notify = {};
 
 notify.toast = Swal.mixin({
     toast: true,
-    position: 'top',
+    position: 'bottom-end',
     showConfirmButton: false,
-    timer: 3000,
+    timer: 10000,
     timerProgressBar: true,
+    showClass: {
+        popup: '',
+    },
+    hideClass: {
+        popup: ''
+    },
     onOpen: (toast) => {
         toast.addEventListener('mouseenter', Swal.stopTimer)
         toast.addEventListener('mouseleave', Swal.resumeTimer)

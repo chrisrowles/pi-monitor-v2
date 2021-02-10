@@ -1,18 +1,29 @@
 <template>
-  <div id="app">
-    <div class="d-flex flex-column flex-md-row align-items-center p-4 px-md-4 mb-0 mb-md-3 bg-white box-shadow">
-      <h5 class="my-0 mr-md-auto font-weight-normal">{{ name }}</h5>
-      <nav class="my-2 my-md-0 mr-md-3" id="nav">
-        <div v-if="$store.getters.isAuthorized">
-          <router-link :to="{name: 'dashboard'}" class="p-2">Dashboard</router-link>
-          <router-link :to="{name: 'network'}" class="p-2">Network</router-link>
-          <a v-on:click="logout" href="#" class="p-2">Logout</a>
-        </div>
-        <div v-else>
-          <router-link :to="{name: 'login'}" class="p-2">Login</router-link>
-        </div>
-      </nav>
-    </div>
+  <div id="app" class="h-100" :class="{'login-overlay': $route.name === 'login'}">
+    <nav v-if="$store.getters.isAuthorized" class="navbar navbar-expand-lg navbar-light bg-light">
+      <a href="#" class="navbar-brand">{{ name }}</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse"
+              data-target="#main-navbar"
+              aria-controls="main-navbar"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="main-navbar">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <router-link :to="{name: 'dashboard'}" class="nav-link">Dashboard</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link :to="{name: 'network'}" class="nav-link">Network</router-link>
+          </li>
+          <li class="nav-item">
+            <a v-on:click="logout" href="#" class="nav-link">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
     <router-view/>
   </div>
 </template>

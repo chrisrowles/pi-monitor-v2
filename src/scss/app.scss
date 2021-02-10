@@ -27,6 +27,30 @@ table.table thead th {
   background: $brand;
 }
 
+#app.login-overlay {
+  background: url("/assets/pi.jpg") no-repeat;
+  background-size: cover;
+
+  &:before {
+    content: "";
+    position: absolute;
+    left: 0; right: 0;
+    top: 0; bottom: 0;
+    background: rgba(100,100,100,.5);
+  }
+
+  .login {
+    background: #1e1e1e;
+    color: #eeeeee;
+    h1,h2 {
+      margin: 0;
+    }
+    .text-muted {
+      color: #eeeeee !important;
+    }
+  }
+}
+
 .border-radius-5 {
   border-radius: 5px;
 }

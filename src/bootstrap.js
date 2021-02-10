@@ -13,6 +13,8 @@ import {
 
 import {library, dom} from '@fortawesome/fontawesome-svg-core';
 
+import 'bootstrap';
+
 import '@/scss/app.scss';
 
 library.add(

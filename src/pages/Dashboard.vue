@@ -5,9 +5,9 @@
     <Loading :show="!loaded" :status="status" :message="message"></Loading>
 
     <transition name="fade">
-      <div class="container" v-if="loaded">
+      <div class="container pb-2" v-if="loaded">
 
-        <Header :title="'Dashboard Overview'"></Header>
+        <Header :title="'Dashboard Overview'" class="mt-5"></Header>
 
         <section id="overview" class="my-4">
           <div class="row">
@@ -103,8 +103,6 @@
 </template>
 
 <script>
-import {liveCpu} from '@/services/live-data';
-
 import Stat from '@/components/common/Stat';
 import Gauge from '@/components/charts/Gauge';
 import Graph from '@/components/charts/Graph';
@@ -140,7 +138,6 @@ export default {
       loaded: false,
       status: false,
       message: '',
-      liveChartExists: false
     }
   },
   created() {
@@ -158,7 +155,7 @@ export default {
   },
   methods: {
     getSystem() {
-      this.$api.request('/system/').then(response => {
+      this.$api.request('/system').then(response => {
         ['platform', 'cpu', 'disk'].forEach(key => {
           if (typeof this[key] === 'undefined' || typeof response.data[key] === 'undefined') {
             throw new Error('Undefined metric in API response.');
@@ -170,7 +167,6 @@ export default {
         this.disk_percent = response.data.disk.percent;
         this.processes = response.data.processes;
         this.formatProcessesDataForGraphs();
-        this.liveTemp();
         this.loaded = true;
       }).catch(error => {
         this.setError(error.message);
@@ -185,14 +181,6 @@ export default {
         });
       });
       this.processesGraphData = response;
-    },
-    liveTemp() {
-      setInterval(() => {
-        liveCpu.get('temp').then(temp => {
-          this.cpu.temp = temp;
-          this.$bus.$emit('update-gauge-temp', {value: temp, id: 'temp'})
-        })
-      }, 5000)
     },
     setError(message) {
       this.loaded = false;

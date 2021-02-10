@@ -1,11 +1,11 @@
 <template>
-    <section id="heading" class="mt-5">
+    <section id="heading">
         <div class="row d-flex justify-content-between align-items-center">
-            <div class="col-md-4">
+            <div class="col-6">
                 <h1 class="text-muted header-decor">{{ name }}</h1>
                 <h2 class="header">{{ title }}</h2>
             </div>
-            <div class="col-md-8 text-left text-md-right">
+            <div class="col-6 text-left text-md-right">
                 <small class="text-muted">API:
                     <span :class="{'text-success': status, 'text-danger': !status }">{{ message }}</span>
                 </small>
