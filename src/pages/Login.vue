@@ -41,6 +41,9 @@ export default {
     }
   },
   created() {
+    if (localStorage.getItem('auth')) {
+      this.$router.push({name: 'dashboard'})
+    }
     this.$bus.$on('post-login', () => this.$router.push('dashboard').catch(() => {}))
   },
   methods: {
@@ -49,7 +52,7 @@ export default {
         method: 'POST',
         body: JSON.stringify({email: this.email, password: this.password})
       }).then(response => {
-        localStorage.setItem('auth_token', response.Authorization)
+        localStorage.setItem('auth', response.Authorization)
         this.$bus.$emit('post-login');
       })
     }
