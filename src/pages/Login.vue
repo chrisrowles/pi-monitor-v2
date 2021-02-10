@@ -41,7 +41,6 @@ export default {
     }
   },
   created() {
-    if (this.isAuthenticated()) this.$router.push('dashboard').catch(() => {})
     this.$bus.$on('post-login', () => this.$router.push('dashboard').catch(() => {}))
   },
   methods: {
@@ -53,9 +52,6 @@ export default {
         localStorage.setItem('auth_token', response.Authorization)
         this.$bus.$emit('post-login');
       })
-    },
-    isAuthenticated() {
-      return !!localStorage.getItem('auth_token')
     }
   },
   components: {

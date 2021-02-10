@@ -3,28 +3,35 @@ import VueRouter from 'vue-router';
 import Dashboard from './pages/Dashboard';
 import Login from "./pages/Login";
 
+import auth from './middleware/auth';
+import log from './middleware/log';
+
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: '/',
-    name: 'Login',
-    component: Login
+    name: 'login',
+    component: Login,
+    meta: {
+      middleware: log
+    }
   },
   {
     path: '/dashboard',
-    name: 'Dashboard',
-    component: Dashboard
+    name: 'dashboard',
+    component: Dashboard,
+    meta: {
+      middleware: [auth, log]
+    }
   },
   {
     path: '/network',
-    name: 'Network',
-    component: () => import(/* webpackChunkName: "about" */ './pages/Network')
-  },
-  {
-    path: '/ssh',
-    name: 'SSH',
-    component: () => import(/* webpackChunkName: "about" */ './pages/Terminal')
+    name: 'network',
+    component: () => import(/* webpackChunkName: "about" */ './pages/Network'),
+    meta: {
+      middleware: [auth, log]
+    }
   }
 ];
 
@@ -32,6 +39,29 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+});
+
+function nextFactory(context, middleware, index) {
+  const subsequentMiddleware = middleware[index];
+  if (!subsequentMiddleware) return context.next;
+
+  return (...parameters) => {
+    context.next(...parameters);
+    const nextMiddleware = nextFactory(context, middleware, index + 1);
+    subsequentMiddleware({...context, next: nextMiddleware});
+  };
+}
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.middleware) {
+    const middleware = Array.isArray(to.meta.middleware) ? to.meta.middleware : [to.meta.middleware];
+    const context = {from, next, router, to};
+    const nextMiddleware = nextFactory(context, middleware, 1);
+
+    return middleware[0]({...context, next: nextMiddleware});
+  }
+
+  return next();
 });
 
 export default router;
