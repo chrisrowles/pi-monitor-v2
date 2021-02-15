@@ -10,7 +10,11 @@ import {
   faCogs,
   faBroadcastTower,
   faHome,
-  faNetworkWired
+  faNetworkWired,
+  faUser,
+  faUsers,
+  faTerminal,
+  faList
 } from '@fortawesome/free-solid-svg-icons';
 
 import {library, dom} from '@fortawesome/fontawesome-svg-core';
@@ -31,7 +35,11 @@ library.add(
     faCogs,
     faBroadcastTower,
     faHome,
-    faNetworkWired
+    faNetworkWired,
+    faUser,
+    faUsers,
+    faTerminal,
+    faList
 );
 
 dom.watch();

@@ -33,7 +33,7 @@
 
     .please-wait {
         position: absolute;
-        top: 50%;
+        top: 58%;
         left: 0;
         z-index: 999;
         right: 0;

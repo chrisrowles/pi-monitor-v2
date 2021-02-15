@@ -25,6 +25,35 @@
                   Network
                 </router-link>
               </li>
+              <li class="nav-item">
+                <router-link :to="{name: 'network'}" class="nav-link">
+                  <i class="fas fa-server mr-2"></i>
+                  Services
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link :to="{name: 'network'}" class="nav-link">
+                  <i class="fas fa-terminal mr-2"></i>
+                  Terminal
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link :to="{name: 'network'}" class="nav-link">
+                  <i class="fas fa-users mr-2"></i>
+                  Users
+                </router-link>
+              </li><li class="nav-item">
+              <router-link :to="{name: 'network'}" class="nav-link">
+                <i class="fas fa-list mr-2"></i>
+                  Logging
+              </router-link>
+            </li>
+              <li class="nav-item">
+                <router-link :to="{name: 'network'}" class="nav-link">
+                  <i class="fas fa-cogs mr-2"></i>
+                  Settings
+                </router-link>
+              </li>
             </ul>
           </div>
         </nav>

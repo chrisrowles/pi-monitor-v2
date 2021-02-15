@@ -59,11 +59,16 @@ table.table thead th {
   z-index: 100;
   padding: 48px 0 0;
   box-shadow: inset -1px 0 0 rgb(0 0 0 / 10%);
-  font-size: .875rem;
 
   .nav-link {
     font-weight: 500;
     color: #333;
+  }
+
+  .nav-item .nav-link {
+    &:hover {
+      color: #6c757d;
+    }
   }
 }
 
