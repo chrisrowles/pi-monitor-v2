@@ -6,14 +6,14 @@ const liveCpu = {};
 /**
  * Fetch live CPU statistics.
  *
- * @param fields
+ * @param field
  * @returns {Promise<number>}
  */
-liveCpu.get = async (...fields) => {
+liveCpu.get = async (field) => {
     let response = await caller(url + '/system/cpu', {
-        headers: { 'X-Fields': fields.join(', ') }
+        headers: { 'X-Fields': field }
     });
-    return response.data.temp;
+    return response.data[field];
 }
 
 /** Live disk data service **/
@@ -22,14 +22,14 @@ const liveDisk = {};
 /**
  * Fetch live disk statistics.
  *
- * @param fields
+ * @param field
  * @returns {Promise<number>}
  */
-liveDisk.get = async (...fields) => {
+liveDisk.get = async (field) => {
     let response = await caller(url + '/system/disk', {
-        headers: { 'X-Fields': fields.join(', ') }
+        headers: { 'X-Fields': field }
     });
-    return response.data.temp;
+    return response.data[field];
 }
 
 export {

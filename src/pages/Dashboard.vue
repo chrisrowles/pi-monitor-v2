@@ -11,16 +11,16 @@
 
         <section id="overview" class="my-4">
           <div class="row">
-            <div class="col-12 col-md-12 col-lg-6 mb-4 mb-lg-0">
+            <div class="col-12 col-md-12 col-lg-3 mb-4 mb-lg-0">
               <div class="platform-header">
                 <Stat :color="'bg-dark'" :title="'Platform'">
                   <template v-slot:icon>
                     <i class="fa fa-server card-icon"></i>
                   </template>
                   <template v-slot:content>
-                    <strong>Distro</strong> {{ platform.distro }}<br>
+                    <strong>OS</strong> {{ platform.distro }}<br>
                     <strong>Kernel</strong> {{ platform.kernel }}<br>
-                    <strong>Uptime</strong> {{ platform.uptime }}<br>
+                    <strong>Up</strong> {{ platform.uptime }}<br>
                   </template>
                 </Stat>
               </div>
@@ -39,6 +39,20 @@
                 </Stat>
               </div>
             </div>
+            <div class="col-12 col-md-12 col-lg-3 mb-4 mb-lg-0">
+              <div class="platform-header">
+                <Stat :color="'bg-success'" :title="'Memory'">
+                  <template v-slot:icon>
+                    <i class="fa fa-server card-icon"></i>
+                  </template>
+                  <template v-slot:content>
+                    <strong>Used</strong> {{ mem.used }} GB<br>
+                    <strong>Free</strong> {{ mem.free }} GB<br>
+                    <strong>Total</strong> {{ mem.total }} GB<br>
+                  </template>
+                </Stat>
+              </div>
+            </div>
             <div class="col-12 col-md-6 col-lg-3">
               <div class="disk-header">
                 <Stat :color="'bg-success'" :title="'Disk'">
@@ -46,9 +60,9 @@
                     <i class="fa fa-hdd card-icon btt-1"></i>
                   </template>
                   <template v-slot:content>
-                    <strong>Used</strong> {{ disk.used }}GB<br>
-                    <strong>Free</strong> {{ disk.free }}GB<br>
-                    <strong>Total</strong> {{ disk.total }}GB<br>
+                    <strong>Used</strong> {{ disk.used }} GB<br>
+                    <strong>Free</strong> {{ disk.free }} GB<br>
+                    <strong>Total</strong> {{ disk.total }} GB<br>
                   </template>
                 </Stat>
               </div>
@@ -63,13 +77,16 @@
             </div>
             <div class="card-body">
               <div class="row">
-                <div class="col-12 col-md-6 col-lg-4 ml-auto">
+                <div class="col-12 col-md-6 col-lg-3 ml-auto">
                   <Gauge :title="'Temperature'" :id="'temp'" :metric="cpu.temp" :format="'{y}°C'"></Gauge>
                 </div>
-                <div class="col-12 col-md-6 col-lg-4 ml-auto">
+                <div class="col-12 col-md-6 col-lg-3 ml-auto">
                   <Gauge :title="'CPU'" :id="'cpu'" :metric="cpu.usage" :format="'{y}%'"></Gauge>
                 </div>
-                <div class="col-12 col-md-12 col-lg-4 ml-auto">
+                <div class="col-12 col-md-6 col-lg-3 ml-auto">
+                  <Gauge :title="'Memory'" :id="'mem'" :metric="mem_percent" :format="'{y}%'"></Gauge>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 ml-auto">
                   <Gauge :title="'Disk'" :id="'disk'" :metric="disk_percent" :format="'{y}%'"></Gauge>
                 </div>
               </div>
@@ -103,6 +120,8 @@
 </template>
 
 <script>
+import {liveCpu} from "@/services/live-data";
+
 import Stat from '@/components/common/Stat';
 import Gauge from '@/components/charts/Gauge';
 import Graph from '@/components/charts/Graph';
@@ -124,11 +143,17 @@ export default {
         freq: 0,
         usage: 0
       },
+      mem: {
+        used: 0,
+        free: 0,
+        total: 0,
+      },
       disk: {
         used: 0,
         free: 0,
         total: 0,
       },
+      mem_percent: 0,
       disk_percent: 0,
       fan: {
         status: '',
@@ -156,7 +181,7 @@ export default {
   methods: {
     getSystem() {
       this.$api.request('/system/').then(response => {
-        ['platform', 'cpu', 'disk'].forEach(key => {
+        ['platform', 'cpu', 'mem', 'disk'].forEach(key => {
           if (typeof this[key] === 'undefined' || typeof response.data[key] === 'undefined') {
             throw new Error('Undefined metric in API response.');
           }
@@ -164,9 +189,11 @@ export default {
             this[key][result] = response.data[key][result];
           });
         });
+        this.mem_percent = response.data.mem.percent;
         this.disk_percent = response.data.disk.percent;
         this.processes = response.data.processes;
         this.formatProcessesDataForGraphs();
+        // this.updateDataRegularly(5000);
         this.loaded = true;
       }).catch(error => {
         this.setError(error.message);
@@ -181,6 +208,14 @@ export default {
         });
       });
       this.processesGraphData = response;
+    },
+    updateDataRegularly(interval) {
+      setInterval(() => {
+        liveCpu.get('temp').then(temp => {
+          this.cpu.temp = temp;
+          this.$bus.$emit('update-gauge-temp', {value: temp, id: 'temp'})
+        });
+      }, interval);
     },
     setError(message) {
       this.loaded = false;
