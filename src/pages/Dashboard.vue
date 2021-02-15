@@ -155,7 +155,7 @@ export default {
   },
   methods: {
     getSystem() {
-      this.$api.request('/system').then(response => {
+      this.$api.request('/system/').then(response => {
         ['platform', 'cpu', 'disk'].forEach(key => {
           if (typeof this[key] === 'undefined' || typeof response.data[key] === 'undefined') {
             throw new Error('Undefined metric in API response.');

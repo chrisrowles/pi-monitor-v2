@@ -153,7 +153,7 @@ export default {
       });
     },
     getNetworkInformation() {
-      this.$api.request('/network').then(response => {
+      this.$api.request('/network/').then(response => {
         Object.keys(this.interfaces).forEach(inet => {
           Object.keys(this.interfaces[inet]).forEach(metric => {
             this.interfaces[inet][metric] = Math.round(parseInt(response.data.interfaces[inet][metric]))

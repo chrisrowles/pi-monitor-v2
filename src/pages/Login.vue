@@ -1,9 +1,8 @@
 <template>
-  <div class="container d-flex h-100">
-    <div class="background"></div>
+  <div class="container d-flex h-100 justify-content-around">
     <Title :title="'Login'"></Title>
     <div class="row align-self-center w-100">
-      <div class="col-6 offset-3">
+      <div class="col-12 offset-0 col-md-6 offset-md-3">
         <div id="login" class="card shadow border-0">
           <div class="card-header login">
             <Header :title="'Login'"></Header>
