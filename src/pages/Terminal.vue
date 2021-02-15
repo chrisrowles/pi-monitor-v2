@@ -2,7 +2,7 @@
   <div>
     <Title :title="title"></Title>
 
-    <div class="container">
+    <div class="pt-5">
       <Header :title="'Remote SSH'"></Header>
 
       <section id="overview" class="my-4">

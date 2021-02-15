@@ -26,6 +26,11 @@ const routes = [
     path: '/network',
     name: 'network',
     component: () => import(/* webpackChunkName: "about" */ './pages/Network')
+  },
+  {
+    path: '/terminal',
+    name: 'terminal',
+    component: () => import(/* webpackChunkName: "about" */ './pages/Terminal')
   }
 ];
 
