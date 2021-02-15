@@ -5,7 +5,7 @@
     <Loading :show="!loaded" :status="status" :message="message"></Loading>
 
     <transition name="fade">
-      <div class="container pb-2" v-if="loaded">
+      <div class="pb-2" v-if="loaded">
 
         <Header :title="'Dashboard Overview'" class="mt-5"></Header>
 

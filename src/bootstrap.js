@@ -8,7 +8,9 @@ import {
   faTasks,
   faSpinner,
   faCogs,
-  faBroadcastTower
+  faBroadcastTower,
+  faHome,
+  faNetworkWired
 } from '@fortawesome/free-solid-svg-icons';
 
 import {library, dom} from '@fortawesome/fontawesome-svg-core';
@@ -27,7 +29,9 @@ library.add(
     faTasks,
     faSpinner,
     faCogs,
-    faBroadcastTower
+    faBroadcastTower,
+    faHome,
+    faNetworkWired
 );
 
 dom.watch();

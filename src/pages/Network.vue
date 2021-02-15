@@ -5,7 +5,7 @@
     <Loading :show="!loaded" :status="status" :message="message"></Loading>
 
     <transition name="fade">
-      <div class="container pb-2" v-if="loaded">
+      <div class="pb-2" v-if="loaded">
 
         <Header :title="'Network Overview'" class="mt-5"></Header>
 
@@ -33,7 +33,7 @@
               </Stat>
             </div>
             <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
-              <Stat :color="uploadClass" :title="'Download Speed'">
+              <Stat :color="uploadClass" :title="'Upload Speed'">
                 <template v-slot:icon>
                   <i class="fa fa-arrow-circle-up card-icon"></i>
                 </template>
