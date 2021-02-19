@@ -66,13 +66,17 @@
 </template>
 
 <script>
+import notify from '@/helpers/notify';
+
 export default {
   props: ['name'],
   methods: {
     logout() {
-      this.$store.dispatch('logout');
-      this.$router.push({ name: 'login' }).catch((e) => {
-        console.log(e);
+      this.$store.dispatch('logout').then(response => {
+        notify.send('success', response.message);
+        this.$router.push({ name: 'login' }).catch(()=>{});
+      }).catch(error => {
+        notify.send('error', error);
       });
     }
   },

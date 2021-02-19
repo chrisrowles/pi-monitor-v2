@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import { url, defaultHeaders } from '@/services/api';
+import {url, defaultHeaders} from '@/services/api';
 import createPersistedState from 'vuex-persistedstate';
 
 Vue.use(Vuex);
@@ -11,7 +11,11 @@ const store = new Vuex.Store({
     storage: window.sessionStorage,
   })],
   state: {
-    auth: null
+    auth: null,
+    id: null,
+    email: '',
+    created: '',
+    status: ''
   },
   getters: {
     isAuthorized: state => {
@@ -19,22 +23,22 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
-    auth_request(state){
+    auth_request(state) {
       state.status = 'loading';
     },
-    auth_success(state, auth){
+    auth_success(state, auth) {
       state.status = 'success';
       state.auth = auth;
     },
-    auth_user(state, user){
+    auth_user(state, user) {
       state.id = user.user_id;
       state.email = user.email;
       state.created = user.registered_on;
     },
-    auth_error(state){
+    auth_error(state) {
       state.status = 'error';
     },
-    logout(state){
+    logout(state) {
       state.status = '';
       state.auth = null;
     },
@@ -59,33 +63,49 @@ const store = new Vuex.Store({
       });
     },
     verify({commit}, token) {
-      let headers = { ...defaultHeaders, ...{
+      let headers = {
+        ...defaultHeaders, ...{
           'Authorization': token,
         }
       };
 
-      fetch(url + '/auth/verify', {
-        headers: headers
-      }).then(response => {
-        if (!response.ok) {
-          commit('auth_error');
-          throw new Error("Could not verify user.");
-        }
+      return new Promise((resolve, reject) => {
+        fetch(url + '/auth/verify', {
+          headers: headers
+        }).then(response => {
+          if (!response.ok) {
+            commit('auth_error');
+            return reject(response.statusText);
+          }
 
-        commit('auth_success', token);
-        return response.json();
-      }).then(user => commit('auth_user', user.data)).catch(()=>{})
+          commit('auth_success', token);
+          return response.json();
+        }).then(user => {
+          commit('auth_user', user.data);
+          return resolve(user);
+        });
+      });
     },
     logout({commit}) {
-      let headers = { ...defaultHeaders, ...{
+      let headers = {
+        ...defaultHeaders, ...{
           'Authorization': this.state.auth
         }
       };
 
-      fetch(url + '/auth/logout', {
-        method: 'POST',
-        headers: headers
-      }).then(() => commit('logout')).catch(()=>{});
+      return new Promise((resolve, reject) => {
+        fetch(url + '/auth/logout', {
+          method: 'POST',
+          headers: headers
+        }).then(response => {
+          if (!response.ok) {
+            return reject(response.statusText);
+          }
+
+          commit('logout');
+          return resolve(response.json());
+        });
+      });
     }
   }
 });

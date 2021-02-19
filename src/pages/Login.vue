@@ -45,14 +45,19 @@ export default {
   },
   methods: {
     login() {
-      this.$store.dispatch('login', {
+      let credentials = {
         email: this.email,
         password: this.password
-      }).then(response => {
-        this.$store.dispatch('verify', response.Authorization);
-      }).catch(error => {
-        notify.send('error', error);
-      });
+      };
+
+      this.$store.dispatch('login', credentials)
+          .then(response => this.verify(response))
+          .catch(error => notify.send('error', error));
+    },
+    verify(user) {
+      this.$store.dispatch('verify', user.Authorization)
+          .then(() => this.$router.push({ name: 'dashboard'}).catch(()=>{}))
+          .catch(error => notify.send('error', error));
     }
   },
   components: {
