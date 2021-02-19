@@ -34,7 +34,7 @@
 import Title from '@/components/common/Title';
 import Header from '@/components/common/Header';
 
-import notify from "@/helpers/notify";
+import notify from '@/helpers/notify';
 
 export default {
   data() {
@@ -56,7 +56,7 @@ export default {
     },
     verify(user) {
       this.$store.dispatch('verify', user.Authorization)
-          .then(() => this.$router.push({ name: 'dashboard'}).catch(()=>{}))
+          .then(() => this.$router.push({ name: 'dashboard'}))
           .catch(error => notify.send('error', error));
     }
   },

@@ -14,7 +14,7 @@ notify.toast = Swal.mixin({
     hideClass: {
         popup: ''
     },
-    onOpen: (toast) => {
+    didOpen: (toast) => {
         toast.addEventListener('mouseenter', Swal.stopTimer)
         toast.addEventListener('mouseleave', Swal.resumeTimer)
     }
@@ -25,7 +25,7 @@ notify.send = (type, msg) => {
     notify.toast.fire({
         icon: type,
         title: msg
-    }).then(r => { console.log(r)});
+    });
 }
 
 notify.level = (param, {max, mid, min}) => {

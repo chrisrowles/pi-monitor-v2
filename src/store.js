@@ -18,9 +18,7 @@ const store = new Vuex.Store({
     status: ''
   },
   getters: {
-    isAuthorized: state => {
-      return !!state.auth
-    }
+    isAuthorized: state => !!state.auth
   },
   mutations: {
     auth_request(state) {

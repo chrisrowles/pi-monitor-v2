@@ -27,6 +27,7 @@ const caller = (uri, options = {}) => {
   const headers = new Headers();
   Object.keys(defaultHeaders).forEach((key) => headers.append(key, defaultHeaders[key]));
 
+  // Authorization interceptor
   if (store.getters.isAuthorized) {
     headers.append('Authorization', store.state.auth);
   }
@@ -34,7 +35,7 @@ const caller = (uri, options = {}) => {
   options.headers = headers;
 
   return new Promise((resolve, reject) => {
-    fetch(uri, options).then((response) => {
+    fetch(uri, options).then(response => {
       if (!response.ok) {
         throw new Error(response.statusText);
       }
