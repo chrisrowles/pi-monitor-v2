@@ -53,7 +53,7 @@ const store = new Vuex.Store({
         }).then(response => {
           if (!response.ok) {
             commit('auth_error');
-            return reject(response.statusText);
+            return reject("Invalid username/password.");
           }
 
           return resolve(response.json());

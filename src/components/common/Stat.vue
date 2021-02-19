@@ -1,5 +1,5 @@
 <template>
-    <div class="card border-0 shadow" :class="color">
+    <div class="card border-0 shadow h-100" :class="color">
         <div class="card-header border-0 text-white d-flex justify-content-between align-items-center w-100"
              :class="color">
             <strong>{{ title }}</strong>

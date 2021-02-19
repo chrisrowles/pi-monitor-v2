@@ -19,7 +19,9 @@
                     <label for="password" class="sr-only">Password</label>
                     <input v-model="password" type="password" class="form-control" id="password" placeholder="Password">
                   </div>
-                  <button type="submit" class="btn login">Submit</button>
+                  <button type="submit" class="btn login" v-bind:disabled="submitting">
+                    Submit <span v-if="submitting"><i class="fas fa-spinner fa-spin ml-2"></i></span>
+                  </button>
                 </form>
               </div>
             </div>
@@ -41,23 +43,35 @@ export default {
     return {
       email: '',
       password: '',
+      submitting: false,
     }
   },
   methods: {
     login() {
+      this.submitting = true;
       let credentials = {
         email: this.email,
         password: this.password
       };
 
       this.$store.dispatch('login', credentials)
-          .then(response => this.verify(response))
-          .catch(error => notify.send('error', error));
+          .then(response => {
+            this.submitting = false;
+            this.verify(response);
+          })
+          .catch(error => {
+            this.submitting = false;
+            notify.send('error', error)
+          });
     },
     verify(user) {
       this.$store.dispatch('verify', user.Authorization)
-          .then(() => this.$router.push({ name: 'dashboard'}))
-          .catch(error => notify.send('error', error));
+          .then(() => {
+            this.$router.push({ name: 'dashboard'})
+          })
+          .catch(error => {
+            notify.send('error', error)
+          });
     }
   },
   components: {
@@ -66,13 +80,3 @@ export default {
   }
 }
 </script>
-
-<style>
-input.form-control {
-  border: none;
-  background: transparent;
-  border-bottom: 1px solid #999999;
-  border-radius: 0;
-  border-width: thin;
-}
-</style>

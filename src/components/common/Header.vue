@@ -10,7 +10,9 @@
           <span :class="{'text-success': status, 'text-danger': !status }">{{ message }}</span>
         </small>
         <br>
-        <small v-if="$store.getters.isAuthorized" class="text-muted">User: {{ $store.state.email }}</small>
+        <small v-if="$store.getters.isAuthorized" class="text-muted">
+          User: <a :href="'mailto:'+$store.state.email">{{ $store.state.email }}</a>
+        </small>
       </div>
     </div>
   </section>

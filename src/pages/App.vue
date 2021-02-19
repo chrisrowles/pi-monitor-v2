@@ -83,9 +83,9 @@ export default {
   computed: {
     columnLayout() {
       if (this.$store.getters.isAuthorized) {
-        return 'col-md-9 col-lg-10'
+        return 'col-12 col-md-10'
       } else {
-        return 'col-lg-12'
+        return 'col-12'
       }
     }
   }

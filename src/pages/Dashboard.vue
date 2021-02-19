@@ -11,8 +11,8 @@
 
         <section id="overview" class="my-4">
           <div class="row">
-            <div class="col-12 col-md-12 col-lg-3 mb-4 mb-lg-0">
-              <div class="platform-header">
+            <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+              <div class="platform-header h-100">
                 <Stat :color="'bg-dark'" :title="'Platform'">
                   <template v-slot:icon>
                     <i class="fa fa-server card-icon"></i>
@@ -26,7 +26,7 @@
               </div>
             </div>
             <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
-              <div class="cpu-header">
+              <div class="cpu-header h-100">
                 <Stat :color="'bg-success'" :title="'CPU'">
                   <template v-slot:icon>
                     <i class="fa fa-tachometer-alt card-icon"></i>
@@ -39,8 +39,8 @@
                 </Stat>
               </div>
             </div>
-            <div class="col-12 col-md-12 col-lg-3 mb-4 mb-lg-0">
-              <div class="platform-header">
+            <div class="col-12 col-md-6 col-lg-3 mb-4 mb-md-0">
+              <div class="memory-header h-100">
                 <Stat :color="'bg-success'" :title="'Memory'">
                   <template v-slot:icon>
                     <i class="fa fa-server card-icon"></i>
@@ -54,7 +54,7 @@
               </div>
             </div>
             <div class="col-12 col-md-6 col-lg-3">
-              <div class="disk-header">
+              <div class="disk-header h-100">
                 <Stat :color="'bg-success'" :title="'Disk'">
                   <template v-slot:icon>
                     <i class="fa fa-hdd card-icon btt-1"></i>
@@ -120,7 +120,7 @@
 </template>
 
 <script>
-import {liveCpu} from "@/services/live-data";
+import {liveCpu} from '@/services/live-data';
 
 import Stat from '@/components/common/Stat';
 import Gauge from '@/components/charts/Gauge';
@@ -155,9 +155,6 @@ export default {
       },
       mem_percent: 0,
       disk_percent: 0,
-      fan: {
-        status: '',
-      },
       processes: {},
       processesGraphData: [],
       loaded: false,
