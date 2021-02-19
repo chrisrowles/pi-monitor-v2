@@ -24,8 +24,6 @@ let connected = true
 const caller = (uri, options = {}) => {
   options.headers = { ...defaultHeaders, ...options.headers };
 
-  console.log(options.headers);
-
   const headers = new Headers();
   Object.keys(defaultHeaders).forEach((key) => headers.append(key, defaultHeaders[key]));
 
@@ -87,6 +85,7 @@ api.ping(30000);
 export {
   url,
   caller,
+  defaultHeaders
 };
 
 export default api;

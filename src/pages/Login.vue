@@ -34,6 +34,8 @@
 import Title from '@/components/common/Title';
 import Header from '@/components/common/Header';
 
+import notify from "@/helpers/notify";
+
 export default {
   data() {
     return {
@@ -46,7 +48,11 @@ export default {
       this.$store.dispatch('login', {
         email: this.email,
         password: this.password
-      })
+      }).then(response => {
+        this.$store.dispatch('verify', response.Authorization);
+      }).catch(error => {
+        notify.send('error', error);
+      });
     }
   },
   components: {
