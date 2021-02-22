@@ -1,4 +1,4 @@
-# RaspiMon
+# Pi Monitor
 
 A lightweight monitor for your raspberry pi, works with the [RaspiMon API.](https://github.com/raekw0n/raspi-mon-api)
 
