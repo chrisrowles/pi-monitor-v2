@@ -4,7 +4,7 @@
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">{{ this.name }}</a>
       <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-          <a v-on:click="logout" href="#" class="nav-link">Logout</a>
+          <a v-if="$store.getters.isAuthorized" v-on:click="logout" href="#" class="nav-link">Logout</a>
         </li>
       </ul>
     </nav>

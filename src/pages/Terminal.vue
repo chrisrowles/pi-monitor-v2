@@ -11,7 +11,7 @@
             <div class="cpu-header">
               <Stat :color="'bg-dark'" :title="'Connected Host'">
                 <template v-slot:icon>
-                  <i class="fa fa-tachometer-alt card-icon"></i>
+                  <i class="fa fa-terminal card-icon"></i>
                 </template>
                 <template v-slot:content>
                   <strong>User</strong> {{ username }}<br>
