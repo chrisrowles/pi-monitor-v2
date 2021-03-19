@@ -1,3 +1,0 @@
-[submodule "raspi-sh"]
-	path = raspi-sh
-	url = git@github.com:raekw0n/raspi-sh.git
