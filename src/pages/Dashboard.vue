@@ -1,19 +1,19 @@
 <template>
   <div>
-    <Title :title="'Dashboard'"></Title>
+    <Title title="Dashboard"></Title>
 
     <Loading :show="!loaded" :status="status" :message="message"></Loading>
 
     <transition name="fade">
       <div class="pb-2" v-if="loaded">
 
-        <Header :title="'Dashboard Overview'" class="mt-5"></Header>
+        <Header title="Dashboard Overview" class="mt-5"></Header>
 
         <section id="overview" class="my-4">
           <div class="row">
             <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
               <div class="platform-header h-100">
-                <Stat :color="'bg-dark'" :title="'Platform'">
+                <Stat color="dark" title="Platform">
                   <template v-slot:icon>
                     <i class="fa fa-server card-icon"></i>
                   </template>
@@ -27,7 +27,7 @@
             </div>
             <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
               <div class="cpu-header h-100">
-                <Stat :color="'bg-success'" :title="'CPU'">
+                <Stat color="success" title="CPU">
                   <template v-slot:icon>
                     <i class="fa fa-tachometer-alt card-icon"></i>
                   </template>
@@ -41,7 +41,7 @@
             </div>
             <div class="col-12 col-md-6 col-lg-3 mb-4 mb-md-0">
               <div class="memory-header h-100">
-                <Stat :color="'bg-success'" :title="'Memory'">
+                <Stat color="success" title="Memory">
                   <template v-slot:icon>
                     <i class="fa fa-server card-icon"></i>
                   </template>
@@ -55,7 +55,7 @@
             </div>
             <div class="col-12 col-md-6 col-lg-3">
               <div class="disk-header h-100">
-                <Stat :color="'bg-success'" :title="'Disk'">
+                <Stat color="success" title="Disk">
                   <template v-slot:icon>
                     <i class="fa fa-hdd card-icon btt-1"></i>
                   </template>
@@ -78,16 +78,16 @@
             <div class="card-body">
               <div class="row">
                 <div class="col-12 col-md-6 col-lg-3 ml-auto">
-                  <Gauge :title="'Temperature'" :id="'temp'" :metric="cpu.temp" :format="'{y}°C'"></Gauge>
+                  <Gauge title="Temperature" id="temp" :metric="cpu.temp" format="{y}°C"></Gauge>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3 ml-auto">
-                  <Gauge :title="'CPU'" :id="'cpu'" :metric="cpu.usage" :format="'{y}%'"></Gauge>
+                  <Gauge title="CPU" id="cpu" :metric="cpu.usage" format="{y}%"></Gauge>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3 ml-auto">
-                  <Gauge :title="'Memory'" :id="'mem'" :metric="mem_percent" :format="'{y}%'"></Gauge>
+                  <Gauge title="Memory" id="mem" :metric="mem_percent" format="{y}%"></Gauge>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3 ml-auto">
-                  <Gauge :title="'Disk'" :id="'disk'" :metric="disk_percent" :format="'{y}%'"></Gauge>
+                  <Gauge title="Disk" id="disk" :metric="disk_percent" format="{y}%"></Gauge>
                 </div>
               </div>
             </div>
@@ -102,12 +102,12 @@
                   <i class="fa fa-cogs mr-2"></i> Top Processes
                 </div>
                 <div class="card-body">
-                  <Graph :id="'processes'"
-                         :title="'Top Processes'"
+                  <Graph id="processes"
+                         title="Top Processes"
                          :data="processesGraphData">
                   </Graph>
                   <div class="mt-4">
-                    <Table :type="'horizontal'" :data="processes"></Table>
+                    <Table type="horizontal" :data="processes"></Table>
                   </div>
                 </div>
               </div>
