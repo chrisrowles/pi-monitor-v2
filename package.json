@@ -18,7 +18,7 @@
     "lodash": "^4.17.21",
     "popper.js": "^1.16.1",
     "redoc": "^2.0.0-rc.56",
-    "sweetalert2": "^10.14.0",
+    "sweetalert2": "^11.1.7",
     "vue": "^2.6.14",
     "vue-router": "^3.5.2",
     "vuex": "^3.6.2",
@@ -27,10 +27,10 @@
     "xterm-addon-fit": "^0.5.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.13",
-    "@vue/cli-plugin-eslint": "~4.5.13",
+    "@vue/cli-plugin-babel": "^4.5.13",
+    "@vue/cli-plugin-eslint": "^4.5.13",
     "@vue/cli-plugin-router": "^4.5.13",
-    "@vue/cli-service": "~4.5.13",
+    "@vue/cli-service": "^4.5.13",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
@@ -40,7 +40,7 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-vue": "^7.19.1",
     "sass": "^1.42.1",
-    "sass-loader": "^9.0.3",
+    "sass-loader": "^10.2.0",
     "style-loader": "^3.3.0",
     "vue-template-compiler": "^2.6.14"
   },
