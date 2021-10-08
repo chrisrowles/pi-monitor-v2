@@ -1,11 +1,11 @@
 <template>
   <div class="container d-flex h-100 justify-content-around">
-    <Title :title="'Login'"></Title>
+    <PageTitle title="Login"></PageTitle>
     <div class="row align-self-center w-100">
       <div class="col-12 offset-0 col-md-6 offset-md-3">
         <div id="login" class="card shadow border-0">
           <div class="card-header login">
-            <Header :title="'Login'"></Header>
+            <MainHeader title="Login"></MainHeader>
           </div>
           <div class="card-body">
             <div class="row">
@@ -33,8 +33,8 @@
 </template>
 
 <script>
-import Title from '@/components/common/Title';
-import Header from '@/components/common/Header';
+import PageTitle from '@/components/common/PageTitle';
+import MainHeader from '@/components/common/MainHeader';
 
 import notify from '@/helpers/notify';
 
@@ -75,8 +75,8 @@ export default {
     }
   },
   components: {
-    Title,
-    Header
+    PageTitle,
+    MainHeader
   }
 }
 </script>

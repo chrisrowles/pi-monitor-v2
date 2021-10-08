@@ -1,23 +1,20 @@
 <template>
   <div>
-    <Title :title="title"></Title>
+    <PageTitle :title="title"></PageTitle>
 
     <div class="pt-5">
-      <Header :title="'Remote SSH'"></Header>
+      <MainHeader title="Remote SSH"></MainHeader>
 
       <section id="overview" class="my-4">
         <div class="row">
           <div class="col-12">
             <div class="cpu-header">
-              <Stat :color="'bg-dark'" :title="'Connected Host'">
-                <template v-slot:icon>
-                  <i class="fa fa-terminal card-icon"></i>
-                </template>
+              <StatCard title="Connected Host" color="dark" icon="terminal">
                 <template v-slot:content>
                   <strong>User</strong> {{ username }}<br>
                   <strong>Hostname</strong> {{ hostname }}<br>
                 </template>
-              </Stat>
+              </StatCard>
             </div>
           </div>
         </div>
@@ -88,9 +85,9 @@
 </template>
 
 <script>
-import Stat from "@/components/common/Stat";
-import Title from '@/components/common/Title';
-import Header from '@/components/common/Header';
+import StatCard from '@/components/common/StatCard';
+import PageTitle from '@/components/common/PageTitle';
+import MainHeader from '@/components/common/MainHeader';
 
 import {Terminal} from 'xterm';
 import {FitAddon} from 'xterm-addon-fit';
@@ -193,9 +190,9 @@ export default {
     }
   },
   components: {
-    Header,
-    Title,
-    Stat
+    MainHeader,
+    PageTitle,
+    StatCard
   }
 }
 </script>

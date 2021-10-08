@@ -212,16 +212,17 @@ let graph = [];
  * Create a new graph.
  *
  * @param id
+ * @param type
  * @param title
  * @param data
  * @param yAxisText
  * @param xAxisText
  * @returns {[]}
  */
-graphMaker.create = ({id, title, data, yAxisText = null, xAxisText = null}) => {
+graphMaker.create = ({id, type, title, data, yAxisText = null, xAxisText = null}) => {
     graph[id] = Highcharts.chart(id, {
         chart: {
-            type: 'bar'
+            type
         },
         title: {
             text: title

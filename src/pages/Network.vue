@@ -1,47 +1,38 @@
 <template>
   <div>
-    <Title :title="'Network'"></Title>
+    <PageTitle title="Network"></PageTitle>
 
     <Loading :show="!loaded" :status="status" :message="message"></Loading>
 
     <transition name="fade">
       <div class="pb-2" v-if="loaded">
 
-        <Header :title="'Network Overview'" class="mt-5"></Header>
+        <MainHeader title="Network Overview" class="mt-5"></MainHeader>
 
         <section id="overview" class="my-4">
           <div class="row">
             <div class="col-12 col-md-12 col-lg-4 mb-4 mb-lg-0">
-              <Stat :color="'bg-dark'" :title="'Wireless Network'">
-                <template v-slot:icon>
-                  <i class="fa fa-wifi card-icon"></i>
-                </template>
+              <StatCard title="Wireless Network" color="dark" icon="wifi">
                 <template v-slot:content>
                   <strong>{{ details.name }}</strong>
                 </template>
-              </Stat>
+              </StatCard>
             </div>
             <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
-              <Stat :color="downloadClass" :title="'Download Speed'">
-                <template v-slot:icon>
-                  <i class="fa fa-arrow-circle-down card-icon"></i>
-                </template>
+              <StatCard title="Download Speed" :color="downloadClass" icon="arrow-circle-down">
                 <template v-slot:content>
                   <i v-if="speedTestCompleted" class="fa fa-arrow-circle-down mr-2"></i>
                   <strong>{{ speed.download }}</strong>
                 </template>
-              </Stat>
+              </StatCard>
             </div>
             <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
-              <Stat :color="uploadClass" :title="'Upload Speed'">
-                <template v-slot:icon>
-                  <i class="fa fa-arrow-circle-up card-icon"></i>
-                </template>
+              <StatCard title="Upload Speed" :color="uploadClass" icon="arrow-circle-up">
                 <template v-slot:content>
                   <i v-if="speedTestCompleted" class="fa fa-arrow-circle-up mr-2"></i>
                   <strong>{{ speed.upload }}</strong>
                 </template>
-              </Stat>
+              </StatCard>
             </div>
           </div>
         </section>
@@ -61,7 +52,7 @@
                            :data="interfacesGraphData[inet]">
                     </Graph>
                     <div class="mt-4">
-                      <Table :type="'horizontal'" :data="interfaces[inet]" :nested="true"></Table>
+                      <DataTable type="horizontal" :data="interfaces[inet]" :nested="true"></DataTable>
                     </div>
                   </div>
                 </div>
@@ -77,11 +68,11 @@
 <script>
 import notify from '@/helpers/notify';
 
-import Stat from '@/components/common/Stat';
+import StatCard from '@/components/common/StatCard';
 import Graph from '@/components/charts/Graph';
-import Table from '@/components/common/Table';
-import Title from '@/components/common/Title';
-import Header from '@/components/common/Header';
+import DataTable from '@/components/common/DataTable';
+import PageTitle from '@/components/common/PageTitle';
+import MainHeader from '@/components/common/MainHeader';
 import Loading from '@/components/common/Loading';
 
 export default {
@@ -235,12 +226,12 @@ export default {
     },
   },
   components: {
-    Stat,
+    StatCard,
     Graph,
-    Table,
-    Title,
+    DataTable,
+    PageTitle,
     Loading,
-    Header
+    MainHeader
   }
 }
 </script>

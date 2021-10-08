@@ -3,7 +3,7 @@
         <div class="card-header border-0 text-white d-flex justify-content-between align-items-center w-100"
              :class="`bg-${color}`">
             <strong>{{ title }}</strong>
-            <slot name="icon"></slot>
+          <i :class="`fa fa-${icon} card-icon`"></i>
         </div>
         <div class="card-body border-radius-5 text-white" :class="`bg-${color}`">
             <slot name="content"></slot>
@@ -13,6 +13,6 @@
 
 <script>
     export default {
-        props: ['title', 'color']
+        props: ['title', 'color', 'icon']
     }
 </script>

@@ -1,70 +1,55 @@
 <template>
   <div>
-    <Title title="Dashboard"></Title>
-
+    <PageTitle title="Dashboard"></PageTitle>
     <Loading :show="!loaded" :status="status" :message="message"></Loading>
 
     <transition name="fade">
       <div class="pb-2" v-if="loaded">
-
-        <Header title="Dashboard Overview" class="mt-5"></Header>
-
+        <MainHeader title="Dashboard Overview" class="mt-5"></MainHeader>
         <section id="overview" class="my-4">
           <div class="row">
             <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
               <div class="platform-header h-100">
-                <Stat color="dark" title="Platform">
-                  <template v-slot:icon>
-                    <i class="fa fa-server card-icon"></i>
-                  </template>
+                <StatCard title="Platform" color="dark" icon="server">
                   <template v-slot:content>
                     <strong>OS</strong> {{ platform.distro }}<br>
                     <strong>Kernel</strong> {{ platform.kernel }}<br>
                     <strong>Up</strong> {{ platform.uptime }}<br>
                   </template>
-                </Stat>
+                </StatCard>
               </div>
             </div>
             <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
               <div class="cpu-header h-100">
-                <Stat color="success" title="CPU">
-                  <template v-slot:icon>
-                    <i class="fa fa-tachometer-alt card-icon"></i>
-                  </template>
+                <StatCard  title="CPU" color="success" icon="tachometer-alt">
                   <template v-slot:content>
                     <strong>Temp</strong> {{ cpu.temp }}°C<br>
                     <strong>Usage</strong> {{ cpu.usage }}%<br>
                     <strong>Frequency</strong> {{ cpu.freq }}MHz<br>
                   </template>
-                </Stat>
+                </StatCard>
               </div>
             </div>
             <div class="col-12 col-md-6 col-lg-3 mb-4 mb-md-0">
               <div class="memory-header h-100">
-                <Stat color="success" title="Memory">
-                  <template v-slot:icon>
-                    <i class="fa fa-server card-icon"></i>
-                  </template>
+                <StatCard title="Memory" color="success" icon="server">
                   <template v-slot:content>
                     <strong>Used</strong> {{ mem.used }} GB<br>
                     <strong>Free</strong> {{ mem.free }} GB<br>
                     <strong>Total</strong> {{ mem.total }} GB<br>
                   </template>
-                </Stat>
+                </StatCard>
               </div>
             </div>
             <div class="col-12 col-md-6 col-lg-3">
               <div class="disk-header h-100">
-                <Stat color="success" title="Disk">
-                  <template v-slot:icon>
-                    <i class="fa fa-hdd card-icon btt-1"></i>
-                  </template>
+                <StatCard title="Disk" color="success" icon="hdd">
                   <template v-slot:content>
                     <strong>Used</strong> {{ disk.used }} GB<br>
                     <strong>Free</strong> {{ disk.free }} GB<br>
                     <strong>Total</strong> {{ disk.total }} GB<br>
                   </template>
-                </Stat>
+                </StatCard>
               </div>
             </div>
           </div>
@@ -102,12 +87,9 @@
                   <i class="fa fa-cogs mr-2"></i> Top Processes
                 </div>
                 <div class="card-body">
-                  <Graph id="processes"
-                         title="Top Processes"
-                         :data="processesGraphData">
-                  </Graph>
+                  <Graph id="processes" type="bar" title="Top Processes" :data="processesGraphData"></Graph>
                   <div class="mt-4">
-                    <Table type="horizontal" :data="processes"></Table>
+                    <DataTable type="horizontal" :data="processes"></DataTable>
                   </div>
                 </div>
               </div>
@@ -122,13 +104,13 @@
 <script>
 import {liveCpu} from '@/services/live-data';
 
-import Stat from '@/components/common/Stat';
+import PageTitle from '@/components/common/PageTitle';
+import MainHeader from '@/components/common/MainHeader';
+import StatCard from '@/components/common/StatCard';
+import DataTable from '@/components/common/DataTable';
+import Loading from '@/components/common/Loading';
 import Gauge from '@/components/charts/Gauge';
 import Graph from '@/components/charts/Graph';
-import Table from '@/components/common/Table';
-import Title from '@/components/common/Title';
-import Header from '@/components/common/Header';
-import Loading from '@/components/common/Loading';
 
 export default {
   data() {
@@ -190,7 +172,7 @@ export default {
         this.disk_percent = response.data.disk.percent;
         this.processes = response.data.processes;
         this.formatProcessesDataForGraphs();
-        // this.updateDataRegularly(5000);
+        this.updateDataRegularly(5000);
         this.loaded = true;
       }).catch(error => {
         this.setError(error.message);
@@ -221,13 +203,13 @@ export default {
     }
   },
   components: {
-    Stat,
+    StatCard,
     Gauge,
     Graph,
-    Title,
-    Table,
+    PageTitle,
+    DataTable,
     Loading,
-    Header
+    MainHeader
   }
 }
 </script>
