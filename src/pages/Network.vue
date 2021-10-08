@@ -120,7 +120,7 @@ export default {
     getNetwork() {
       this.setNetworkInterfaces();
       this.$on('interfaces-retrieved', () => this.getNetworkInformation());
-      // this.$on('information-retrieved', () => this.getNetworkWifi());
+      this.$on('information-retrieved', () => this.getNetworkWifi());
     },
     setNetworkInterfaces() {
       this.$api.request('/network/interfaces').then(response => {
@@ -160,16 +160,19 @@ export default {
     },
     getNetworkWifi() {
       this.$api.request('/network/wifi').then(response => {
+        if (!response.data.name && !response.data.signal) {
+          response.data.name = 'Using Ethernet'
+        }
         Object.keys(this.details).forEach(key => {
           this.details[key] = response.data[key];
         });
-        this.runNetworkWifiSpeedTest();
+        this.runNetworkSpeedTest();
         this.loaded = true;
       }).catch(error => {
         this.setError(error.message);
       });
     },
-    runNetworkWifiSpeedTest() {
+    runNetworkSpeedTest() {
       let progress = {}
       Object.keys(this.speed).forEach(key => {
         progress[key] = this.progress(key)
