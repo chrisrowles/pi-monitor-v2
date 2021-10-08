@@ -24,7 +24,7 @@
                 </router-link>
               </li>
               <li class="nav-item">
-                <router-link :to="{name: 'network'}" class="nav-link">
+                <router-link :to="{name: 'services'}" class="nav-link">
                   <fa-icon :icon="['fas', 'server']" class="mr-3"></fa-icon>Services
                 </router-link>
               </li>
