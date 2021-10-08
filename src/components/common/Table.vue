@@ -33,6 +33,11 @@ import _ from 'lodash';
 
 export default {
   props: ['type', 'nested', 'data', 'sortKey', 'sortOrder'],
+  data() {
+    return {
+      verticalData: this.data
+    }
+  },
   methods: {
     formatHeader(header) {
       header = header.charAt(0).toUpperCase() + header.slice(1);
@@ -42,15 +47,14 @@ export default {
   computed: {
     vertical() {
       let response = [];
-      Object.keys(this.data).forEach(key => {
-        if (typeof this.data[key] === 'number') {
-            // eslint-disable-next-line vue/no-mutating-props
-          this.data[key] = parseFloat(this.data[key]).toFixed(2);
+      Object.keys(this.verticalData).forEach(key => {
+        if (typeof this.verticalData[key] === 'number') {
+          this.verticalData[key] = parseFloat(this.verticalData[key]).toFixed(2);
         }
 
         response.push({
           header: this.formatHeader(key),
-          value: this.data[key]
+          value: this.verticalData[key]
         });
       });
       return _.orderBy(response, this.sortKey, this.sortOrder);
