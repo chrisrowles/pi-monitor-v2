@@ -1,14 +1,10 @@
 <template>
   <div>
     <PageTitle title="Network"></PageTitle>
-
     <Loading :show="!loaded" :status="status" :message="message"></Loading>
-
     <transition name="fade">
       <div class="pb-2" v-if="loaded">
-
-        <MainHeader title="Network Overview" class="mt-5"></MainHeader>
-
+        <MainHeader title="Network Overview" class="mt-5 mt-md-4"></MainHeader>
         <section id="overview" class="my-4">
           <div class="row">
             <div class="col-12 col-md-12 col-lg-4 mb-4 mb-lg-0">
@@ -21,7 +17,7 @@
             <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
               <StatCard title="Download Speed" :color="downloadClass" icon="arrow-circle-down">
                 <template v-slot:content>
-                  <i v-if="speedTestCompleted" class="fa fa-arrow-circle-down mr-2"></i>
+                  <fa-icon v-if="speedTestCompleted" :icon="['fas', 'arrow-circle-down']" class="mr-2"></fa-icon>
                   <strong>{{ speed.download }}</strong>
                 </template>
               </StatCard>
@@ -29,7 +25,7 @@
             <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
               <StatCard title="Upload Speed" :color="uploadClass" icon="arrow-circle-up">
                 <template v-slot:content>
-                  <i v-if="speedTestCompleted" class="fa fa-arrow-circle-up mr-2"></i>
+                  <fa-icon v-if="speedTestCompleted" :icon="['fas', 'arrow-circle-up']" class="mr-2"></fa-icon>
                   <strong>{{ speed.upload }}</strong>
                 </template>
               </StatCard>
@@ -44,7 +40,7 @@
               <div class="col-12">
                 <div class="card border-0 bg-white h-100">
                   <div class="card-header bg-white text-muted">
-                    <i class="fa fa-broadcast-tower mr-2"></i> Interface {{ inet }}
+                    <fa-icon :icon="['fas', 'broadcast-tower']" class="mr-2"></fa-icon>Interface {{ inet }}
                   </div>
                   <div class="card-body">
                     <Graph :id="inet"

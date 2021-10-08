@@ -20,7 +20,7 @@
                     <input v-model="password" type="password" class="form-control" id="password" placeholder="Password">
                   </div>
                   <button type="submit" class="btn login" v-bind:disabled="submitting">
-                    Submit <span v-if="submitting"><i class="fas fa-spinner fa-spin ml-2"></i></span>
+                    Submit <fa-icon v-if="submitting" :icon="['fas', 'spinner']" class="fa-spin ml-2"></fa-icon>
                   </button>
                 </form>
               </div>

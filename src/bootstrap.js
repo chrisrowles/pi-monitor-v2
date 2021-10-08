@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 import {
   faArrowCircleUp,
   faArrowCircleDown,
@@ -17,7 +19,8 @@ import {
   faList
 } from '@fortawesome/free-solid-svg-icons';
 
-import {library, dom} from '@fortawesome/fontawesome-svg-core';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 import 'bootstrap';
 
@@ -42,4 +45,4 @@ library.add(
     faList
 );
 
-dom.watch();
+Vue.component('fa-icon', FontAwesomeIcon)

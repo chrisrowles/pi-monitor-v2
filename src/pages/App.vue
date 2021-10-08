@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="h-100" :class="{'login-overlay': $route.name === 'login'}">
-    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap shadow">
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">{{ this.name }}</a>
       <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
@@ -8,50 +8,43 @@
         </li>
       </ul>
     </nav>
-    <div class="container-fluid h-100 pt-5 pt-md-2">
+    <div class="container-fluid h-100" style="margin-top: 56px;">
       <div class="row h-100">
-        <nav v-if="$store.getters.isAuthorized" class="col-md-2 d-none d-md-block bg-light sidebar">
+        <nav v-if="$store.getters.isAuthorized" class="col-md-2 d-none d-md-block bg-light sidebar mt-3">
           <div class="sidebar-sticky">
             <ul class="nav flex-column">
               <li class="nav-item">
                 <router-link :to="{name: 'dashboard'}" class="nav-link">
-                  <i class="fas fa-home mr-2"></i>
-                  Dashboard
+                  <fa-icon :icon="['fas', 'home']" class="mr-3"></fa-icon>Dashboard
                 </router-link>
               </li>
               <li class="nav-item">
                 <router-link :to="{name: 'network'}" class="nav-link">
-                  <i class="fas fa-broadcast-tower mr-2"></i>
-                  Network
+                  <fa-icon :icon="['fas', 'broadcast-tower']" class="mr-3"></fa-icon>Network
                 </router-link>
               </li>
               <li class="nav-item">
                 <router-link :to="{name: 'network'}" class="nav-link">
-                  <i class="fas fa-server mr-2"></i>
-                  Services
+                  <fa-icon :icon="['fas', 'server']" class="mr-3"></fa-icon>Services
                 </router-link>
               </li>
               <li class="nav-item">
                 <router-link :to="{name: 'terminal'}" class="nav-link">
-                  <i class="fas fa-terminal mr-2"></i>
-                  Terminal
+                  <fa-icon :icon="['fas', 'terminal']" class="mr-3"></fa-icon>Terminal
                 </router-link>
               </li>
               <li class="nav-item">
                 <router-link :to="{name: 'network'}" class="nav-link">
-                  <i class="fas fa-users mr-2"></i>
-                  Users
+                  <fa-icon :icon="['fas', 'users']" class="mr-3"></fa-icon>Users
                 </router-link>
               </li><li class="nav-item">
               <router-link :to="{name: 'network'}" class="nav-link">
-                <i class="fas fa-list mr-2"></i>
-                  Logging
+                <fa-icon :icon="['fas', 'list']" class="mr-3"></fa-icon>Logging
               </router-link>
             </li>
               <li class="nav-item">
                 <router-link :to="{name: 'network'}" class="nav-link">
-                  <i class="fas fa-cogs mr-2"></i>
-                  Settings
+                  <fa-icon :icon="['fas', 'cogs']" class="mr-3"></fa-icon>Settings
                 </router-link>
               </li>
             </ul>

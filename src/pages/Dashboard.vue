@@ -2,10 +2,9 @@
   <div>
     <PageTitle title="Dashboard"></PageTitle>
     <Loading :show="!loaded" :status="status" :message="message"></Loading>
-
     <transition name="fade">
       <div class="pb-2" v-if="loaded">
-        <MainHeader title="Dashboard Overview" class="mt-5"></MainHeader>
+        <MainHeader title="Dashboard Overview" class="mt-5 mt-md-4"></MainHeader>
         <section id="overview" class="my-4">
           <div class="row">
             <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
@@ -58,7 +57,7 @@
         <section id="charts" class="bg-white p-4 my-4 shadow border-radius-5">
           <div class="card border-0">
             <div class="card-header bg-white text-muted">
-              <i class="fa fa-tasks mr-2"></i> Statistics
+              <fa-icon :icon="['fas', 'tasks']" class="mr-3"></fa-icon>Statistics
             </div>
             <div class="card-body">
               <div class="row">
@@ -84,7 +83,7 @@
             <div class="col-12">
               <div class="card border-0">
                 <div class="card-header bg-white text-muted">
-                  <i class="fa fa-cogs mr-2"></i> Top Processes
+                  <fa-icon :icon="['fas', 'cogs']" class="mr-3"></fa-icon>Top Processes
                 </div>
                 <div class="card-body">
                   <Graph id="processes" type="bar" title="Top Processes" :data="processesGraphData"></Graph>

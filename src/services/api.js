@@ -70,7 +70,7 @@ api.request = async (endpoint, options = {}) => caller(url + endpoint, options);
  * Ping the API for connection status.
  *
  * @param timeout
- * @returns {number}
+ * @returns {NodeJS.Timer}
  */
 api.ping = timeout => {
   return setInterval(() => {

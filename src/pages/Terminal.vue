@@ -1,86 +1,80 @@
 <template>
   <div>
     <PageTitle :title="title"></PageTitle>
-
-    <div class="pt-5">
-      <MainHeader title="Remote SSH"></MainHeader>
-
-      <section id="overview" class="my-4">
-        <div class="row">
-          <div class="col-12">
-            <div class="cpu-header">
-              <StatCard title="Connected Host" color="dark" icon="terminal">
-                <template v-slot:content>
-                  <strong>User</strong> {{ username }}<br>
-                  <strong>Hostname</strong> {{ hostname }}<br>
-                </template>
-              </StatCard>
-            </div>
+    <MainHeader title="Remote SSH" class="mt-5 mt-md-4"></MainHeader>
+    <section id="overview" class="my-4">
+      <div class="row">
+        <div class="col-12">
+          <div class="cpu-header">
+            <StatCard title="Connected Host" color="dark" icon="terminal">
+              <template v-slot:content>
+                <strong>User</strong> {{ username }}<br>
+                <strong>Hostname</strong> {{ hostname }}<br>
+              </template>
+            </StatCard>
           </div>
         </div>
-      </section>
-
-      <div v-if="!xterm_active">
-        <section class="bg-white p-4 my-4 shadow border-radius-5">
-          <div class="card border-0">
-            <div class="card-header bg-white text-muted">
-              <i class="fa fa-cogs mr-2"></i> Configure Connection
-            </div>
-            <div class="card-body">
-              <form v-on:submit.prevent="connect" id="connect" action="" type="post" enctype="multipart/form-data">
-                <div class="form-group row">
-                  <div class="col-6">
-                    <label for="hostname">Hostname</label>
-                    <input id="hostname" class="form-control" type="text" name="hostname" v-model="hostname">
-                  </div>
-                  <div class="col-6">
-                    <label for="port">Port</label>
-                    <input id="port" class="form-control" type="text" name="port" v-model="port">
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <div class="col-6">
-                    <label for="username">Username</label>
-                    <input id="username" class="form-control" type="text" name="username" v-model="username">
-                  </div>
-                  <div class="col-6">
-                    <label for="privatekey">Private Key</label>
-                    <input id="privatekey" class="form-control file-control" type="file" name="privatekey"
-                           @change="attach_private_key">
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <div class="col-6">
-                    <label for="password">Password</label>
-                    <input id="password" class="form-control" type="password" name="password" placeholder=""
-                           v-model="password">
-                  </div>
-                </div>
-                <div class="form-group row mt-3">
-                  <div class="col-md-12">
-                    <button type="submit" class="btn btn-success btn-connect">Connect
-                      <i v-if="submitting" class="fa fa-spinner fa-spin ml-2"></i>
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </section>
       </div>
-
-      <section class="my-4" v-if="xterm_active">
-        <div class="row">
-          <div class="col-12">
-            <div class="card border-0 shadow">
-              <div class="card-body bg-black border-radius-5">
-                <div id="terminal"></div>
+    </section>
+    <div v-if="!xterm_active">
+      <section class="bg-white p-4 my-4 shadow border-radius-5">
+        <div class="card border-0">
+          <div class="card-header bg-white text-muted">
+            <fa-icon :icon="['fas', 'cogs']" class="mr-2"></fa-icon>Configure Connection
+          </div>
+          <div class="card-body">
+            <form v-on:submit.prevent="connect" id="connect" action="" type="post" enctype="multipart/form-data">
+              <div class="form-group row">
+                <div class="col-6">
+                  <label for="hostname">Hostname</label>
+                  <input id="hostname" class="form-control" type="text" name="hostname" v-model="hostname">
+                </div>
+                <div class="col-6">
+                  <label for="port">Port</label>
+                  <input id="port" class="form-control" type="text" name="port" v-model="port">
+                </div>
               </div>
-            </div>
+              <div class="form-group row">
+                <div class="col-6">
+                  <label for="username">Username</label>
+                  <input id="username" class="form-control" type="text" name="username" v-model="username">
+                </div>
+                <div class="col-6">
+                  <label for="privatekey">Private Key</label>
+                  <input id="privatekey" class="form-control file-control" type="file" name="privatekey"
+                         @change="attach_private_key">
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-6">
+                  <label for="password">Password</label>
+                  <input id="password" class="form-control" type="password" name="password" placeholder=""
+                         v-model="password">
+                </div>
+              </div>
+              <div class="form-group row mt-3">
+                <div class="col-md-12">
+                  <button type="submit" class="btn btn-success btn-connect">Connect
+                    <fa-icon v-if="submitting" :icon="['fas', 'spinner']" class="fa-spin ml-2"></fa-icon>
+                  </button>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </section>
     </div>
+    <section class="my-4" v-if="xterm_active">
+      <div class="row">
+        <div class="col-12">
+          <div class="card border-0 shadow">
+            <div class="card-body bg-black border-radius-5">
+              <div id="terminal"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 

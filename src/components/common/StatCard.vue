@@ -3,7 +3,7 @@
         <div class="card-header border-0 text-white d-flex justify-content-between align-items-center w-100"
              :class="`bg-${color}`">
             <strong>{{ title }}</strong>
-          <i :class="`fa fa-${icon} card-icon`"></i>
+          <fa-icon :icon="['fas', icon]" class="card-icon"></fa-icon>
         </div>
         <div class="card-body border-radius-5 text-white" :class="`bg-${color}`">
             <slot name="content"></slot>
