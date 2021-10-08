@@ -48,6 +48,7 @@
                   </div>
                   <div class="card-body">
                     <Graph :id="inet"
+                           type="bar"
                            :title="'Interface ' + inet"
                            :data="interfacesGraphData[inet]">
                     </Graph>
@@ -119,7 +120,7 @@ export default {
     getNetwork() {
       this.setNetworkInterfaces();
       this.$on('interfaces-retrieved', () => this.getNetworkInformation());
-      this.$on('information-retrieved', () => this.getNetworkWifi());
+      // this.$on('information-retrieved', () => this.getNetworkWifi());
     },
     setNetworkInterfaces() {
       this.$api.request('/network/interfaces').then(response => {
@@ -151,6 +152,7 @@ export default {
           });
           this.formatInterfaceGraphData(inet)
         });
+        this.loaded = true;
         this.$emit('information-retrieved');
       }).catch(error => {
         this.setError(error.message);

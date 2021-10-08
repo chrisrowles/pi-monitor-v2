@@ -30,13 +30,13 @@ notify.send = (type, msg) => {
 
 notify.level = (param, {max, mid, min}) => {
     if (param >= max) {
-        return 'bg-success';
+        return 'success';
     } else if (param < max && param >= mid) {
-        return 'bg-warning';
+        return 'warning';
     } else if (param < mid && param > min) {
-        return 'bg-danger';
+        return 'danger';
     } else {
-        return 'bg-dark';
+        return 'dark';
     }
 }
 
