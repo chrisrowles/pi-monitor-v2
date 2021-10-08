@@ -44,6 +44,7 @@ export default {
       let response = [];
       Object.keys(this.data).forEach(key => {
         if (typeof this.data[key] === 'number') {
+            // eslint-disable-next-line vue/no-mutating-props
           this.data[key] = parseFloat(this.data[key]).toFixed(2);
         }
 
