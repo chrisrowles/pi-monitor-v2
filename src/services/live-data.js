@@ -13,7 +13,8 @@ liveCpu.get = async (field) => {
     let response = await caller(url + '/system/cpu', {
         headers: { 'X-Fields': field }
     });
-    return response.data[field];
+    
+    return response.data;
 }
 
 /** Live disk data service **/

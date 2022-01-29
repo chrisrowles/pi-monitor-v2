@@ -1,13 +1,9 @@
 import Vue from 'vue';
-
 import store from './store';
 import router from './router';
-
 import api from './services/api';
 import bus from './services/bus';
-
 import App from './pages/App';
-
 import './bootstrap';
 
 /** Add event bus, api client and app name instance properties **/

@@ -29,7 +29,7 @@ const caller = (uri, options = {}) => {
 
   // Authorization interceptor
   if (store.getters.isAuthorized) {
-    headers.append('Authorization', store.state.auth);
+    headers.append('Authorization', 'Bearer ' + store.state.auth);
   }
 
   options.headers = headers;

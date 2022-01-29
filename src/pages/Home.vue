@@ -171,7 +171,7 @@ export default {
         this.disk_percent = response.data.disk.percent;
         this.processes = response.data.processes;
         this.formatProcessesDataForGraphs();
-        this.updateDataRegularly(5000);
+        this.updateDataRegularly(20000);
         this.loaded = true;
       }).catch(error => {
         this.setError(error.message);
@@ -189,9 +189,13 @@ export default {
     },
     updateDataRegularly(interval) {
       setInterval(() => {
-        liveCpu.get('temp').then(temp => {
-          this.cpu.temp = temp;
-          this.$bus.$emit('update-gauge-temp', {value: temp, id: 'temp'})
+        liveCpu.get('all').then((response) => {
+          for (const key of Object.keys(this.cpu)) {
+            this.cpu[key] = response[key]
+          }
+
+          this.$bus.$emit('update-gauge-temp', {value: this.cpu.temp, id: 'temp'})
+          this.$bus.$emit('update-gauge-cpu', {value: this.cpu.usage, id: 'cpu'})
         });
       }, interval);
     },
