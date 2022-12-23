@@ -1,3 +1,7 @@
+*** UPDATE ***
+
+[V3 client](https://github.com/chrisrowles/pi-monitor-v3) has been released, it includes realtime monitoring through websockets, check it out!
+
 # Pi Monitor
 
 A lightweight monitor for your raspberry pi, works with the [API.](https://github.com/chrisrowles/pi-monitor-api)
